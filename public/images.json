@@ -1,0 +1,39 @@
+{
+  "images": [
+    {
+      "url": "seoul",
+      "caption": "대한민국 - 서울",
+      "src": "/img/seoul.png"
+    },
+    {
+      "url": "/path/to/image2.jpg",
+      "caption": "대한민국 - 경기",
+      "src": "/img/seoul.png"
+    },
+    {
+      "url": "/path/to/image3.jpg",
+      "caption": "대한민국 - 강원",
+      "src": "/img/seoul.png"
+    },
+    {
+      "url": "/path/to/image4.jpg",
+      "caption": "Image 4",
+      "src": "/img/seoul.png"
+    },
+    {
+      "url": "/path/to/image5.jpg",
+      "caption": "Image 5",
+      "src": "/img/seoul.png"
+    },
+    {
+      "url": "/path/to/image5.jpg",
+      "caption": "Image 6",
+      "src": "/img/seoul.png"
+    },
+    {
+      "url": "/path/to/image5.jpg",
+      "caption": "Image 6",
+      "src": "/img/seoul.png"
+    }
+  ]
+}
