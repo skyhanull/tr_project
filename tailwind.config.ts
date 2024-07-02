@@ -8,13 +8,61 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      spacing: {
+        "px-1": "1px",
+        "px-2": "2px",
+        "px-3": "3px",
+        "px-4": "4px",
+        "px-5": "5px",
+        "px-6": "6px",
+        "px-7": "7px",
+        "px-8": "8px",
+        "px-9": "9px",
+        "px-10": "10px",
+        // 원하는 만큼 추가
+      },
+      inset: {
+        "px-1": "1px",
+        "px-2": "2px",
+        "px-3": "3px",
+        "px-4": "4px",
+        "px-5": "5px",
+        "px-6": "6px",
+        "px-7": "7px",
+        "px-8": "8px",
+        "px-9": "9px",
+        "px-55": "725px",
+        // 원하는 만큼 추가
+      },
+      width: {
+        "px-1": "1px",
+        "px-2": "2px",
+        "px-3": "3px",
+        "px-4": "4px",
+        "px-5": "5px",
+        "px-6": "6px",
+        "px-7": "7px",
+        "px-8": "8px",
+        "px-9": "9px",
+        "px-55": "550px",
+        // 원하는 만큼 추가
+      },
+      height: {
+        "px-1": "1px",
+        "px-2": "2px",
+        "px-3": "3px",
+        "px-4": "4px",
+        "px-5": "5px",
+        "px-6": "6px",
+        "px-7": "7px",
+        "px-8": "8px",
+        "px-9": "9px",
+        "px-10": "10px",
+        // 원하는 만큼 추가
       },
     },
   },
   plugins: [],
 };
+
 export default config;
