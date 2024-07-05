@@ -61,3 +61,18 @@ export async function getMenuItems(
     priceSelector
   );
 }
+export async function getStyleBackgroundImage(
+  page: puppeteer.Page,
+  selector: string
+) {
+  const style = await page.evaluate((selector) => {
+    const element = document.querySelector(selector);
+    return element ? window.getComputedStyle(element).backgroundImage : null;
+  }, selector);
+
+  if (style) {
+    const urlMatch = style.match(/url\("(.+)"\)/);
+    return urlMatch ? urlMatch[1] : null;
+  }
+  return null;
+}

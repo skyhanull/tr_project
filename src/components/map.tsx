@@ -1,61 +1,93 @@
 "use client";
-import { useEffect } from "react";
+
+import React, { useEffect, useRef } from "react";
+import { textState } from "@/components/atoms";
+import { useRecoilValue } from "recoil";
+import axios from "axios";
 
 declare global {
   interface Window {
-    kakao: any;
+    naver: any;
   }
 }
 
-export default function KakaoMap() {
+const Map = () => {
+  const mapElement = useRef(null);
+  const markerPositions = useRecoilValue(textState);
   useEffect(() => {
-    if (window.kakao) {
-      window.kakao.maps.load(() => {
-        const mapContainer = document.getElementById("map");
-        const mapOption = {
-          center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-          level: 3,
+    const script = document.createElement("script");
+    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_CLIENT_ID`;
+    script.onload = () => {
+      const { naver } = window;
+      if (!mapElement.current || !naver) return;
+
+      const mapOptions = {
+        center: new naver.maps.LatLng(37.5665, 126.978), // 초기 중심 좌표 (서울 시청)
+        zoom: 10,
+      };
+
+      const map = new naver.maps.Map(mapElement.current, mapOptions);
+
+      // 추가적인 지도 설정 및 마커 추가 코드
+      markerPositions.forEach((position) => {
+        new naver.maps.Marker({
+          position: new naver.maps.LatLng(position.y, position.x),
+          map,
+        });
+      });
+      if (markerPositions.length > 1) {
+        const path = markerPositions.map(
+          (position) => new naver.maps.LatLng(position.y, position.x)
+        );
+        const polyline = new naver.maps.Polyline({
+          map: map,
+          path: path,
+          strokeColor: "#5347AA",
+          strokeWeight: 3,
+        });
+      }
+      // 길찾기 경로 추가
+      // 길찾기 경로 추가
+      if (markerPositions.length > 1) {
+        const fetchDirections = async () => {
+          const start = markerPositions[0];
+          const end = markerPositions[1];
+          try {
+            const response = await fetch(
+              `/api/directions?start=${start.x},${start.y}&goal=${end.x},${end.y}`
+            );
+            const data = await response.json();
+            const path = data.route.traoptimal[0].path.map(
+              ([lng, lat]) => new naver.maps.LatLng(lat, lng)
+            );
+            new naver.maps.Polyline({
+              map: map,
+              path: path,
+              strokeColor: "#5347AA",
+              strokeWeight: 3,
+            });
+            const summary = data.route.traoptimal[0].summary;
+            console.log(
+              `총 거리: ${summary.distance}m, 예상 시간: ${summary.duration}ms, 교통 수단: ${summary.fare}`
+            );
+          } catch (error) {
+            console.error("Failed to fetch directions:", error);
+          }
         };
 
-        var positions = [
-          {
-            title: "카카오",
-            latlng: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-          },
-          {
-            title: "생태연못",
-            latlng: new window.kakao.maps.LatLng(33.450936, 126.569477),
-          },
-          {
-            title: "텃밭",
-            latlng: new window.kakao.maps.LatLng(33.450879, 126.56994),
-          },
-          {
-            title: "근린공원",
-            latlng: new window.kakao.maps.LatLng(33.451393, 126.570738),
-          },
-        ];
-        var imageSrc =
-          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png";
+        fetchDirections();
+      }
+    };
+    // 경로 추가
 
-        var maps = new window.kakao.maps.Map(mapContainer, mapOption);
-        for (var i = 0; i < positions.length; i++) {
-          var imageSize = new window.kakao.maps.Size(24, 35);
-          var markerImage = new window.kakao.maps.MarkerImage(
-            imageSrc,
-            imageSize
-          );
+    document.head.appendChild(script);
 
-          var marker = new window.kakao.maps.Marker({
-            map: maps,
-            position: positions[i].latlng,
-            title: positions[i].title,
-            image: markerImage,
-          });
-        }
-      });
-    }
-  }, []);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [markerPositions]);
 
-  return <div id="map" style={{ height: "100%", width: "100%" }} />;
-}
+  return <div ref={mapElement} style={{ width: "100%", height: "100%" }} />;
+};
+
+export default Map;
