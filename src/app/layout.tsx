@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-// import { Inter } from "next/font/google";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
+import RecoilRootWrapper from "@/components/recoilWapper";
 import Layout from "../components/layout/layout";
 import { Jua } from "next/font/google";
 import Script from "next/script";
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // @를 떼주자
+import "./globals.css";
+import theme from "./theme";
 
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
 //
 import "./globals.css";
 
@@ -23,7 +25,7 @@ declare global {
     kakao: any;
   }
 }
-
+const queryClient = new QueryClient();
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,13 +34,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={` bg-[url('/img/background.png')] bg-cover bg-center`}>
-        <Layout>
-          <Script
-            type="text/javascript"
-            src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}&callback=CALLBACK_FUNCTION`}
-          />
-          <main>{children}</main>
-        </Layout>
+        {/* <QueryClientProvider client={queryClient}> */}
+        <ThemeProvider theme={theme}>
+          <RecoilRootWrapper>
+            <Layout>
+              <Script
+                type="text/javascript"
+                src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&callback=CALLBACK_FUNCTION`}
+              />
+              <Script
+                src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_KEY}&libraries=services`}
+              ></Script>
+              <main>{children}</main>
+            </Layout>
+          </RecoilRootWrapper>
+        </ThemeProvider>
+        {/* </QueryClientProvider> */}
       </body>
     </html>
   );

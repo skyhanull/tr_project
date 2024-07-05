@@ -28,6 +28,7 @@ const nextConfig = {
   },
   images: {
     domains: [
+      "t1.kakaocdn.net",
       "dbscthumb-phinf.pstatic.net",
       "search.pstatic.net",
       "example.com",
