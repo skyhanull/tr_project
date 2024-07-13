@@ -2,125 +2,120 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import puppeteer from "puppeteer";
-import {
-  setupBrowser,
-  getTextContent,
-  getAttribute,
-  getAllTextContent,
-  getMenuItems,
-} from "../../util/puppeteerUtils";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // const url = "http://place.map.kakao.com/20747449"; // 스크래핑할 웹 페이지 URL
   const { url } = req.query;
+  if (typeof url !== "string") {
+    return res.status(400).json({ error: "Invalid URL" });
+  }
+
   try {
-    const browser = await puppeteer.launch(); // Puppeteer 브라우저 실행
-    const page = await browser.newPage(); // 새 페이지 생성
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
 
-    // 페이지 이동 및 완전한 로드까지 대기
-    await page.goto(url, { waitUntil: "networkidle0" }); // 네트워크 활동이 완전히 멈출 때까지 대기
+    await page.goto(url, { waitUntil: "networkidle0" });
 
-    // 페이지의 동적 콘텐츠를 렌더링하기 위해 JavaScript를 실행합니다.
-    // 예를 들어, 페이지의 특정 요소를 클릭하여 동적 콘텐츠를 로드합니다.
-    // // 이 부분은 실제로 필요한 동작에 따라 수정해야 합니다.
-    // await page.evaluate(() => {
-    //   // 예시: 페이지의 특정 요소를 클릭하여 동적 콘텐츠를 로드합니다.
-    //   document.querySelector("#someDynamicContentButton")?.click();
-    // });
+    // 특정 요소의 텍스트 추출
+    const data = await page.evaluate(() => {
+      const ogTitle =
+        document
+          .querySelector('meta[property="og:title"]')
+          ?.getAttribute("content") || "No og:title found";
+      const description =
+        document.querySelector(".description")?.textContent ||
+        "No description found";
+      const imageUrl = document.querySelector("img")?.src || "No image found";
+      const operationTime =
+        document.querySelector(".time_operation")?.textContent ||
+        "No operation time found";
+      const contactNumber =
+        document.querySelector(".txt_contact")?.textContent ||
+        "No contact number found";
+      const holiday =
+        document.querySelector(".holiday")?.textContent || "No holiday found";
+      const closedDay =
+        document.querySelector(".txt_operation")?.textContent ||
+        "No closed day found";
+      const tags = Array.from(document.querySelectorAll(".link_tag")).map(
+        (tag) => tag.textContent || ""
+      );
+      const address =
+        document.querySelector(".txt_address")?.textContent?.trim() ||
+        "No address found";
+      const addressDetail =
+        document.querySelector(".txt_addrnum")?.textContent?.trim() ||
+        "No address detail found";
+      const reviewCount =
+        document.querySelector(".link_evaluation")?.getAttribute("data-cnt") ||
+        "No review count found";
+      const reviewTarget =
+        document
+          .querySelector(".link_evaluation")
+          ?.getAttribute("data-target") || "No review target found";
+      const reviewScore =
+        document
+          .querySelector(".link_evaluation .color_b")
+          ?.textContent?.trim() || "No review score found";
+      // 배경 이미지 URL 추출
+      // 링크 이미지 URL 추출
+      // 배경 이미지 URL 추출
+      const backgroundImageElement = document.querySelector(".bg_present");
+      const backgroundImageStyle =
+        backgroundImageElement?.getAttribute("style") || "";
+      const backgroundImageUrlMatch = backgroundImageStyle.match(
+        /url\(["']?(.*?)["']?\)/
+      );
+      let backgroundImageUrl = backgroundImageUrlMatch
+        ? backgroundImageUrlMatch[1]
+        : "No background image found";
+      if (backgroundImageUrl.startsWith("//")) {
+        backgroundImageUrl = "https:" + backgroundImageUrl;
+      }
 
-    // 전체 HTML을 가져오기
-    // const htmlContent = await page.evaluate(
-    //   () => document.documentElement.outerHTML
-    // );
-    const title = await getTextContent(page, "title");
+      // 메뉴 추출
+      const menuElements = Array.from(
+        document.querySelectorAll(".list_menu > li:not(.hide)")
+      );
+      const menus = menuElements.slice(0, 5).map((menuElement) => {
+        const name =
+          menuElement.querySelector(".loss_word")?.textContent ||
+          "No menu name found";
+        const price =
+          menuElement
+            ?.querySelector(".price_menu")
+            ?.textContent?.replace(/[^0-9]/g, "") || "No menu price found";
 
-    // Open Graph 메타데이터 가져오기
-    const ogTitle = await getAttribute(
-      page,
-      'meta[property="og:title"]',
-      "content"
-    );
-    const ogSiteName = await getAttribute(
-      page,
-      'meta[property="og:site_name"]',
-      "content"
-    );
-    const ogDescription = await getAttribute(
-      page,
-      'meta[property="og:description"]',
-      "content"
-    );
-    // const ogType = await getAttribute(
-    //   page,
-    //   'meta[property="og:type"]',
-    //   "content"
-    // );
-    const ogImage = await getAttribute(
-      page,
-      'meta[property="og:image"]',
-      "content"
-    );
-    const ogUrl = await getAttribute(
-      page,
-      'meta[property="og:url"]',
-      "content"
-    );
+        return {
+          name,
+          price,
+        };
+      });
 
-    // await browser.close(); // 브라우저 닫기
-    const operatingHours = await getTextContent(
-      page,
-      ".tit_operation.fst + .list_operation li"
-    );
-    const holidayOperatingHours = await getTextContent(
-      page,
-      ".tit_operation + .list_operation li"
-    );
-    const caution = await getTextContent(
-      page,
-      ".operation_caution .list_caution li"
-    );
-    const contact = await getTextContent(
-      page,
-      ".placeinfo_contact .location_present .num_contact .txt_contact"
-    );
-
-    // 태그 가져오기
-    const tags = await getAllTextContent(
-      page,
-      ".placeinfo_default .location_detail .txt_tag .tag_g a"
-    );
-    const menuItems = await getMenuItems(
-      page,
-      ".info_menu .loss_word",
-      ".info_menu .price_menu"
-    );
-
-    // const name = await getTextContent(page, '.operation_caution .list_caution li');
-    // const caution = await getTextContent(page, '.operation_caution .list_caution li');
-
-    await browser.close(); // 브라우저 닫기
-
-    res.status(200).json({
-      title: title || "정보 없음",
-      ogTitle: ogTitle || "정보 없음",
-      ogSiteName: ogSiteName || "정보 없음",
-      ogDescription: ogDescription || "정보 없음",
-      // ogType: ogType || "정보 없음",
-      ogImage: ogImage || "정보 없음",
-      ogUrl: ogUrl || "정보 없음",
-      operatingHours: operatingHours || "정보 없음",
-      holidayOperatingHours: holidayOperatingHours || "정보 없음",
-      caution: caution || "정보 없음",
-      // homepage: homepage || "정보 없음",
-      contact: contact || "연락처 정보는 제공되지 않습니다.",
-      tag: tags || "연락처 정보는 제공되지 않습니다.",
-      menuItems:
-        menuItems.length > 0 ? menuItems : ["메뉴 정보를 가져올 수 없습니다."],
+      return {
+        ogTitle,
+        description,
+        imageUrl,
+        operationTime,
+        contactNumber,
+        holiday,
+        closedDay,
+        tags,
+        address,
+        backgroundImageUrl,
+        addressDetail,
+        reviewCount,
+        reviewTarget,
+        reviewScore,
+        menus,
+      };
     });
-    // res.status(200).json({ html: htmlContent });
+
+    await browser.close();
+
+    res.status(200).json(data);
   } catch (error) {
     console.error("Error scraping data:", error);
     res.status(500).json({ error: "Failed to scrape data" });
