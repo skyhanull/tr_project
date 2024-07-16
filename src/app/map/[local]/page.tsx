@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import MapLayout from "../../../components/layout/nav";
 import Link from "next/link";
-import KaKaoMap from "../../../components/useK";
+import KaKaoMap from "../../../components/kakaomap";
 import Menu from "./mapCilent";
 // import React, { useState } from "react";
 

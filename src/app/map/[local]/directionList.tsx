@@ -3,99 +3,135 @@ import SearchBar from "../../../components/filterbar/search";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
-
+import convertDuration from "@/util/time";
 import React, { useState, useEffect } from "react";
 import { FaTrashCan } from "react-icons/fa6";
 import Chip from "@mui/material/Chip";
 import { textState } from "@/components/atoms";
 import { useRecoilValue } from "recoil";
 import Button from "@mui/material/Button";
-
+import DirectionModal from "@/components/directionModal";
+import getChipColor from "@/util/color";
+import getImageSrc from "@/util/image";
 const DirectionList = () => {
   const [filterChip, setFilterChip] = useState("loc");
-  const [selectList, setSelectList] = useRecoilState(textState);
-  const [todoList, setTodoList] = useRecoilState(textState);
-  const markerPositions = useRecoilValue<any[]>(textState);
+  // const [selectList, setSelectList] = useRecoilState(textState);
+  // const [todoList, setTodoList] = useRecoilState(textState);
+  const [markerList, setMarkerList] = useRecoilState(textState);
   const [directions, setDirections] = useState(null);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  // const backgroundColorClass = getChipColor(markerList);
   const [error, setError] = useState(null);
   const filterArray = [
     { name: "자동차", code: "drive" },
     { name: "버스", code: "bus" },
   ];
-  const origin = `${markerPositions[0].y},${markerPositions[0].x}`;
-  const destination = `${markerPositions[markerPositions.length - 1].y},${
-    markerPositions[markerPositions.length - 1].x
+
+  const destination = `${markerList[markerList.length - 1]?.x},${
+    markerList[markerList.length - 1]?.y
   }`;
-  const waypoints = markerPositions
-    .slice(1, -1)
-    .map((wp) => `${wp.y},${wp.x}`)
-    .join("|");
-  console.log(origin, destination, waypoints);
-  console.log(todoList);
+
+  const AAA = markerList
+    ?.map((el) => `${el.x},${el.y}`)
+    .slice(0, -1)
+    .join(";");
+
+  // console.log(markerPositions?.map((el) => `${el.x},${el.y}`).join(";"));
+  // console.log(origin, destination, waypoints);
+  console.log(AAA);
   useEffect(() => {
-    const url = `/api/dir?origin=${origin}&destination=${destination}`;
+    const url = `/api/mapbox?origin=${AAA}&destination=${destination}`;
     const fetchDirections = async () => {
       try {
         const res = await fetch(url);
         const data = await res.json();
         if (res.ok) {
           setDirections(data);
+          console.log(data);
         } else {
           setError(data.error);
         }
       } catch (err) {
-        setError("Failed to fetch directions");
+        setError(error);
       }
     };
 
-    fetchDirections();
-  }, []);
+    if (markerList) {
+      fetchDirections();
+    }
+  }, [markerList]);
 
+  const deleteFilter = (i: number) => {
+    const newList = markerList.filter((el, index) => index !== i);
+    setMarkerList(newList);
+  };
+  console.log(markerList);
   return (
-    <div>
-      <SearchBar />
-      <SelectFilter setFilterChip={setFilterChip} Array={filterArray} />
-      {todoList.map((el) => (
-        <div key={el.id} className="rounded-xl p-10 flex flex-col border-b ">
-          <div
-            className="text-3xl h-10 flex-row mb-3"
-            // onClick={() => toggleCollapse(el.place_url)}
-          >
-            {el.place_name}
-            {/* <Chip label={el.category_group_name} /> */}
-          </div>
-          <div className=" flex flex-row ">
-            <Image
-              src={el.img}
-              alt=""
-              layout="fixed"
-              width={100}
-              height={100}
-              objectFit="cover" // 원본 이미지의 비율을 유지하면서 컨테이너에 맞게 조정
-              className="rounded-lg shadow-md"
-            />
+    <>
+      <div>
+        <div>
+          <div className="text-4xl m-8">길찾기</div>
+          <button onClick={() => setIsCollapsed(true)}>상세보기</button>
+        </div>
 
-            <div className="flex ml-10 flex-row justify-between w-full">
-              <div>
-                {/* <div>
-                      <span onClick={toggleCollapse}>{el.tag}</span>
-                      {el.road_address_name}
-                    </div> */}
-              </div>
-              <div>
-                <Button
-                  variant="contained"
-                  className="h-full"
-                  onClick={() => locationHanlder(el.x, el.y, el.place_name)}
-                >
-                  <FaTrashCan />
-                </Button>
+        <SelectFilter setFilterChip={setFilterChip} Array={filterArray} />
+
+        {markerList.length === 0 ? (
+          <div>no result</div>
+        ) : (
+          markerList.map((el, i) => (
+            <div
+              key={el.id}
+              className="rounded-xl p-10 flex flex-col border-b "
+            >
+              <div className=" flex flex-row ">
+                <Image
+                  src={getImageSrc(el.filterChip)}
+                  alt=""
+                  layout="fixed"
+                  width={100}
+                  height={100}
+                  objectFit="cover" // 원본 이미지의 비율을 유지하면서 컨테이너에 맞게 조정
+                  className="rounded-lg shadow-md"
+                />
+                <div className="flex ml-10 flex-row justify-between w-full">
+                  <div>
+                    <div>
+                      {/* <span onClick={toggleCollapse}>{el.tag}</span> */}
+                      {el.name}
+                    </div>
+                    <div>{el.filterChip}</div>
+                    <div>{el.address}</div>
+                  </div>
+                  <div>
+                    <Button
+                      variant="contained"
+                      className="h-full bg-red-500"
+                      onClick={() => deleteFilter(i)}
+                    >
+                      <FaTrashCan />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
+          ))
+        )}
+        <div className="h-60 border-2">
+          <div>
+            총 시간 : {convertDuration(directions?.routes[0]?.duration)}
           </div>
+          <div>총 거리 : {directions?.routes[0]?.distance}</div>
+          <div>거리:</div>
         </div>
-      ))}
-    </div>
+      </div>
+      {isCollapsed && (
+        <DirectionModal
+          setIsCollapsed={setIsCollapsed}
+          directions={directions}
+        />
+      )}
+    </>
   );
 };
 

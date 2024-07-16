@@ -1,72 +1,177 @@
 "use client";
-import SearchBar from "../../../components/filterbar/search";
-import SelectFilter from "../../../components/filterbar/fieldSelect";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
-import { textState } from "@/components/atoms";
 import React, { useState, useEffect } from "react";
-
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { textState } from "@/components/atoms";
+import { HiOutlinePlus } from "react-icons/hi";
+import { Place } from "@/util/interface/listInterface";
+import { searchPlaces } from "../../../util/kakao";
+import InfiniteScroll from "react-infinite-scroll-component";
+import SelectFilter from "../../../components/filterbar/fieldSelect";
+import SearchBar from "../../../components/filterbar/search";
+import ListModal from "../../../components/listModal";
 import Chip from "@mui/material/Chip";
+import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
+import getChipColor from "@/util/color";
+import getImageSrc from "@/util/image";
+export enum Status {
+  MAP = 1,
+  SUCCESS = 2,
+  ERROR = "error",
+}
 
-const LocationList = ({ mapArray }) => {
+const LocationList = () => {
+  const router = usePathname();
+  const [todoList, setTodoList] = useRecoilState(textState);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [filterChip, setFilterChip] = useState("loc");
+  const [mapArray, setMapArray] = useState<Place[]>([]);
+  const [curUrl, setCurUrl] = useState("");
+  const [hasMore, setHasMore] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const backgroundColorClass = getChipColor(filterChip);
+  const [totalPages, setTotalPages] = useState(0);
+  const filterArray = [
+    { name: "추천루트", code: "loc" },
+    { name: "맛집", code: "FD6" },
+    { name: "관광지", code: "AT4" },
+    { name: "카페", code: "CE7" },
+    { name: "축제", code: "fes" },
+  ];
+  //몰고디비 연결 api
+  const fetchData = async (collection = "") => {
+    const url = collection
+      ? `/api/mapArray?collectionName=${
+          router?.split("/")[2]
+        }_list&filter=${filterChip}`
+      : `/api/mapArray`;
+    const res = await fetch(url);
+    const data = await res.json();
+    setMapArray(data); // Adjust according to your API response
+    // setTotalPages(data.totalPages); // Adjust according to your API response
+  };
+  //카카오 장소 검색 연결 api
+  const fetchPlaces = async () => {
+    try {
+      const options = {
+        size: 10, // 한 페이지에 보여질 문서의 개수
+        page: currentPage,
+        // sort: "accuracy",
+        category_group_code: filterChip,
+      };
+      const results = await searchPlaces("서울", options);
+      setTotalPages(Math.ceil(results.meta.total_count / 10));
+      setMapArray(results.documents);
+      // setTotalPages(results.totalPages);
+    } catch (error) {
+      console.error("Error fetching places:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (filterChip === "loc" || filterChip === "fes") {
+      fetchData(filterChip);
+    } else {
+      fetchPlaces();
+    }
+  }, [filterChip, currentPage]);
+
+  //전역변수넣는거
+  const locationHanlder = (x, y, name, address) => {
+    const loca = [{ x, y, name, filterChip, address }];
+    setTodoList([...todoList, ...loca]);
+  };
+
+  const toggleCollapse = (url: string) => {
+    setIsCollapsed(true);
+    setCurUrl(url);
+  };
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
   return (
     <>
-      <SearchBar />
-      <SelectFilter setFilterChip={setFilterChip} />
-      {mapArray.map((el) => (
-        <div key={el.id} className="rounded-xl p-10 flex flex-col border-b ">
+      <div className="mb-40">
+        <SearchBar />
+        <SelectFilter setFilterChip={setFilterChip} Array={filterArray} />
+
+        {mapArray.map((el) => (
           <div
-            className="text-3xl h-10 flex-row mb-3"
-            // onClick={() => toggleCollapse(el.place_url)}
+            key={el.id}
+            className="h-full rounded-xl p-10 flex flex-col border-b overflow-auto"
           >
-            {el.place_name}
-            <Chip label={el.category_group_name} />
-          </div>
-          <div className=" flex flex-row ">
-            <Image
-              src={el.img}
-              alt=""
-              layout="fixed"
-              width={100}
-              height={100}
-              objectFit="cover" // 원본 이미지의 비율을 유지하면서 컨테이너에 맞게 조정
-              className="rounded-lg shadow-md"
-            />
+            <div
+              className="h-10 flex-row mb-3 text-3xl "
+              onClick={() => toggleCollapse(el.place_url)}
+            >
+              {el.place_name}
+              <Chip
+                label={el.category_group_name}
+                sx={{ backgroundColorClass, color: backgroundColorClass }}
+                variant="outlined"
+                className="ml-3"
+              />
+            </div>
+            <div className=" flex flex-row ">
+              <Image
+                src={getImageSrc(filterChip)}
+                alt=""
+                layout="fixed"
+                width={100}
+                height={100}
+                objectFit="cover" // 원본 이미지의 비율을 유지하면서 컨테이너에 맞게 조정
+                className="rounded-lg shadow-md"
+              />
 
-            <div className="flex ml-10 flex-row justify-between w-full">
-              <div>
-                <span className="flex m-0 p-0 flex-row  flex-wrap">
-                  {el?.category_name?.split(" > ").map((category) => (
-                    <Chip
-                      key={category}
-                      label={category}
-                      size="small"
-                      variant="Filled"
-                      className="m-1"
-                    />
-                  ))}
-                </span>
-
+              <div className="flex ml-8 flex-row justify-between w-full">
                 <div>
-                  {/* <span onClick={toggleCollapse}>{el.tag}</span> */}
-                  {el.road_address_name}
+                  <span className="flex m-0 p-0 flex-row  flex-wrap">
+                    {el?.category_name?.split(" > ").map((category) => (
+                      <Chip
+                        key={category}
+                        label={category}
+                        size="small"
+                        variant="Filled"
+                        className="m-1"
+                      />
+                    ))}
+                  </span>
+
+                  <div className="m-1 mt-2">{el.road_address_name}</div>
                 </div>
-              </div>
-              <div>
-                <Button
-                  variant="contained"
-                  className="h-full"
-                  // onClick={() => locationHanlder(el.x, el.y)}
-                >
-                  +
-                </Button>
+                <div>
+                  <Button
+                    // variant="contained"
+                    className="h-full bg-red-100 text-zinc-700"
+                    onClick={() =>
+                      locationHanlder(
+                        el.x,
+                        el.y,
+                        el.place_name,
+                        el.road_address_name
+                      )
+                    }
+                  >
+                    <HiOutlinePlus className="text-2xl" />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          variant="outlined"
+          color="secondary"
+        />
+      </div>
+      {isCollapsed && (
+        <ListModal curUrl={curUrl} setIsCollapsed={setIsCollapsed} />
+      )}
     </>
   );
 };
