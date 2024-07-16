@@ -38,13 +38,15 @@ export default function RootLayout({
         <ThemeProvider theme={theme}>
           <RecoilRootWrapper>
             <Layout>
-              <Script
+              {/* <Script
                 type="text/javascript"
                 src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&callback=CALLBACK_FUNCTION`}
-              />
-              <Script
-                src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_KEY}&libraries=services`}
-              ></Script>
+              /> */}
+              {/* <Script
+                // type="text/javascript"
+
+                src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_JS_KAKAO_CLIENT_KEY}&libraries=services&autoload=false`}
+              /> */}
               <main>{children}</main>
             </Layout>
           </RecoilRootWrapper>
