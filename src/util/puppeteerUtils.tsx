@@ -8,30 +8,30 @@ export async function setupBrowser() {
 }
 
 // 특정 선택자의 텍스트 콘텐츠를 가져오는 헬퍼 함수
-export async function getTextContent(page: puppeteer.Page, selector: string) {
+export async function getTextContent(page: any, selector: string) {
   return await page.evaluate((sel) => {
-    const element = document.querySelector(sel);
-    return element ? element.textContent.trim() : null;
+    const element = document?.querySelector(sel);
+    return element ? element?.textContent.trim() : null;
   }, selector);
 }
 
 // 특정 선택자의 속성 값을 가져오는 헬퍼 함수
 export async function getAttribute(
-  page: puppeteer.Page,
+  page: any,
   selector: string,
   attribute: string
 ) {
   return await page.evaluate(
     (sel, attr) => {
-      const element = document.querySelector(sel);
-      return element ? element.getAttribute(attr) : null;
+      const element = document?.querySelector(sel);
+      return element ? element?.getAttribute(attr) : null;
     },
     selector,
     attribute
   );
 }
 export async function getAllTextContent(
-  page: Page,
+  page: any,
   selector: string
 ): Promise<string[]> {
   return await page.evaluate((sel) => {
@@ -41,7 +41,7 @@ export async function getAllTextContent(
 }
 
 export async function getMenuItems(
-  page: Page,
+  page: any,
   menuSelector: string,
   priceSelector: string
 ): Promise<{ menu: string; price: string }[]> {
@@ -61,10 +61,7 @@ export async function getMenuItems(
     priceSelector
   );
 }
-export async function getStyleBackgroundImage(
-  page: puppeteer.Page,
-  selector: string
-) {
+export async function getStyleBackgroundImage(page: any, selector: string) {
   const style = await page.evaluate((selector) => {
     const element = document.querySelector(selector);
     return element ? window.getComputedStyle(element).backgroundImage : null;
