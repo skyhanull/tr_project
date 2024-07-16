@@ -33,25 +33,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` bg-[url('/img/background.png')] bg-cover bg-center`}>
-        {/* <QueryClientProvider client={queryClient}> */}
-        <ThemeProvider theme={theme}>
-          <RecoilRootWrapper>
-            <Layout>
-              {/* <Script
+      <body className="m-0 h-screen overflow-auto">
+        {" "}
+        {/* 전체 페이지 스크롤 허용 */}
+        <div className="h-full bg-[url('/img/background.png')] bg-cover bg-center overflow-hidden">
+          {" "}
+          {/* 배경 div */}
+          <ThemeProvider theme={theme}>
+            <RecoilRootWrapper>
+              <Layout>
+                {/* <Script
                 type="text/javascript"
                 src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&callback=CALLBACK_FUNCTION`}
               /> */}
-              {/* <Script
+                {/* <Script
                 // type="text/javascript"
 
                 src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_JS_KAKAO_CLIENT_KEY}&libraries=services&autoload=false`}
               /> */}
-              <main>{children}</main>
-            </Layout>
-          </RecoilRootWrapper>
-        </ThemeProvider>
-        {/* </QueryClientProvider> */}
+                <main>{children}</main>
+              </Layout>
+            </RecoilRootWrapper>
+          </ThemeProvider>
+        </div>
       </body>
     </html>
   );
