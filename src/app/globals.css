@@ -17,6 +17,10 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+html,
+body {
+  @apply h-full m-0 overflow-auto; /* 높이를 100%, 마진 제거, 스크롤 방지 */
+}
 
 body {
   color: rgb(var(--foreground-rgb));
