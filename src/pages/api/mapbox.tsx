@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
   // 경로 모드에 따라 URL 생성
   let url = `https://api.mapbox.com/directions/v5/mapbox/${mode}/${originCoords};${destinationCoords}?access_token=${apiKey}`;
-  let urls = `https://api.mapbox.com/directions/v5/mapbox/driving/${origin}?access_token=${apiKey}`;
+  let urls = `https://api.mapbox.com/directions/v5/mapbox/driving/${origin};${destination}?access_token=${apiKey}`;
 
   // // 경유지가 있다면 waypoints 파라미터 추가
   // if (waypoints && waypoints.length > 0) {
