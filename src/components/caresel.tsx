@@ -1,9 +1,9 @@
 "use client";
-
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import Slider from "react-slick";
-import Link from "next/link";
+import Search from "../components/filterbar/search";
 import { SlArrowRight, SlArrowLeft } from "react-icons/sl";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -26,12 +26,10 @@ const Carousel = () => {
     const { className, style, onClick } = props;
     return (
       <span
-        // className={className}
         className="absolute top-52 block left-full"
         style={{
           ...style,
           display: "block",
-          // background: "no",
           color: "black",
           width: "50px",
           height: "50px",
@@ -79,17 +77,23 @@ const Carousel = () => {
 
   return (
     <div className="slider-container">
+      <Search />
       <h2 className="flex justify-center m-16 text-6xl">추천 여행지</h2>
       <Slider {...settings}>
         {images.map((image, index) => (
           <Link key={index} href={`/map/${image.url}`} className="m-10">
-            <Image
-              src={image.src}
-              alt={image.caption}
-              width={300}
-              height={400}
-            />
-            <div className="mt-5">{image.caption}</div>
+            <div
+              style={{ width: "300px", height: "300px", position: "relative" }}
+            >
+              <Image
+                src={image.src}
+                alt={image.caption}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-3xl"
+              />
+            </div>
+            <div className="my-6 text-3xl">{image.caption}</div>
           </Link>
         ))}
       </Slider>
