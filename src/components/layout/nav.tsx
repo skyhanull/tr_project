@@ -1,31 +1,20 @@
 "use client";
 
-import Link from "next/link";
-
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-
+interface MapLayoutProps {
+  setTab: React.Dispatch<React.SetStateAction<string>>;
+}
 const tabs = [
-  { name: "검색", href: "/map/p", id: "0" },
-  { name: "길찾기", href: "/map/p", id: "1" },
-  { name: "Tab3", href: "/map/[", id: "2" },
+  { name: "검색", id: "0" },
+  { name: "길찾기", id: "1" },
 ];
 
-const MapLayout = ({ setTab }) => {
-  const router = useRouter();
-  const pathname = usePathname();
-
+const MapLayout = ({ setTab }: MapLayoutProps) => {
   return (
-    <nav className="w-40 bg-white border-2 border-gray-200 ">
+    <nav className=" bg-white border-2 border-gray-200 flex items-center flex-col">
       {tabs.map((tab) => (
         <div
           key={tab.name}
-          style={{
-            padding: "50px 10px",
-            // color: pathname === tab.href ? "blue" : "black",
-            textAlign: "center",
-            fontSize: "20px",
-          }}
-          className="hover:bg-sky-700"
+          className="hover:bg-pink-100 text-gray-500 p-12 w-36 flex justify-center"
           onClick={() => setTab(tab.id)}
         >
           {tab.name}

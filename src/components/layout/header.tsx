@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const router = useRouter();
