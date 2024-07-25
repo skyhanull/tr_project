@@ -1,4 +1,6 @@
 "use client";
+
+import { Metadata } from "next";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
 import React, { useState, useEffect } from "react";
@@ -23,6 +25,11 @@ const filterArray = [
   { name: "카페", code: "CE7" },
   { name: "축제", code: "fes" },
 ];
+export const metadata: Metadata = {
+  title: "페이지 타이틀",
+  description: "페이지 설명",
+  // 기타 메타데이터
+};
 
 const LocationList = () => {
   const router = usePathname();
@@ -31,11 +38,11 @@ const LocationList = () => {
   const [filterChip, setFilterChip] = useState("loc");
   const [mapArray, setMapArray] = useState<Place[]>([]);
   const [curUrl, setCurUrl] = useState("");
-
+  const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const backgroundColorClass = getChipColor(filterChip);
   const [totalPages, setTotalPages] = useState(0);
-
+  const [immediateFilter, setImmediateFilter] = useState(true);
   //몽고디비 연결 api
   const fetchData = async (collection = "") => {
     const url = collection
@@ -47,16 +54,24 @@ const LocationList = () => {
     const data = await res.json();
     setMapArray(data); // Adjust according to your API response
   };
-
+  console.log(search);
   //카카오 장소 검색 연결 api
+  const AAA = `${search}`;
   const fetchPlaces = async () => {
     try {
       const options = {
         size: 10, // 한 페이지에 보여질 문서의 개수
         page: currentPage,
         category_group_code: filterChip,
+        filter: search,
       };
-      const results = await searchPlaces(router?.split("/")[2], options);
+      const results = await searchPlaces(
+        search === ""
+          ? router?.split("/")[2]
+          : `${router?.split("/")[2]} ${search}`,
+        options
+      );
+      console.log(results.documents);
       setTotalPages(Math.ceil(results.meta.total_count / 10));
       setMapArray(results.documents);
     } catch (error) {
@@ -70,7 +85,7 @@ const LocationList = () => {
     } else {
       fetchPlaces();
     }
-  }, [filterChip, currentPage]);
+  }, [filterChip, currentPage, search]);
 
   //전역변수넣는거
   const locationHanlder = (x, y, name, address) => {
@@ -89,7 +104,7 @@ const LocationList = () => {
   return (
     <>
       <div className="mb-40 mt-30">
-        <SearchBar />
+        <SearchBar setSearch={setSearch} immediateFilter={false} />
         <SelectFilter setFilterChip={setFilterChip} Array={filterArray} />
 
         {mapArray.length === 0 ? (
@@ -122,7 +137,7 @@ const LocationList = () => {
                     layout="fixed"
                     width={100}
                     height={100}
-                    objectFit="cover" // 원본 이미지의 비율을 유지하면서 컨테이너에 맞게 조정
+                    objectFit="cover"
                     className="rounded-lg shadow-md"
                   />
 
