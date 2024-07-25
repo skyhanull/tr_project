@@ -1,16 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { textState } from "@/components/atoms";
-import { useRecoilValue } from "recoil";
 import axios from "axios";
+import { useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRecoilValue } from "recoil";
+import { textState } from "@/components/atoms";
 
 export default function MapTest() {
   const mapRef = useRef(null);
   const pathname = useSearchParams();
-
-  // const AA = encodeURIComponent(pathname?.split("/")[2] as string);
   const markerPositions = useRecoilValue(textState);
 
   useEffect(() => {
