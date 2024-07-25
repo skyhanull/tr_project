@@ -3,8 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 // import React, { useState } from "react";
-import { FaPhone, FaTag, FaStar, FaTags, FaRegBookmark } from "react-icons/fa6";
-import { Rating } from "@mui/material";
+import {
+  FaPhone,
+  FaTag,
+  FaStar,
+  FaTags,
+  FaRegBookmark,
+  FaXmark,
+} from "react-icons/fa6";
+import { Rating, Skeleton } from "@mui/material";
+import Loader from "@/components/loader";
 import { RiMapPin2Fill } from "react-icons/ri";
 import { IoTime } from "react-icons/io5";
 import { BsFillMenuButtonWideFill } from "react-icons/bs";
@@ -12,12 +20,7 @@ import { TiHome } from "react-icons/ti";
 import { PlaceData } from "@/util/interface/scrapingType";
 import SubwayTag from "../components/subwayTag";
 
-interface ProductDetailsProps {
-  placeData: PlaceData;
-}
-
 export default function ProductDetails({ curUrl, setIsCollapsed }) {
-  // const [placeDatas, setPlaceDatas] = useState<PlaceData[]>([]);
   const [placeData, setPlaceData] = useState<PlaceData | null>(null);
   useEffect(() => {
     const fetchPlaceData = async (url: string) => {
@@ -34,33 +37,22 @@ export default function ProductDetails({ curUrl, setIsCollapsed }) {
     fetchPlaceData(curUrl);
   }, [curUrl]);
 
+  const Chip = ({ label }) => <span className="chip">{label}</span>;
+
   // console.log(placeDatas.tags.split("/n"));
   const placeholderImage = "/img/seoul.png";
   console.log(placeData);
   return (
-    <div className="absolute left-px-55 w-px-55 top-0 max-h-full bg-white border-l z-50 overflow-scroll ">
-      <div className="flex justify-end p-2">
+    <div className="absolute left-px-55 w-px-55 top-0  bg-white border-l z-50 overflow-scroll h-full">
+      <div className="flex justify-end ">
         <button
           className="text-gray-600 hover:text-black transition duration-300"
           onClick={() => setIsCollapsed(false)}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <FaXmark size={40} />
         </button>
       </div>
-      <div className="overflow-scroll flex flex-col">
+      <div>
         {placeData ? (
           <>
             <div className="flex justify-center h-80 w-full relative bg-black">
@@ -77,7 +69,7 @@ export default function ProductDetails({ curUrl, setIsCollapsed }) {
               />
             </div>
             <div className="border-b-2 border-gray-200"></div>
-            <div className="p-7 my-2 h-fit\">
+            <div className="p-7 my-2">
               <div className="flex flex-col">
                 <div className="text-3xl font-bold flex flex-row justify-between">
                   {placeData.ogTitle}
@@ -118,12 +110,12 @@ export default function ProductDetails({ curUrl, setIsCollapsed }) {
                   </div>
 
                   <a
-                    href={placeData.ogUrl}
+                    href={placeData.linkHomepage}
                     target="_blank"
-                    rel={placeData.ogUrl}
+                    rel={placeData.linkHomepage}
                     className="text-blue-500 hover:underline"
                   >
-                    {placeData.ogUrl}
+                    {placeData.linkHomepage}
                   </a>
                 </div>
                 <div className="flex py-1 items-center">
@@ -143,7 +135,7 @@ export default function ProductDetails({ curUrl, setIsCollapsed }) {
                 </div>
               </div>
               <div className="border-b-2 border-gray-200 my-2"></div>
-              <div className="overflow-scroll h-screen ">
+              <div>
                 {placeData.menus ? (
                   <div>
                     <div className="text-xl font-bold my-2">메뉴</div>
@@ -177,10 +169,22 @@ export default function ProductDetails({ curUrl, setIsCollapsed }) {
                     <div>
                       {placeData?.busStations?.map((el, i) => (
                         <div key={i}>
-                          <div>
-                            {" "}
-                            {el.busInfo[0].busNumbers} {el.busInfo[0].busType}
-                          </div>
+                          {/* <div className="chips-container">
+                            {el.busNumbers.split("|").map((busNumber, idx) => (
+                              <Chip key={idx} label={busNumber} />
+                            ))}
+                          </div> */}
+                          {el.busInfo.map((el) => (
+                            <div key={el}>
+                              {el.busNumbers
+                                .split("|")
+                                .map((busNumber, idx) => (
+                                  <span key={busNumber} className="border-2">
+                                    {busNumber}
+                                  </span>
+                                ))}
+                            </div>
+                          ))}
                           {el.busStopName}
                           {el.busStopNumber}
                         </div>
@@ -193,7 +197,9 @@ export default function ProductDetails({ curUrl, setIsCollapsed }) {
             </div>
           </>
         ) : (
-          <div>Loading...</div>
+          <div>
+            <Loader />
+          </div>
         )}
       </div>
     </div>
