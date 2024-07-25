@@ -20,6 +20,15 @@ export default async function handler(
 
     // 특정 요소의 텍스트 추출
     const data = await page.evaluate(() => {
+      const ogUrl =
+        document
+          .querySelector('meta[property="og:url"]')
+          ?.getAttribute("content") || "No og:url found";
+
+      const linkHomepage =
+        document.querySelector(".location_present .link_homepage")?.href ||
+        "No homepage link found";
+
       const ogTitle =
         document
           .querySelector('meta[property="og:title"]')
@@ -42,6 +51,10 @@ export default async function handler(
       const tags = Array.from(document.querySelectorAll(".link_tag")).map(
         (tag) => tag.textContent || ""
       );
+      const filteredTags = tags
+        .map((tag) => tag.trim()) // 각 요소의 앞뒤 공백을 제거
+        .filter((tag) => tag.length > 0); // 길이가 0보다 큰 요소만 필터링
+
       const address =
         document.querySelector(".txt_address")?.textContent?.trim() ||
         "No address found";
@@ -59,8 +72,62 @@ export default async function handler(
         document
           .querySelector(".link_evaluation .color_b")
           ?.textContent?.trim() || "No review score found";
-      // 배경 이미지 URL 추출
-      // 링크 이미지 URL 추출
+      // 지하철역 정보 추출
+      const subwayStations = Array.from(
+        document.querySelectorAll(".station_wayout .list_wayout li")
+      ).map((station) => {
+        const stationName =
+          station.querySelector(".txt_station a")?.textContent?.trim() ||
+          "No station name found";
+        const lines = Array.from(station.querySelectorAll(".ico_traffic")).map(
+          (line) => line.textContent?.trim() || "No line found"
+        );
+        const exit =
+          station.querySelector(".txt_wayout")?.textContent?.trim() ||
+          "No exit info found";
+        return {
+          stationName,
+          lines,
+          exit,
+        };
+      });
+      // 버스 정류장 정보 추출
+      const busStations = Array.from(
+        document.querySelectorAll(".station_ride .ride_wayout")
+      ).map((station) => {
+        const busStopElement = station.querySelector(".link_wayout");
+        const busStopName =
+          busStopElement?.querySelector(".txt_busstop")?.textContent?.trim() ||
+          "No bus stop name found";
+        const busStopNumber =
+          busStopElement?.querySelector(".txt_number")?.textContent?.trim() ||
+          "No bus stop number found";
+        const distance =
+          busStopElement
+            ?.querySelector(".txt_number span:last-child")
+            ?.textContent?.trim() || "No distance found";
+        const busInfo = Array.from(
+          station.querySelectorAll(".list_ride li")
+        ).map((bus) => {
+          const busType =
+            bus.querySelector("em")?.textContent?.trim() || "No bus type found";
+          const busNumbers =
+            bus.querySelector(".num_ride")?.textContent?.trim() ||
+            "No bus numbers found";
+          return {
+            busType,
+            busNumbers,
+          };
+        });
+
+        return {
+          busStopName,
+          busStopNumber,
+          distance,
+          busInfo,
+        };
+      });
+
       // 배경 이미지 URL 추출
       const backgroundImageElement = document.querySelector(".bg_present");
       const backgroundImageStyle =
@@ -70,7 +137,7 @@ export default async function handler(
       );
       let backgroundImageUrl = backgroundImageUrlMatch
         ? backgroundImageUrlMatch[1]
-        : "No background image found";
+        : "/";
       if (backgroundImageUrl.startsWith("//")) {
         backgroundImageUrl = "https:" + backgroundImageUrl;
       }
@@ -95,6 +162,8 @@ export default async function handler(
       });
 
       return {
+        ogUrl,
+        linkHomepage,
         ogTitle,
         description,
         imageUrl,
@@ -102,13 +171,15 @@ export default async function handler(
         contactNumber,
         holiday,
         closedDay,
-        tags,
+        filteredTags,
         address,
         backgroundImageUrl,
         addressDetail,
         reviewCount,
         reviewTarget,
         reviewScore,
+        busStations, // 찾아가는 길 하위의 지하철/버스 정보 추가
+        subwayStations,
         menus,
       };
     });
@@ -118,6 +189,6 @@ export default async function handler(
     res.status(200).json(data);
   } catch (error) {
     console.error("Error scraping data:", error);
-    res.status(500).json({ error: "Failed to scrape data" });
+    res.status(500).json({ error: error.message });
   }
 }
