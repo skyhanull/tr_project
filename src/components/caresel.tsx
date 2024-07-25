@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Slider from "react-slick";
@@ -10,20 +11,32 @@ import "slick-carousel/slick/slick-theme.css";
 
 const Carousel = () => {
   const [images, setImages] = useState([]);
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const route = useRouter();
   useEffect(() => {
     const fetchImages = async () => {
-      const res = await fetch("/images.json");
-      const text = await res.text();
-      const parsedImages = JSON.parse(text);
-      setImages(parsedImages.images);
+      const endpoint = searchQuery
+        ? `/api/region?query=${searchQuery}`
+        : `/api/regionList`;
+      const res = await fetch(endpoint);
+      const data = await res.json();
+      const shuffledImages = shuffleArray(data).slice(0, 8);
+      setImages(shuffledImages);
     };
 
     fetchImages();
-  }, []);
+  }, [searchQuery]);
+  console.log(images);
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
   function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
+    const { style, onClick } = props;
     return (
       <span
         className="absolute top-52 block left-full"
@@ -33,7 +46,7 @@ const Carousel = () => {
           color: "black",
           width: "50px",
           height: "50px",
-        }} // 화살표의 스타일을 조정하세요.
+        }}
         onClick={onClick}
       >
         <SlArrowRight style={{ fontSize: "40px" }} />
@@ -42,26 +55,25 @@ const Carousel = () => {
   }
 
   function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
+    const { style, onClick } = props;
     return (
       <span
-        // className={className}
         className="absolute top-52 block right-full"
         style={{
           ...style,
           display: "block",
-          // background: "white",
           color: "black",
           width: "50px",
           height: "50px",
           marginRight: 100,
-        }} // 화살표의 스타일을 조정하세요.
+        }}
         onClick={onClick}
       >
         <SlArrowLeft style={{ fontSize: "40px" }} />
       </span>
     );
   }
+
   const settings = {
     dots: true,
     infinite: true,
@@ -71,17 +83,25 @@ const Carousel = () => {
     speed: 3000,
     autoplaySpeed: 2000,
     cssEase: "linear",
-    nextArrow: <SampleNextArrow />, // 사용자 정의 다음 화살표 컴포넌트
-    prevArrow: <SamplePrevArrow />, // 사용자 정의 이전 화살표 컴포넌트
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
   };
 
+  const LinkHandler = (url, lat, lon, e) => {
+    e.stopPropagation();
+    route.push(`/map/${url}?lat=${lat}&lon=${lon}`);
+  };
   return (
     <div className="slider-container">
       <Search />
       <h2 className="flex justify-center m-16 text-6xl">추천 여행지</h2>
       <Slider {...settings}>
         {images.map((image, index) => (
-          <Link key={index} href={`/map/${image.url}`} className="m-10">
+          // <Link key={index} href={`/map/${image.url}`} className="m-10">
+          <div
+            key={index}
+            onClick={(e) => LinkHandler(image.name, image.lat, image.lon, e)}
+          >
             <div
               style={{ width: "300px", height: "300px", position: "relative" }}
             >
@@ -93,8 +113,10 @@ const Carousel = () => {
                 className="rounded-3xl"
               />
             </div>
-            <div className="my-6 text-3xl">{image.caption}</div>
-          </Link>
+            <div className="my-6 text-3xl">{image.name}</div>
+          </div>
+
+          // </Link>
         ))}
       </Slider>
     </div>
