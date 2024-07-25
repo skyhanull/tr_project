@@ -11,7 +11,8 @@ const Header = () => {
   return (
     <header>
       <div
-        className="flex justify-between items-center m-8"
+        // className="flex justify-between items-center m-8"
+        className="fixed top-0 left-0 w-full bg-white shadow z-10 flex flex-row justify-between"
         onClick={LogoHanlder}
       >
         <div className="flex items-center space-x-4">
@@ -22,7 +23,7 @@ const Header = () => {
         <div className="flex items-center space-x-4">
           <span className="text-3xl p-7">gtp연결</span>
 
-          <span className="text-3xl p-7">로그인</span>
+          <span className="text-3xl p-7">Login</span>
         </div>
       </div>
     </header>
