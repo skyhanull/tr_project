@@ -36,7 +36,7 @@ async function dbConnect() {
       })
       .catch((err) => {
         console.error("Failed to connect to MongoDB:", err);
-        throw err; // 에러를 다시 던져서 상위 레벨에서 처리할 수 있도록 합니다.
+        throw err;
       });
   }
   cached.conn = await cached.promise;

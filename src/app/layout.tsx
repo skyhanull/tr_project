@@ -19,7 +19,7 @@ declare global {
     kakao: any;
   }
 }
-
+//className="h-full bg-[url('/img/background.png')] bg-cover bg-center overflow-auto"
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="m-0 h-screen overflow-auto">
-        <div className="h-full bg-[url('/img/background.png')] bg-cover bg-center overflow-hidden">
+        <div className="h-full bg-[url('/img/background.png')] bg-cover bg-center overflow-auto">
           <ThemeProvider theme={theme}>
             <RecoilRootWrapper>
               <Layout>
@@ -41,6 +41,11 @@ export default function RootLayout({
 
                 src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_JS_KAKAO_CLIENT_KEY}&libraries=services&autoload=false`}
               /> */}
+                <script
+                  type="text/javascript"
+                  src="https://developers.kakao.com/sdk/js/kakao.min.js"
+                  defer
+                ></script>
                 <main>{children}</main>
               </Layout>
             </RecoilRootWrapper>
