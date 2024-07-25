@@ -1,23 +1,30 @@
 // pages/api/directions.js
 
-import axios from "axios";
+// import axios from "axios";
 
-export default async function handler(req, res) {
-  const { start, goal } = req.query;
-  const clientId = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
-  const clientSecret = process.env.NEXT_PUBLIC_NAVER_CLIENT_SECRET;
-  const url = `https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving?start=${start}&goal=${goal}`;
-  const options = {
-    headers: {
-      "X-NCP-APIGW-API-KEY-ID": clientId,
-      "X-NCP-APIGW-API-KEY": clientSecret,
-    },
-  };
+// export default async function handler(req, res) {
+//   const { start, end } = req.query;
 
-  try {
-    const response = await axios.get(url, options);
-    res.status(200).json(response.data);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch directions" });
-  }
-}
+//   if (!start || !end) {
+//     return res.status(400).json({ error: "Missing start or end coordinates" });
+//   }
+
+//   try {
+//     const url = `https://apis-navi.kakaomobility.com/v1/directions?origin=${start}&destination=${end}`;
+//     const response = await axios.get(url, {
+//       headers: {
+//         Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_REST_KAKAO_CLIENT_KEY}`,
+//         "Content-Type": "application/json",
+//       },
+//     });
+
+//     if (response.status === 200) {
+//       const data = response.data;
+//       res.status(200).json(data.routes[0].paths[0]);
+//     } else {
+//       res.status(500).json({ error: "Failed to fetch directions" });
+//     }
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// }

@@ -46,40 +46,40 @@ export default function MapTest() {
             customOverlay.setMap(map);
           });
 
-          // Fetch directions from the API
-          const fetchDirections = async () => {
-            if (markerPositions.length > 1) {
-              const start = `${markerPositions[0].y},${markerPositions[0].x}`;
-              const end = `${markerPositions[markerPositions.length - 1].y},${
-                markerPositions[markerPositions.length - 1].x
-              }`;
+          // // Fetch directions from the API
+          // const fetchDirections = async () => {
+          //   if (markerPositions.length > 1) {
+          //     const start = `${markerPositions[0].y},${markerPositions[0].x}`;
+          //     const end = `${markerPositions[markerPositions.length - 1].y},${
+          //       markerPositions[markerPositions.length - 1].x
+          //     }`;
 
-              try {
-                const response = await axios.get(
-                  `/api/directions?start=${start}&end=${end}`
-                );
+          //     try {
+          //       const response = await axios.get(
+          //         `/api/directions?start=${start}&end=${end}`
+          //       );
 
-                const path = response.data.map(
-                  (point) => new window.kakao.maps.LatLng(point[1], point[0])
-                );
+          //       const path = response.data.map(
+          //         (point) => new window.kakao.maps.LatLng(point[1], point[0])
+          //       );
 
-                // new window.kakao.maps.Polyline({
-                //   map: map,
-                //   path: path,
-                //   strokeColor: "#5347AA",
-                //   strokeWeight: 5,
-                // });
+          //       // new window.kakao.maps.Polyline({
+          //       //   map: map,
+          //       //   path: path,
+          //       //   strokeColor: "#5347AA",
+          //       //   strokeWeight: 5,
+          //       // });
 
-                const bounds = new window.kakao.maps.LatLngBounds();
-                path.forEach((latLng) => bounds.extend(latLng));
-                map.setBounds(bounds);
-              } catch (error) {
-                console.error("Error fetching directions:", error.message);
-              }
-            }
-          };
+          //       const bounds = new window.kakao.maps.LatLngBounds();
+          //       path.forEach((latLng) => bounds.extend(latLng));
+          //       map.setBounds(bounds);
+          //     } catch (error) {
+          //       console.error("Error fetching directions:", error.message);
+          //     }
+          //   }
+          // };
 
-          fetchDirections();
+          // fetchDirections();
           const bounds = map.getBounds();
           markerPositions.forEach((position, index) => {
             const latLng = new window.kakao.maps.LatLng(position.y, position.x);
