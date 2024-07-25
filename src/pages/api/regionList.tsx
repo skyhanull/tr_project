@@ -1,4 +1,3 @@
-// /api/allRegions.js
 import { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "../../lib/mongodb";
 import Region from "../../models/regionModels";
