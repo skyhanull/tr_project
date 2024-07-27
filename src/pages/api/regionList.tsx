@@ -11,6 +11,6 @@ export default async function handler(
     const regions = await Region.find({}).limit(10).exec();
     res.status(200).json(regions);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error });
   }
 }

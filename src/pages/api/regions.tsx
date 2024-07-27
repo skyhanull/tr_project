@@ -15,16 +15,16 @@ export default async function handler(
     const decodedQuery = query ? decodeURIComponent(query.toString()) : "";
 
     // 디코딩된 쿼리 파라미터로 필터링
-    const filter = decodedQuery ? { name: decodedQuery } : {};
+    const filter = decodedQuery
+      ? { name: { $regex: decodedQuery, $options: "i" } }
+      : {};
 
     // 필터를 적용하여 데이터 조회
     const regions = await Region.find(filter).limit(10).exec();
 
-    console.log("Regions Found:", regions); // 검색된 데이터 확인
-
     res.status(200).json(regions);
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error });
   }
 }

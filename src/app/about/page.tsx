@@ -1,4 +1,3 @@
-import Carousel from "@/components/caresel";
 import MainList from "@/components/mainList";
 export default function Page() {
   return (

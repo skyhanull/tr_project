@@ -1,8 +1,5 @@
-// components/NumberCircle.tsx
 import React from "react";
 
-// Tailwind CSS 색상 클래스 이름을 지정합니다.
-// 필요한 경우 추가적인 색상 클래스를 정의할 수 있습니다.
 const subwayColors = [
   "bg-blue-900", // 1호선
   "bg-green-500", // 2호선
