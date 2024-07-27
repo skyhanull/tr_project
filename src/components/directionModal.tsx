@@ -52,7 +52,7 @@ export default function ProductDetails({ setIsCollapsed, directions }: any) {
                   </div>
                 )}
                 <div className="bg-gray-200 rounded-md w-full p-6 flex justify-center">
-                  {markerList[i].name}
+                  {markerList[i]?.name}
                 </div>
               </div>
             ))}

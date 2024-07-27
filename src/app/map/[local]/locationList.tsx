@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRecoilState } from "recoil";
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { textState } from "@/components/atoms";
+import { textState } from "../../../components/atoms";
 import { HiOutlinePlus } from "react-icons/hi";
 import { Place } from "@/util/interface/listInterface";
 import { searchPlaces } from "../../../util/kakao";
@@ -18,6 +18,12 @@ import Button from "@mui/material/Button";
 import getChipColor from "@/util/color";
 import getImageSrc from "@/util/image";
 
+export const metadata: Metadata = {
+  title: "페이지 타이틀",
+  description: "페이지 설명",
+  // 기타 메타데이터
+};
+
 const filterArray = [
   { name: "추천루트", code: "loc" },
   { name: "맛집", code: "FD6" },
@@ -25,11 +31,6 @@ const filterArray = [
   { name: "카페", code: "CE7" },
   { name: "축제", code: "fes" },
 ];
-export const metadata: Metadata = {
-  title: "페이지 타이틀",
-  description: "페이지 설명",
-  // 기타 메타데이터
-};
 
 const LocationList = () => {
   const router = usePathname();
@@ -42,7 +43,10 @@ const LocationList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const backgroundColorClass = getChipColor(filterChip);
   const [totalPages, setTotalPages] = useState(0);
-  const [immediateFilter, setImmediateFilter] = useState(true);
+  const searchUrl =
+    search === ""
+      ? router?.split("/")[2]
+      : `${router?.split("/")[2]} ${search}`;
   //몽고디비 연결 api
   const fetchData = async (collection = "") => {
     const url = collection
@@ -54,9 +58,9 @@ const LocationList = () => {
     const data = await res.json();
     setMapArray(data); // Adjust according to your API response
   };
-  console.log(search);
+
   //카카오 장소 검색 연결 api
-  const AAA = `${search}`;
+
   const fetchPlaces = async () => {
     try {
       const options = {
@@ -65,12 +69,7 @@ const LocationList = () => {
         category_group_code: filterChip,
         filter: search,
       };
-      const results = await searchPlaces(
-        search === ""
-          ? router?.split("/")[2]
-          : `${router?.split("/")[2]} ${search}`,
-        options
-      );
+      const results = await searchPlaces(searchUrl, options);
       console.log(results.documents);
       setTotalPages(Math.ceil(results.meta.total_count / 10));
       setMapArray(results.documents);
@@ -88,7 +87,12 @@ const LocationList = () => {
   }, [filterChip, currentPage, search]);
 
   //전역변수넣는거
-  const locationHanlder = (x, y, name, address) => {
+  const locationHanlder = (
+    x: string,
+    y: string,
+    name: string,
+    address: string
+  ) => {
     const loca = [{ x, y, name, filterChip, address }];
     setTodoList([...todoList, ...loca]);
   };
@@ -97,7 +101,10 @@ const LocationList = () => {
     setIsCollapsed(true);
     setCurUrl(url);
   };
-  const handlePageChange = (event, page) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
     setCurrentPage(page);
   };
 
@@ -149,7 +156,7 @@ const LocationList = () => {
                             key={i}
                             label={category}
                             size="small"
-                            variant="Filled"
+                            // variant="Filled"
                             className="m-1"
                           />
                         ))}

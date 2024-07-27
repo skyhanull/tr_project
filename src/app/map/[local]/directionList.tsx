@@ -12,16 +12,24 @@ import DirectionModal from "@/components/directionModal";
 import DistanceM from "@/util/distance";
 import getImageSrc from "@/util/image";
 import ShareKakao from "@/components/shareKakao";
+import { RouteResponse } from "../../../util/interface/roadType";
 const filterArray = [
   { name: "자동차", code: "driving" },
   { name: "도보", code: "walking" },
   { name: "실시간 경로", code: "driving-traffic" },
 ];
+interface RoadType {
+  address: string;
+  filterChip: string;
+  name: string;
+  x: string;
+  y: string;
+}
 
 const DirectionList = () => {
   const [filterChip, setFilterChip] = useState("driving");
-  const [markerList, setMarkerList] = useRecoilState(textState);
-  const [directions, setDirections] = useState(null);
+  const [markerList, setMarkerList] = useRecoilState<RoadType[]>(textState);
+  const [directions, setDirections] = useState<RouteResponse | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [error, setError] = useState(null);
 
@@ -59,6 +67,7 @@ const DirectionList = () => {
     const newList = markerList.filter((el, index) => index !== i);
     setMarkerList(newList);
   };
+  console.log(directions);
 
   return (
     <>
@@ -83,12 +92,14 @@ const DirectionList = () => {
 
         <SelectFilter setFilterChip={setFilterChip} Array={filterArray} />
         <div className="h-full">
-          {markerList.length < 2 ? (
-            <div>no result</div>
+          {markerList.length === 0 ? (
+            <div>추가해주세요</div>
+          ) : markerList.length === 1 ? (
+            <div>최소 2개의 루트가 있어야 합니다</div>
           ) : (
             markerList.map((el, i) => (
               <div
-                key={el.id}
+                key={el.name}
                 className="rounded-xl p-8 flex flex-col border-b "
               >
                 <div className=" flex flex-row ">
@@ -124,6 +135,7 @@ const DirectionList = () => {
               </div>
             ))
           )}
+
           <div className="border-y-2  fixed bottom-0 p-10 flex flex-col bg-white w-px-55">
             <div className="text-2xl flex justify-between w-full">
               <div className="font-bold">총 시간 :</div>
