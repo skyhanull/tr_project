@@ -21,7 +21,7 @@ import getImageSrc from "@/util/image";
 export const metadata: Metadata = {
   title: "페이지 타이틀",
   description: "페이지 설명",
-  // 기타 메타데이터
+  // 기타 메타데이터 입니다
 };
 
 const filterArray = [
