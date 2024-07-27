@@ -21,7 +21,7 @@ const Search = ({ searchQuery, setSearch, immediateFilter, images }: Props) => {
   const inputRef = useRef(null);
   const [focusIndex, setFocusIndex] = useState(-1);
 
-  const handleInputChange = (e: ChangeEvent<HTMLDivElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (immediateFilter) {
       setSearch(e.target.value);
     }
@@ -30,7 +30,6 @@ const Search = ({ searchQuery, setSearch, immediateFilter, images }: Props) => {
   const handleSuggestionClick = (name: string) => {
     setSearch(name);
   };
-
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -42,10 +41,13 @@ const Search = ({ searchQuery, setSearch, immediateFilter, images }: Props) => {
       if (focusIndex >= 0 && focusIndex < images.length) {
         setSearch(images[focusIndex].name);
       } else if (!immediateFilter) {
-        setSearch(e.target.value);
+        // Cast e.target to HTMLInputElement to access .value
+        const target = e.target as HTMLInputElement;
+        setSearch(target.value);
       }
     }
   };
+
   useEffect(() => {
     if (focusIndex >= 0 && focusIndex < images?.length) {
       const focusedElement = document.getElementById(
