@@ -17,7 +17,12 @@ interface Props {
   images?: urlLink[];
 }
 
-const Search = ({ searchQuery, setSearch, immediateFilter, images }: Props) => {
+const Search = ({
+  searchQuery,
+  setSearch,
+  immediateFilter,
+  images = [],
+}: Props) => {
   const inputRef = useRef(null);
   const [focusIndex, setFocusIndex] = useState(-1);
 
