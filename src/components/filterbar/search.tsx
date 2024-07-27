@@ -12,9 +12,9 @@ import { urlLink } from "../../util/interface/urlLink";
 
 interface Props {
   setSearch: (newSearchQuery: string) => void;
-  searchQuery: string;
+  searchQuery?: string;
   immediateFilter: boolean;
-  images: urlLink[];
+  images?: urlLink[];
 }
 
 const Search = ({ searchQuery, setSearch, immediateFilter, images }: Props) => {
@@ -27,11 +27,6 @@ const Search = ({ searchQuery, setSearch, immediateFilter, images }: Props) => {
     }
   };
 
-  // const handleKeyDown = (e) => {
-  //   if (!immediateFilter && e.key === "Enter") {
-  //     setSearch(e.target.value);
-  //   }
-  // };
   const handleSuggestionClick = (name: string) => {
     setSearch(name);
   };
@@ -65,8 +60,6 @@ const Search = ({ searchQuery, setSearch, immediateFilter, images }: Props) => {
     }
   }, [focusIndex, images?.length]);
 
-  console.log(focusIndex);
-
   return (
     <header>
       <div className="flex items-center justify-center relative ">
@@ -83,23 +76,27 @@ const Search = ({ searchQuery, setSearch, immediateFilter, images }: Props) => {
             onKeyDown={handleKeyDown}
           />
         </div>
-        {searchQuery === "" ? null : (
-          <div className="absolute top-28 left-1/2 transform -translate-x-1/2 w-4/6 mt-2 border-2 border-gray-400 overflow-scroll bg-white">
-            <div className="px-4 py-2  w-full h-60">
-              {images?.map((el, index) => (
-                <div
-                  key={el.name}
-                  id={`suggestion-${index}`}
-                  className={`cursor-pointer px-4 py-2 ${
-                    index === focusIndex ? "bg-gray-200" : ""
-                  }`}
-                  onMouseDown={() => handleSuggestionClick(el.name)}
-                >
-                  {el.name}
+        {!immediateFilter ? null : (
+          <>
+            {searchQuery === "" ? null : (
+              <div className="absolute top-28 left-1/2 transform -translate-x-1/2 w-4/6 mt-2 border-2 border-gray-400 overflow-scroll bg-white">
+                <div className="px-4 py-2  w-full h-60">
+                  {images?.map((el, index) => (
+                    <div
+                      key={el.name}
+                      id={`suggestion-${index}`}
+                      className={`cursor-pointer px-4 py-2 ${
+                        index === focusIndex ? "bg-gray-200" : ""
+                      }`}
+                      onMouseDown={() => handleSuggestionClick(el.name)}
+                    >
+                      {el.name}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </header>
