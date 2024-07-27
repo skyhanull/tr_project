@@ -20,7 +20,7 @@ import { TiHome } from "react-icons/ti";
 import { PlaceData } from "@/util/interface/scrapingType";
 import SubwayTag from "../components/subwayTag";
 
-export default function ProductDetails({ curUrl, setIsCollapsed }) {
+export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
   const [placeData, setPlaceData] = useState<PlaceData | null>(null);
   useEffect(() => {
     const fetchPlaceData = async (url: string) => {

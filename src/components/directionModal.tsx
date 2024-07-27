@@ -40,7 +40,7 @@ export default function ProductDetails({ setIsCollapsed, directions }: any) {
       <div className="flex flex-col items-center space-y-4">
         {directions?.waypoints?.length > 1 ? (
           <>
-            {directions?.waypoints.map((el, i) => (
+            {directions?.waypoints.map((el: any, i: any) => (
               <div
                 key={i}
                 className="flex flex-col items-center space-y-2 w-80"
