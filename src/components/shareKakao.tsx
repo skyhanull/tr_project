@@ -2,16 +2,32 @@
 import { useEffect } from "react";
 import { FaShareNodes } from "react-icons/fa6";
 
-const KakaoShareButton = ({ title, description, imageUrl, linkUrl }) => {
+interface CardProps {
+  title: string;
+  description: string;
+  imageUrl: string;
+  linkUrl: string;
+}
+
+interface Window {
+  kakao: any;
+}
+
+const KakaoShareButton = ({
+  title,
+  description,
+  imageUrl,
+  linkUrl,
+}: CardProps) => {
   useEffect(() => {
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_JS_KAKAO_CLIENT_KEY); // 자신의 카카오 앱 키로 초기화
+    if (!window.kakao.isInitialized()) {
+      window.kakao.init(process.env.NEXT_PUBLIC_JS_KAKAO_CLIENT_KEY); // 자신의 카카오 앱 키로 초기화
     }
   }, []);
 
   const shareKakao = () => {
-    if (window.Kakao) {
-      window.Kakao.Link.sendDefault({
+    if (window.kakao) {
+      window.kakao.Link.sendDefault({
         objectType: "feed",
         content: {
           title: title,
