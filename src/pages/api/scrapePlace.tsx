@@ -25,9 +25,10 @@ export default async function handler(
           .querySelector('meta[property="og:url"]')
           ?.getAttribute("content") || "No og:url found";
 
-      const linkHomepage =
-        document.querySelector(".location_present .link_homepage")?.href ||
-        "No homepage link found";
+      const homepageElement = document.querySelector(
+        ".location_present .link_homepage"
+      ) as HTMLAnchorElement;
+      const linkHomepage = homepageElement?.href || "No homepage link found";
 
       const ogTitle =
         document
