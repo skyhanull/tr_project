@@ -1,4 +1,13 @@
-export async function searchPlaces(query, options = {}) {
+interface SearchOptions {
+  category_group_code?: string;
+  page?: number;
+  size?: number;
+}
+
+export async function searchPlaces(
+  query: string,
+  options: SearchOptions = {}
+): Promise<any> {
   const apiKey = process.env.NEXT_PUBLIC_KAKAO_CLIENT_KEY;
   let url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${query}`;
   if (options.category_group_code) {
