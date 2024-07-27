@@ -10,7 +10,7 @@ interface CardProps {
 }
 
 interface Window {
-  kakao: any;
+  Kakao: any;
 }
 
 const KakaoShareButton = ({
@@ -19,9 +19,12 @@ const KakaoShareButton = ({
   imageUrl,
   linkUrl,
 }: CardProps) => {
+  const KAKAO_CLIENT_KEY = process.env.NEXT_PUBLIC_JS_KAKAO_CLIENT_KEY;
   useEffect(() => {
-    if (!window.kakao.isInitialized()) {
-      window.kakao.init(process.env.NEXT_PUBLIC_JS_KAKAO_CLIENT_KEY); // 자신의 카카오 앱 키로 초기화
+    // 카카오 SDK가 이미 로드되었는지 확인
+    if (window.Kakao && !window.Kakao.isInitialized() && KAKAO_CLIENT_KEY) {
+      // 카카오 SDK 초기화
+      window.Kakao.init(KAKAO_CLIENT_KEY);
     }
   }, []);
 
