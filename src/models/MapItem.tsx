@@ -1,7 +1,8 @@
-import mongoose, { Schema, Document, models } from "mongoose";
+// models/mapItem.ts
+import mongoose, { Schema, model, models, Document, Model } from "mongoose";
 
 // 인터페이스 정의
-interface IMapItem extends Document {
+export interface IMapItem extends Document {
   name: string;
   _id: number;
   lng: string;
@@ -9,29 +10,32 @@ interface IMapItem extends Document {
   E_name: string;
   location: string;
   img: string;
-  type: "restaurant" | "cafe" | "cultural" | "recommended" | "tourist"; // 타입 필드
+  type: "restaurant" | "tourist";
 }
 
-// 스키마 정의
-const mapItemSchema = new Schema<IMapItem>(
-  {
-    name: { type: String, required: true },
-    _id: { type: Number, required: true },
-    lng: { type: String, required: true },
-    caption: { type: String, required: true },
-    E_name: { type: String, required: true },
-    location: { type: String, required: true },
-    img: { type: String, required: true },
-    type: {
-      type: String,
-      required: true,
-      enum: ["location", "cafe", "cultural", "recommended", "tourist"],
+// 동적 모델 생성 함수
+const createDynamicModel = (collectionName: string): Model<IMapItem> => {
+  const mapItemSchema = new Schema<IMapItem>(
+    {
+      name: { type: String, required: true },
+      _id: { type: Number, required: true },
+      lng: { type: String, required: true },
+      caption: { type: String, required: true },
+      E_name: { type: String, required: true },
+      location: { type: String, required: true },
+      img: { type: String, required: true },
+      type: {
+        type: String,
+        required: true,
+        enum: ["restaurant", "tourist"],
+      },
     },
-  },
-  { collection: "MapItems" }
-);
+    { collection: collectionName }
+  );
 
-const MapItem =
-  models.MapItems || mongoose.model<IMapItem>("MapItems", mapItemSchema);
+  return (
+    models[collectionName] || model<IMapItem>(collectionName, mapItemSchema)
+  );
+};
 
-export default MapItem;
+export default createDynamicModel;

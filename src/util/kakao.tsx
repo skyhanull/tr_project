@@ -5,7 +5,7 @@ interface SearchOptions {
 }
 
 export async function searchPlaces(
-  query: string,
+  query?: string,
   options: SearchOptions = {}
 ): Promise<any> {
   const apiKey = process.env.NEXT_PUBLIC_KAKAO_CLIENT_KEY;
