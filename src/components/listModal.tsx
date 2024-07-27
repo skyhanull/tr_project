@@ -27,7 +27,7 @@ export default function ProductDetails({ curUrl, setIsCollapsed }) {
       try {
         const response = await fetch(`/api/scrapePlace?url=${curUrl}`);
         const data = await response.json();
-        console.log(data.html); // HTML 데이터를 콘솔에 출력
+        // console.log(data.html); // HTML 데이터를 콘솔에 출력
         setPlaceData(data);
       } catch (error) {
         console.error("Error fetching place data:", error);
@@ -36,8 +36,6 @@ export default function ProductDetails({ curUrl, setIsCollapsed }) {
 
     fetchPlaceData(curUrl);
   }, [curUrl]);
-
-  const Chip = ({ label }) => <span className="chip">{label}</span>;
 
   // console.log(placeDatas.tags.split("/n"));
   const placeholderImage = "/img/seoul.png";
@@ -175,7 +173,7 @@ export default function ProductDetails({ curUrl, setIsCollapsed }) {
                             ))}
                           </div> */}
                           {el.busInfo.map((el) => (
-                            <div key={el}>
+                            <div key={el.busNumbers}>
                               {el.busNumbers
                                 .split("|")
                                 .map((busNumber, idx) => (
