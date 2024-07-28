@@ -4,7 +4,6 @@ import theme from "./theme";
 import RecoilRootWrapper from "@/components/recoilWapper";
 import Layout from "../components/layout/layout";
 import { Jua } from "next/font/google";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@mui/material/styles";
 
 // const inter = Inter({ subsets: ["latin"] });
@@ -28,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="m-0 h-screen overflow-auto">
-        <div className="h-full bg-[url('/img/background.png')] bg-cover bg-center overflow-auto">
+        <div className="h-full bg-[url('/img/backgroundImg.png')] bg-cover bg-center overflow-auto">
           <ThemeProvider theme={theme}>
             <RecoilRootWrapper>
               <Layout>

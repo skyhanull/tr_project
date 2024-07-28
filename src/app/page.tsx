@@ -12,7 +12,7 @@ export default function Main() {
       <div className="justify-center flex">
         <Button
           disableElevation
-          className="bg-customPink text-5xl font-blod p-10 w-96 rounded-full mt-52 text-black "
+          className="bg-rose-300 text-4xl font-blod p-7 w-80 rounded-full mt-52 text-white "
           onClick={ClickHandler}
         >
           시작하기

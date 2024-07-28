@@ -1,4 +1,4 @@
-import KaKaoMap from "../../../components/kakaomap";
+import KaKaoMap from "../../../components/kakao/kakaomap";
 import Menu from "./mapCilent";
 
 export default function MapList({}: // users: React.ReactNode;
