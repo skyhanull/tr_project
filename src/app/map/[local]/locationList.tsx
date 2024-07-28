@@ -1,11 +1,11 @@
 "use client";
 
 import { Metadata } from "next";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
-import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { textState } from "../../../components/atoms";
+import { textState } from "../../../recoil/atoms";
 import { HiOutlinePlus } from "react-icons/hi";
 import { Place } from "@/util/interface/listInterface";
 import { searchPlaces } from "../../../util/kakao";
@@ -19,8 +19,8 @@ import getChipColor from "@/util/color";
 import getImageSrc from "@/util/image";
 
 export const metadata: Metadata = {
-  title: "페이지 타이틀",
-  description: "페이지 설명",
+  title: "관광지 검색 페이지",
+  description: "관광지 검색 페이지입니다",
   // 기타 메타데이터 입니다
 };
 
@@ -34,7 +34,7 @@ const filterArray = [
 
 const LocationList = () => {
   const router = usePathname();
-  const [todoList, setTodoList] = useRecoilState(textState);
+  const [addList, setAddList] = useRecoilState(textState);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [filterChip, setFilterChip] = useState("loc");
   const [mapArray, setMapArray] = useState<Place[]>([]);
@@ -70,7 +70,7 @@ const LocationList = () => {
         filter: search,
       };
       const results = await searchPlaces(searchUrl, options);
-      console.log(results.documents);
+
       setTotalPages(Math.ceil(results.meta.total_count / 10));
       setMapArray(results.documents);
     } catch (error) {
@@ -94,7 +94,11 @@ const LocationList = () => {
     address: string
   ) => {
     const loca = [{ x, y, name, filterChip, address }];
-    setTodoList([...todoList, ...loca]);
+    if (addList.length > 5) {
+      alert("더 이상 추가 할 수 없습니다");
+    } else {
+      setAddList([...addList, ...loca]);
+    }
   };
 
   const toggleCollapse = (url: string) => {
@@ -110,82 +114,88 @@ const LocationList = () => {
 
   return (
     <>
-      <div className="mb-40 mt-30">
+      <div>
         <SearchBar setSearch={setSearch} immediateFilter={false} />
         <SelectFilter setFilterChip={setFilterChip} Array={filterArray} />
-
-        {mapArray.length === 0 ? (
-          <div className="flex justify-center items-center">
-            데이터가 없습니다
-          </div>
-        ) : (
-          <>
-            {mapArray.map((el) => (
-              <div
-                key={el.id}
-                className="h-full rounded-xl p-10 flex flex-col border-b overflow-auto"
-              >
+        <div>
+          {mapArray.length === 0 ? (
+            <div className="flex justify-center items-center h-screen">
+              데이터가 없습니다
+            </div>
+          ) : (
+            <>
+              {mapArray.map((el) => (
                 <div
-                  className="h-10 flex-row mb-3 text-3xl "
-                  onClick={() => toggleCollapse(el.place_url)}
+                  key={el.id}
+                  className="h-full rounded-xl p-5 flex flex-col border-b overflow-auto"
                 >
-                  {el.place_name}
-                  <Chip
-                    label={el.category_group_name}
-                    sx={{ backgroundColorClass, color: backgroundColorClass }}
-                    variant="outlined"
-                    className="ml-3"
-                  />
-                </div>
-                <div className=" flex flex-row ">
-                  <Image
-                    src={getImageSrc(filterChip)}
-                    alt=""
-                    layout="fixed"
-                    width={100}
-                    height={100}
-                    objectFit="cover"
-                    className="rounded-lg shadow-md"
-                  />
+                  <div
+                    className=" flex-row mb-2 text-xl "
+                    onClick={() => toggleCollapse(el.place_url)}
+                  >
+                    {el.place_name}
+                    <Chip
+                      label={el.category_group_name}
+                      sx={{ backgroundColorClass, color: backgroundColorClass }}
+                      variant="outlined"
+                      className="ml-3 text-xs"
+                    />
+                  </div>
+                  <div className=" flex flex-row ">
+                    <Image
+                      src={getImageSrc(filterChip)}
+                      alt=""
+                      layout="fixed"
+                      width={70}
+                      height={90}
+                      objectFit="cover"
+                      className="rounded-lg shadow-xl"
+                    />
 
-                  <div className="flex ml-8 flex-row justify-between w-full">
-                    <div>
-                      <span className="flex m-0 p-0 flex-row  flex-wrap">
-                        {el?.category_name?.split(" > ").map((category, i) => (
-                          <Chip
-                            key={i}
-                            label={category}
-                            size="small"
-                            // variant="Filled"
-                            className="m-1"
-                          />
-                        ))}
-                      </span>
+                    <div className="flex ml-8 flex-row justify-between  w-full">
+                      <div>
+                        <span className="flex m-0 p-0 flex-row">
+                          {el?.category_name
+                            ?.split(" > ")
+                            .slice(0, 3)
+                            .map((category, i) => (
+                              <Chip
+                                key={i}
+                                label={category}
+                                size="small"
+                                // variant="Filled"
+                                className="m-1 text-xs "
+                              />
+                            ))}
+                        </span>
 
-                      <div className="m-1 mt-2">{el.road_address_name}</div>
-                    </div>
-                    <div>
-                      <Button
-                        // variant="contained"
-                        className="h-full bg-red-100 text-zinc-700"
-                        onClick={() =>
-                          locationHanlder(
-                            el.x,
-                            el.y,
-                            el.place_name,
-                            el.road_address_name
-                          )
-                        }
-                      >
-                        <HiOutlinePlus className="text-2xl" />
-                      </Button>
+                        <div className="mt-2 text-sm mr-1 min-h-10">
+                          {el.road_address_name}
+                        </div>
+                      </div>
+                      <div>
+                        <Button
+                          // variant="contained"
+                          className="h-full bg-red-100 text-zinc-700 p-4"
+                          onClick={() =>
+                            locationHanlder(
+                              el.x,
+                              el.y,
+                              el.place_name,
+                              el.road_address_name
+                            )
+                          }
+                        >
+                          <HiOutlinePlus className="text-2xl" />
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </>
-        )}
+              ))}
+            </>
+          )}
+        </div>
         <Pagination
           count={totalPages}
           page={currentPage}

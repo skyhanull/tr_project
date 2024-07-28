@@ -1,20 +1,15 @@
 "use client";
 import { useState, useEffect, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { urlLink } from "../util/interface/urlLink";
 import Image from "next/image";
-import Slider from "react-slick";
 import Search from "../components/filterbar/search";
-import { SlArrowRight, SlArrowLeft } from "react-icons/sl";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { urlLink } from "../util/interface/urlLink";
-import SearchSuggestions from "../components/SearchSuggestions";
 
 const MainList = () => {
   const [images, setImages] = useState<urlLink[]>();
   const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<string[]>([]);
   const route = useRouter();
 
   useEffect(() => {
@@ -24,7 +19,6 @@ const MainList = () => {
         : `/api/regionList`;
       const res = await fetch(endpoint);
       const data = await res.json();
-      // const shuffledImages = shuffleArray(data).slice(0, 8);
       setImages(data);
     };
 
@@ -43,36 +37,33 @@ const MainList = () => {
 
   return (
     <div className="flex justify-center flex-col">
+      <h2 className="flex justify-center m-16 text-6xl">Tour-list</h2>
       <Search
         setSearch={setSearchQuery}
         searchQuery={searchQuery}
         immediateFilter={true}
         images={images}
       />
-      {/* <SearchSuggestions
-      // query={searchQuery}
-      // suggestions={images}
-      // onSelectSuggestion={setImages}
-      /> */}
-      <h2 className="flex justify-center m-16 text-6xl">추천 여행지</h2>
+      <div className="flex justify-center m-16 text-3xl">
+        {"[ 여행지를 선택해주세요! ]"}
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 p-10">
         {images?.length === 0 ? (
-          <div>dddd</div>
+          <div></div>
         ) : (
           <>
-            {" "}
             {images?.map((image, index) => (
-              // <Link key={index} href={`/map/${image.url}`} className="m-10">
               <div
                 key={index}
                 onClick={(e) =>
                   LinkHandler(image.name, image.lat, image.lon, e)
                 }
+                className="flex flex-col justify-center items-center"
               >
                 <div
                   style={{
-                    width: "300px",
-                    height: "300px",
+                    width: "200px",
+                    height: "200px",
                     position: "relative",
                   }}
                 >
@@ -81,13 +72,16 @@ const MainList = () => {
                     alt=""
                     layout="fill"
                     objectFit="cover"
-                    className="rounded-3xl"
+                    className="rounded-3xl justify-center"
                   />
                 </div>
-                <div className="my-6 text-3xl">{image.name}</div>
+                <div className="my-6 text-xl justify-start flex  items-center">
+                  {image.name}
+                  <span className="text-gray-400 text-sm items-center">
+                    ({image.country})
+                  </span>
+                </div>
               </div>
-
-              // </Link>
             ))}
           </>
         )}

@@ -1,11 +1,9 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
 // import React, { useState } from "react";
 import {
   FaPhone,
-  FaTag,
   FaStar,
   FaTags,
   FaRegBookmark,
@@ -14,7 +12,6 @@ import {
 import Loader from "@/components/loader";
 import { RiMapPin2Fill } from "react-icons/ri";
 import { IoTime } from "react-icons/io5";
-import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import { TiHome } from "react-icons/ti";
 import { PlaceData } from "@/util/interface/scrapingType";
 import SubwayTag from "../components/subwayTag";
@@ -37,9 +34,6 @@ export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
     fetchPlaceData(curUrl);
   }, [curUrl]);
 
-  // console.log(placeDatas.tags.split("/n"));
-  const placeholderImage = "/img/seoul.png";
-  console.log(placeData);
   return (
     <div className="absolute left-px-55 w-px-55 top-0  bg-white border-l z-50 overflow-scroll h-full">
       <div className="flex justify-end ">

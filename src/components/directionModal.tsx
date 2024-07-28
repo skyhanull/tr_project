@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 // import React, { useState } from "react";
 import { useRecoilState } from "recoil";
-import { textState } from "@/components/atoms";
+import { textState } from "@/recoil/atoms";
 import { FaArrowDown, FaXmark } from "react-icons/fa6";
 
 interface PlaceData {
