@@ -5,4 +5,5 @@ export interface urlLink {
   src: string;
   id?: number;
   name: string;
+  country: string;
 }

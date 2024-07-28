@@ -34,6 +34,7 @@ const nextConfig = {
       "search.pstatic.net",
       "example.com",
       "images.unsplash.com",
+      "plus.unsplash.com",
     ], // 외부 이미지 도메인 허용
   },
 };
