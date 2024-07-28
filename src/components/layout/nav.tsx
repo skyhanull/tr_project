@@ -14,7 +14,7 @@ const MapLayout = ({ setTab }: MapLayoutProps) => {
       {tabs.map((tab) => (
         <div
           key={tab.name}
-          className="hover:bg-pink-100 text-gray-500 p-12 w-36 flex justify-center"
+          className="hover:bg-pink-100 text-gray-500 py-12 w-24 flex justify-center"
           onClick={() => setTab(tab.id)}
         >
           {tab.name}

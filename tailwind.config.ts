@@ -31,7 +31,7 @@ const config: Config = {
         "px-7": "7px",
         "px-8": "8px",
         "px-9": "9px",
-        "px-55": "705px",
+        "px-55": "515px",
         // 원하는 만큼 추가
       },
       width: {
@@ -44,7 +44,7 @@ const config: Config = {
         "px-7": "7px",
         "px-8": "8px",
         "px-9": "9px",
-        "px-55": "560px",
+        "px-55": "420px",
         // 원하는 만큼 추가
       },
       height: {

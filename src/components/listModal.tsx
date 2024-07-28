@@ -11,7 +11,6 @@ import {
   FaRegBookmark,
   FaXmark,
 } from "react-icons/fa6";
-import { Rating, Skeleton } from "@mui/material";
 import Loader from "@/components/loader";
 import { RiMapPin2Fill } from "react-icons/ri";
 import { IoTime } from "react-icons/io5";
@@ -19,6 +18,7 @@ import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import { TiHome } from "react-icons/ti";
 import { PlaceData } from "@/util/interface/scrapingType";
 import SubwayTag from "../components/subwayTag";
+import BusTag from "../components/busTag";
 
 export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
   const [placeData, setPlaceData] = useState<PlaceData | null>(null);
@@ -54,27 +54,29 @@ export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
         {placeData ? (
           <>
             <div className="flex justify-center h-80 w-full relative bg-black">
-              <Image
-                src={
-                  placeData.backgroundImageUrl !== "/"
-                    ? placeData.backgroundImageUrl
-                    : placeholderImage
-                }
-                alt=""
-                layout="fill"
-                objectFit="contain"
-                className="h-full w-full "
-              />
+              {placeData.backgroundImageUrl !== "/" ? (
+                <Image
+                  src={placeData.backgroundImageUrl}
+                  alt=""
+                  layout="fill"
+                  objectFit="contain"
+                  className="h-full w-full"
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full w-full">
+                  <span className="text-white text-4xl">no Image</span>
+                </div>
+              )}
             </div>
             <div className="border-b-2 border-gray-200"></div>
-            <div className="p-7 my-2">
+            <div className="p-7 ">
               <div className="flex flex-col">
                 <div className="text-3xl font-bold flex flex-row justify-between">
                   {placeData.ogTitle}
                   <FaRegBookmark />
                 </div>
                 <div className="flex py-1 items-center">
-                  <div className="w-16">Review</div>
+                  <div className="w-16">Review :</div>
                   <span>{placeData.reviewCount}</span>
                 </div>
                 <div className="flex py-1 items-center">
@@ -102,19 +104,20 @@ export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
                   </div>
                   <div>{placeData.operationTime}</div>
                 </div>
-                <div className="flex py-1 items-center">
+                <div className="flex py-1 items-center ">
                   <div className="w-7">
                     <TiHome />
                   </div>
-
-                  <a
-                    href={placeData.linkHomepage}
-                    target="_blank"
-                    rel={placeData.linkHomepage}
-                    className="text-blue-500 hover:underline"
-                  >
-                    {placeData.linkHomepage}
-                  </a>
+                  <div className="flex flex-wrap ">
+                    <a
+                      href={placeData.linkHomepage}
+                      target="_blank"
+                      rel={placeData.linkHomepage}
+                      className="text-blue-500 hover:underline w-80 break-words whitespace-normal"
+                    >
+                      {placeData.linkHomepage}
+                    </a>
+                  </div>
                 </div>
                 <div className="flex py-1 items-center">
                   <div className="w-7">
@@ -140,6 +143,7 @@ export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
                     {placeData.menus.map((el, i) => (
                       <div key={i} className="flex">
                         <div>{el.name}</div>
+                        <div>&nbsp;&nbsp;-&nbsp;&nbsp; </div>
                         <div>{el.price}</div>
                       </div>
                     ))}
@@ -148,49 +152,57 @@ export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
                   ""
                 )}
                 <div>
-                  <div>
-                    <div className="text-xl font-bold my-2">지하철역</div>
-                    <div>
-                      {placeData?.subwayStations?.map((el, i) => (
-                        <div key={i} className="flex items-center leading-8">
-                          {el.stationName}{" "}
-                          <SubwayTag line={+el.lines[0].split("")[0]} /> |
-                          <span className="ml-2"> {el.exit}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  {placeData?.subwayStations.length !== 0 && (
+                    <>
+                      <div className="text-xl font-bold my-2">지하철역</div>
+                      <div>
+                        {placeData?.subwayStations?.map((el, i) => (
+                          <div key={i} className="flex items-center leading-8">
+                            {el.stationName}{" "}
+                            <SubwayTag line={+el.lines[0].split("")[0]} /> |
+                            <span className="ml-2"> {el.exit}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div>
-                  <div>
-                    <div className="text-xl font-bold my-2">버스정류장</div>
-                    <div>
-                      {placeData?.busStations?.map((el, i) => (
-                        <div key={i}>
-                          {/* <div className="chips-container">
-                            {el.busNumbers.split("|").map((busNumber, idx) => (
-                              <Chip key={idx} label={busNumber} />
+                  {placeData?.busStations.length !== 0 && (
+                    <>
+                      <div className="text-xl font-bold my-2">버스정류장</div>
+                      <div>
+                        {placeData?.busStations?.map((el, i) => (
+                          <div key={i}>
+                            {el.busInfo.map((el) => (
+                              <span
+                                key={el.busNumbers}
+                                className="flex items-center flex-wrap"
+                              >
+                                {el.busNumbers
+                                  .split("|")
+                                  .map((busNumber, idx) => (
+                                    <span
+                                      key={busNumber}
+                                      className="border-r-2 border-slate-900 text-xs px-1"
+                                    >
+                                      {busNumber}
+                                    </span>
+                                  ))}
+                                <span className="text-xs">
+                                  <BusTag line={el.busType} />
+                                </span>
+                              </span>
                             ))}
-                          </div> */}
-                          {el.busInfo.map((el) => (
-                            <div key={el.busNumbers}>
-                              {el.busNumbers
-                                .split("|")
-                                .map((busNumber, idx) => (
-                                  <span key={busNumber} className="border-2">
-                                    {busNumber}
-                                  </span>
-                                ))}
-                            </div>
-                          ))}
-                          {el.busStopName}
-                          {el.busStopNumber}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                            {el.busStopName}
+                            {el.busStopNumber}
+                            <div className="border-b-2 m-4 border-gray-200"></div>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
-                <div>sldaijflfjaldkfj</div>
               </div>
             </div>
           </>

@@ -12,12 +12,12 @@ interface ChipProps {
 
 const FilterChip = ({ setFilterChip, Array }: ChipProps) => {
   return (
-    <div className="w-auto">
+    <div className="w-auto mx-2">
       {Array?.map((el: any) => (
         <Chip
           key={el}
           label={el.name}
-          className="border-2 rounded-xl m-5 pl-5 pr-5 bg-white"
+          className="border-2 rounded-xl m-2 px-3 bg-white"
           variant="outlined"
           onClick={() => setFilterChip(el.code)}
         />
