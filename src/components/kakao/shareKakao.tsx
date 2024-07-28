@@ -29,8 +29,8 @@ const KakaoShareButton = ({
   }, []);
 
   const shareKakao = () => {
-    if (window.kakao) {
-      window.kakao.Link.sendDefault({
+    if (window.Kakao) {
+      window.Kakao.Link.sendDefault({
         objectType: "feed",
         content: {
           title: title,

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
-import { textState } from "@/components/atoms";
+import { textState } from "@/recoil/atoms";
 
 export default function MapTest() {
   const mapRef = useRef(null);
@@ -45,9 +45,10 @@ export default function MapTest() {
 
             // Add markers
             markerPositions.forEach((position, index) => {
-              const content = `<div style="padding:5px; color: white; background: #ff4343; border: 1px solid black; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">${
+              const content = `<div style="padding:5px; color: white; background: #ff7391; border: 1px solid black; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">${
                 index + 1
               }</div>`;
+              // const content = `<div >${index + 1}</div>`;
 
               const customOverlay = new window.kakao.maps.CustomOverlay({
                 position: new window.kakao.maps.LatLng(position.y, position.x),
@@ -59,40 +60,6 @@ export default function MapTest() {
               customOverlay.setMap(map);
             });
 
-            // // Fetch directions from the API
-            // const fetchDirections = async () => {
-            //   if (markerPositions.length > 1) {
-            //     const start = `${markerPositions[0].y},${markerPositions[0].x}`;
-            //     const end = `${markerPositions[markerPositions.length - 1].y},${
-            //       markerPositions[markerPositions.length - 1].x
-            //     }`;
-
-            //     try {
-            //       const response = await axios.get(
-            //         `/api/directions?start=${start}&end=${end}`
-            //       );
-
-            //       const path = response.data.map(
-            //         (point) => new window.kakao.maps.LatLng(point[1], point[0])
-            //       );
-
-            //       // new window.kakao.maps.Polyline({
-            //       //   map: map,
-            //       //   path: path,
-            //       //   strokeColor: "#5347AA",
-            //       //   strokeWeight: 5,
-            //       // });
-
-            //       const bounds = new window.kakao.maps.LatLngBounds();
-            //       path.forEach((latLng) => bounds.extend(latLng));
-            //       map.setBounds(bounds);
-            //     } catch (error) {
-            //       console.error("Error fetching directions:", error.message);
-            //     }
-            //   }
-            // };
-
-            // fetchDirections();
             const bounds = map.getBounds();
             markerPositions.forEach((position, index) => {
               const latLng = new window.kakao.maps.LatLng(
