@@ -1,36 +1,155 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Pide
 
-## Getting Started
+이미지
 
-First, run the development server:
+배포주소 :[바로가기](https://pre-onboarding-9th-2-3.vercel.app/)
 
-```bash
-npm run dev
-# or
+## 📕 프로젝트 소개
+
+지도 서비스의 주변 장소 검색과 원하는 장소들에 대한 길 찾기 시스템을 한 페이지에서 이용할 수 있도록 구현한 서비스입니다.
+
+## 🕛 개발 기간
+
+2024.06 ~ 진행 중
+
+## ✍ 실행 방법
+
+---
+
+```sh
+git clone // this repository
+cd this file location
+yarn install
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 개발 스택
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<p>
+<img alt="Typescript" src="https://img.shields.io/badge/Typescript-v4.9.4-3178C6?style=plastic&logoColor=white%22/%3E"/>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+<img alt="React" src="https://img.shields.io/badge/React-v18.2.0-61DAFB?style=plastic&logo=react&logoColor=white"/>
 
-## Learn More
+<img alt="React Router" src="https://img.shields.io/badge/React Router-v6.8.0-CA4245?style=plastic&logo=reactrouter&logoColor=white"/>
+</p>
 
-To learn more about Next.js, take a look at the following resources:
+## 🗂️ 프로젝트 구조
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+📦src
+ ┣ 📂app
+ ┃ ┣ 📂about
+ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┣ 📂map
+ ┃ ┃ ┣ 📂[local]
+ ┃ ┃ ┃ ┣ 📜directionList.tsx
+ ┃ ┃ ┃ ┣ 📜locationList.tsx
+ ┃ ┃ ┃ ┣ 📜mapCilent.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┣ 📜favicon.ico
+ ┃ ┣ 📜globals.css
+ ┃ ┣ 📜layout.tsx
+ ┃ ┣ 📜page.tsx
+ ┃ ┗ 📜theme.tsx
+ ┣ 📂components
+ ┃ ┣ 📂filterbar
+ ┃ ┃ ┣ 📜fieldSelect.tsx
+ ┃ ┃ ┗ 📜search.tsx
+ ┃ ┣ 📂kakao
+ ┃ ┃ ┣ 📜kakaomap.tsx
+ ┃ ┃ ┗ 📜shareKakao.tsx
+ ┃ ┣ 📂layout
+ ┃ ┃ ┣ 📜footer.tsx
+ ┃ ┃ ┣ 📜header.tsx
+ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┣ 📜loader.tsx
+ ┃ ┃ ┗ 📜nav.tsx
+ ┃ ┣ 📜SearchSuggestions.tsx
+ ┃ ┣ 📜busTag.tsx
+ ┃ ┣ 📜caresel.tsx
+ ┃ ┣ 📜directionModal.tsx
+ ┃ ┣ 📜geocoding.tsx
+ ┃ ┣ 📜googleMap.tsx
+ ┃ ┣ 📜googletrans.tsx
+ ┃ ┣ 📜listModal.tsx
+ ┃ ┣ 📜mainList.tsx
+ ┃ ┣ 📜map.tsx
+ ┃ ┣ 📜recoilWapper.tsx
+ ┃ ┗ 📜subwayTag.tsx
+ ┣ 📂hook
+ ┃ ┗ 📜useDebounce.tsx
+ ┣ 📂lib
+ ┃ ┗ 📜mongodb.tsx
+ ┣ 📂models
+ ┃ ┣ 📜MapItem.tsx
+ ┃ ┗ 📜regionModels.tsx
+ ┣ 📂pages
+ ┃ ┗ 📂api
+ ┃ ┃ ┣ 📜dir.tsx
+ ┃ ┃ ┣ 📜directions.tsx
+ ┃ ┃ ┣ 📜http.tsx
+ ┃ ┃ ┣ 📜mapArray.tsx
+ ┃ ┃ ┣ 📜mapbox.tsx
+ ┃ ┃ ┣ 📜naverSearch.tsx
+ ┃ ┃ ┣ 📜regionList.tsx
+ ┃ ┃ ┣ 📜regions.tsx
+ ┃ ┃ ┗ 📜scrapePlace.tsx
+ ┣ 📂recoil
+ ┃ ┗ 📜atoms.tsx
+ ┗ 📂utility
+ ┃ ┣ 📂interface
+ ┃ ┃ ┣ 📜kakao.tsx
+ ┃ ┃ ┣ 📜listInterface.tsx
+ ┃ ┃ ┣ 📜roadType.tsx
+ ┃ ┃ ┣ 📜scrapingType.tsx
+ ┃ ┃ ┗ 📜urlLink.tsx
+ ┃ ┣ 📜color.tsx
+ ┃ ┣ 📜distance.tsx
+ ┃ ┣ 📜image.tsx
+ ┃ ┣ 📜kakao.tsx
+ ┃ ┣ 📜puppeteerUtils.tsx
+ ┃ ┗ 📜time.tsx
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 현재 구현 한 기능
 
-## Deploy on Vercel
+1. 연관 검색창
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+1. 검색한 글자에 따라 입력글자가 포함된 단어들이 검색창네 나타나게 하고 자동완성 시킴
+2. 디바운스로 2초동안 한번씩 이벤트가 일어나게함
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. 주변 장소 검색 / 리스트
+
+```
+1. 카카오map을 이용한 키워드 검색을 이용하여 주변 장소 리스트가 나오도록 구현
+2. 카카오map 키워드 검색을 이용하여 나오지 않는 정보들은 몽고디비를 이용하여 리스트가 나오도록 함
+3. 추가한 장소는 마커로 표시
+```
+
+1. 추가한 장소 간 길찾기
+
+```
+1. 장소 검색 / 리스트에서 추가한 장소들 간의 길찾기 구현
+2. 카카오 map의 길찾기는 자동차만 가능하기 때문에 mapbox를 이용하여 자동차/도보/ 실시간 경로의 길찾기 버전을 추가함
+3.경유지는 최대 5개까지 가능하며 걸리는 총 시간/거리를 나타냄
+4.길찾기 옆 카카오공유하기로 현재 페이지 공유가능
+```
+
+1. 사이트 스크래핑
+
+```
+1. 카카오 맵 상세페이지의
+2. 디바운스로 2초동안 한번씩 이벤트가 일어나게함
+```
+
+## 추가 할 목표
+
+1. 연관 검색창
+
+```
+1. 검색한 글자에 따라 입력글자가 포함된 단어들이 검색창네 나타나게 하고 자동완성 시킴
+2. 디바운스로 2초동안 한번씩 이벤트가 일어나게함
+```
