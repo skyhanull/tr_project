@@ -40,8 +40,7 @@ const DirectionList = () => {
   const destination = `${markerList[markerList.length - 1]?.x},${
     markerList[markerList.length - 1]?.y
   }`;
-  console.log(pathName);
-  console.log(router);
+
   const origin = markerList
     ?.map((el) => `${el.x},${el.y}`)
     .slice(0, -1)

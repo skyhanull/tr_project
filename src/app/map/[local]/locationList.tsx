@@ -204,9 +204,9 @@ const LocationList = () => {
           className="p-6 flex justify-center text-pink-500"
         />
       </div>
-      {isCollapsed && (
+      {/* {isCollapsed && (
         <ListModal curUrl={curUrl} setIsCollapsed={setIsCollapsed} />
-      )}
+      )} */}
     </>
   );
 };
