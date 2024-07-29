@@ -49,11 +49,11 @@ export default async function handler(
       const closedDay =
         document.querySelector(".txt_operation")?.textContent ||
         "No closed day found";
-      const tags = Array.from(document.querySelectorAll(".link_tag")).map(
+      const tags = Array.from(document.querySelectorAll(".link_tag"))?.map(
         (tag) => tag.textContent || ""
       );
       const filteredTags = tags
-        .map((tag) => tag.trim()) // 각 요소의 앞뒤 공백을 제거
+        ?.map((tag) => tag.trim()) // 각 요소의 앞뒤 공백을 제거
         .filter((tag) => tag.length > 0); // 길이가 0보다 큰 요소만 필터링
 
       const address =
@@ -76,11 +76,11 @@ export default async function handler(
       // 지하철역 정보 추출
       const subwayStations = Array.from(
         document.querySelectorAll(".station_wayout .list_wayout li")
-      ).map((station) => {
+      )?.map((station) => {
         const stationName =
           station.querySelector(".txt_station a")?.textContent?.trim() ||
           "No station name found";
-        const lines = Array.from(station.querySelectorAll(".ico_traffic")).map(
+        const lines = Array.from(station.querySelectorAll(".ico_traffic"))?.map(
           (line) => line.textContent?.trim() || "No line found"
         );
         const exit =
@@ -95,7 +95,7 @@ export default async function handler(
       // 버스 정류장 정보 추출
       const busStations = Array.from(
         document.querySelectorAll(".station_ride .ride_wayout")
-      ).map((station) => {
+      )?.map((station) => {
         const busStopElement = station.querySelector(".link_wayout");
         const busStopName =
           busStopElement?.querySelector(".txt_busstop")?.textContent?.trim() ||
@@ -109,7 +109,7 @@ export default async function handler(
             ?.textContent?.trim() || "No distance found";
         const busInfo = Array.from(
           station.querySelectorAll(".list_ride li")
-        ).map((bus) => {
+        )?.map((bus) => {
           const busType =
             bus.querySelector("em")?.textContent?.trim() || "No bus type found";
           const busNumbers =
@@ -147,7 +147,7 @@ export default async function handler(
       const menuElements = Array.from(
         document.querySelectorAll(".list_menu > li:not(.hide)")
       );
-      const menus = menuElements.slice(0, 5).map((menuElement) => {
+      const menus = menuElements.slice(0, 5)?.map((menuElement) => {
         const name =
           menuElement.querySelector(".loss_word")?.textContent ||
           "No menu name found";
