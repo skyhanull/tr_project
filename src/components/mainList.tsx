@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
-import { urlLink } from "../util/interface/urlLink";
+import { urlLink } from "../utility/interface/urlLink";
 import Image from "next/image";
 import Search from "../components/filterbar/search";
 import "slick-carousel/slick/slick.css";

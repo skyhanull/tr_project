@@ -7,16 +7,16 @@ import { useRecoilState } from "recoil";
 import { usePathname } from "next/navigation";
 import { textState } from "../../../recoil/atoms";
 import { HiOutlinePlus } from "react-icons/hi";
-import { Place } from "@/util/interface/listInterface";
-import { searchPlaces } from "../../../util/kakao";
+import { Place } from "@/utility/interface/listInterface";
+import { searchPlaces } from "../../../utility/kakao";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
 import SearchBar from "../../../components/filterbar/search";
 import ListModal from "../../../components/listModal";
 import Chip from "@mui/material/Chip";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
-import getChipColor from "@/util/color";
-import getImageSrc from "@/util/image";
+import getChipColor from "@/utility/color";
+import getImageSrc from "@/utility/image";
 
 export const metadata: Metadata = {
   title: "관광지 검색 페이지",

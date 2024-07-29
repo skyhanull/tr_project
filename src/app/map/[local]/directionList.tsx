@@ -6,14 +6,14 @@ import Image from "next/image";
 import { FaTrashCan } from "react-icons/fa6";
 import { textState } from "@/recoil/atoms";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
-import convertDuration from "@/util/time";
+import convertDuration from "@/utility/time";
 import Button from "@mui/material/Button";
 import DirectionModal from "@/components/directionModal";
-import DistanceM from "@/util/distance";
-import getImageSrc from "@/util/image";
+import DistanceM from "@/utility/distance";
+import getImageSrc from "@/utility/image";
 import ShareKakao from "@/components/kakao/shareKakao";
 import { BiSolidError } from "react-icons/bi";
-import { RouteResponse } from "../../../util/interface/roadType";
+import { RouteResponse } from "../../../utility/interface/roadType";
 const filterArray = [
   { name: "자동차", code: "driving" },
   { name: "도보", code: "walking" },

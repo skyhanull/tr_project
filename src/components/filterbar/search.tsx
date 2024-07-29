@@ -6,7 +6,7 @@ import React, {
   KeyboardEvent,
 } from "react";
 import { FaSearch } from "react-icons/fa";
-import { urlLink } from "../../util/interface/urlLink";
+import { urlLink } from "../../utility/interface/urlLink";
 import useDebounce from "../../hook/useDebounce";
 
 interface Props {

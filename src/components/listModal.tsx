@@ -9,11 +9,11 @@ import {
   FaRegBookmark,
   FaXmark,
 } from "react-icons/fa6";
-import Loader from "@/components/loader";
+import Loader from "@/components/layout/loader";
 import { RiMapPin2Fill } from "react-icons/ri";
 import { IoTime } from "react-icons/io5";
 import { TiHome } from "react-icons/ti";
-import { PlaceData } from "@/util/interface/scrapingType";
+import { PlaceData } from "@/utility/interface/scrapingType";
 import SubwayTag from "../components/subwayTag";
 import BusTag from "../components/busTag";
 
