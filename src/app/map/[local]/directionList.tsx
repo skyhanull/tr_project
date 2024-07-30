@@ -6,7 +6,7 @@ import Image from "next/image";
 import { FaTrashCan } from "react-icons/fa6";
 import { textState } from "@/recoil/atoms";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
-import convertDuration from "@/utility/time";
+import { convertDuration } from "@/utility/time";
 import Button from "@mui/material/Button";
 import DirectionModal from "@/components/directionModal";
 import DistanceM from "@/utility/distance";
@@ -14,6 +14,7 @@ import getImageSrc from "@/utility/image";
 import ShareKakao from "@/components/kakao/shareKakao";
 import { BiSolidError } from "react-icons/bi";
 import { RouteResponse } from "../../../utility/interface/roadType";
+import ShareModal from "../../../components/shareModal";
 const filterArray = [
   { name: "자동차", code: "driving" },
   { name: "도보", code: "walking" },
@@ -22,6 +23,7 @@ const filterArray = [
 interface RoadType {
   address: string;
   filterChip: string;
+  chip: string;
   name: string;
   x: string;
   y: string;
@@ -36,7 +38,10 @@ const DirectionList = () => {
   const [directions, setDirections] = useState<RouteResponse | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   const destination = `${markerList[markerList.length - 1]?.x},${
     markerList[markerList.length - 1]?.y
   }`;
@@ -79,13 +84,13 @@ const DirectionList = () => {
         <div className="flex items-center justify-between mr-5 mt-3">
           <div className="text-2xl m-8">길찾기</div>
           <div className="flex items-center">
-            {/* <button
-              onClick={() => setIsCollapsed(true)}
+            <button
+              onClick={() => setIsModalOpen(true)}
               className="bg-pink-300 p-2 mr-4 rounded-xl text-white text-sm"
             >
               상세보기
-            </button> */}
-            <ShareKakao
+            </button>
+            {/* <ShareKakao
               title="제목 예시"
               description="설명 예시"
               imageUrl="https://pide-p.vercel.app/img/shareImg.png"
@@ -95,7 +100,9 @@ const DirectionList = () => {
               )}?lat=${searchparams?.get("lat")}&lon=${searchparams?.get(
                 "lon"
               )} `}
-            />
+              // startDate="string" // "YYYYMMDD" 형식
+              // endDate="string" // "YYYYMMDD" 형식
+            /> */}
           </div>
         </div>
 
@@ -132,7 +139,7 @@ const DirectionList = () => {
                     />
                     <div className="flex ml-5 flex-row justify-between w-full">
                       <div>
-                        <div className=" text-xs ">{el.filterChip}</div>
+                        <div className=" text-xs ">{el.chip}</div>
                         <div className=" text-xs ">{el.address}</div>
                       </div>
                       <div>
@@ -171,10 +178,19 @@ const DirectionList = () => {
           </div>
         </div>
       </div>
-      {isCollapsed && (
+      {/* {isCollapsed && (
         <DirectionModal
           setIsCollapsed={setIsCollapsed}
           directions={directions}
+        />
+      )} */}
+      {isModalOpen && (
+        <ShareModal
+          // setIsCollapsed={setIsCollapsed}
+          markerList={markerList}
+          directions={directions}
+          isOpen={isModalOpen}
+          onClose={closeModal}
         />
       )}
     </>
