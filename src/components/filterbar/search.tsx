@@ -5,9 +5,9 @@ import React, {
   ChangeEvent,
   KeyboardEvent,
 } from "react";
-import { FaSearch } from "react-icons/fa";
 import { urlLink } from "../../utility/interface/urlLink";
 import useDebounce from "../../hook/useDebounce";
+import { FaSearch } from "@react-icons/all-files/fa/FaSearch";
 
 interface Props {
   setSearch: (newSearchQuery: string) => void;

@@ -3,37 +3,37 @@
     {
       "url": "seoul",
       "caption": "대한민국 - 서울",
-      "src": "/img/seoul.png"
+      "src": "/img/location/seoul.png"
     },
     {
-      "url": "/path/to/image2.jpg",
-      "caption": "대한민국 - 경기",
-      "src": "/img/seoul.png"
+      "url": "인천",
+      "caption": "대한민국 - 인천",
+      "src": "/img/location/incheon.png"
     },
     {
-      "url": "/path/to/image3.jpg",
-      "caption": "대한민국 - 강원",
-      "src": "/img/seoul.png"
+      "url": "강원",
+      "caption": "대한민국 - 강원(속초)",
+      "src": "/img/location/gangwon.png"
     },
     {
-      "url": "/path/to/image4.jpg",
-      "caption": "Image 4",
-      "src": "/img/seoul.png"
+      "url": "제주",
+      "caption": "대한민국 - 제주",
+      "src": "/img/location/jeju.png"
     },
     {
-      "url": "/path/to/image5.jpg",
-      "caption": "Image 5",
-      "src": "/img/seoul.png"
+      "url": "부산",
+      "caption": "대한민국 - 부산",
+      "src": "/img/location/busan.png"
     },
     {
-      "url": "/path/to/image5.jpg",
-      "caption": "Image 6",
-      "src": "/img/seoul.png"
+      "url": "gyeongju",
+      "caption": "대한민국 - 경주",
+      "src": "/img/location/seoul.png"
     },
     {
-      "url": "/path/to/image5.jpg",
-      "caption": "Image 6",
-      "src": "/img/seoul.png"
+      "url": "jeonju",
+      "caption": "대한민국 - 전주",
+      "src": "/img/location/seoul.png"
     }
   ]
 }

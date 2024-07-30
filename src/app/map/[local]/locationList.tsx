@@ -1,24 +1,23 @@
 "use client";
 
+import Image from "next/image";
 import { Metadata } from "next";
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import { useRecoilState } from "recoil";
 import { usePathname } from "next/navigation";
-import { textState } from "../../../recoil/atoms";
-import { HiOutlinePlus } from "react-icons/hi";
-import { Place } from "@/utility/interface/listInterface";
-import { searchPlaces } from "../../../utility/kakao";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
 import SearchBar from "../../../components/filterbar/search";
-import ListModal from "../../../components/listModal";
 import Chip from "@mui/material/Chip";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
 import getChipColor from "@/utility/color";
 import getImageSrc from "@/utility/image";
-
 import LocalPopup from "../../../components/localPopup";
+import { textState } from "../../../recoil/atoms";
+import { HiOutlinePlus } from "@react-icons/all-files/hi/HiOutlinePlus";
+import { Place } from "@/utility/interface/listInterface";
+import { searchPlaces } from "../../../utility/kakao";
+
 export const metadata: Metadata = {
   title: "관광지 검색 페이지",
   description: "관광지 검색 페이지입니다",

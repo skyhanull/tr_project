@@ -1,18 +1,15 @@
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-// import React, { useState } from "react";
-import {
-  FaPhone,
-  FaStar,
-  FaTags,
-  FaRegBookmark,
-  FaXmark,
-} from "react-icons/fa6";
 import Loader from "@/components/layout/loader";
-import { RiMapPin2Fill } from "react-icons/ri";
-import { IoTime } from "react-icons/io5";
-import { TiHome } from "react-icons/ti";
+import { FaPhoneAlt } from "@react-icons/all-files/fa/FaPhoneAlt";
+import { FaStar } from "@react-icons/all-files/fa/FaStar";
+import { FaTags } from "@react-icons/all-files/fa/FaTags";
+import { FaRegBookmark } from "@react-icons/all-files/fa/FaRegBookmark";
+import { VscClose } from "@react-icons/all-files/vsc/VscClose";
+import { IoMdHome } from "@react-icons/all-files/io/IoMdHome";
+import { IoTime } from "@react-icons/all-files/io5/IoTime";
+import { RiMapPin2Fill } from "@react-icons/all-files/ri/RiMapPin2Fill";
 import { PlaceData } from "@/utility/interface/scrapingType";
 import SubwayTag from "../components/subwayTag";
 import BusTag from "../components/busTag";
@@ -41,7 +38,7 @@ export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
           className="text-gray-600 hover:text-black transition duration-300"
           onClick={() => setIsCollapsed(false)}
         >
-          <FaXmark size={40} />
+          <VscClose size={40} />
         </button>
       </div>
       <div>
@@ -81,7 +78,7 @@ export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
                 </div>
                 <div className="flex py-1 items-center">
                   <div className="w-7">
-                    <FaPhone />
+                    <FaPhoneAlt />
                   </div>
                   <div>{placeData.contactNumber}</div>
                 </div>
@@ -100,7 +97,7 @@ export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
                 </div>
                 <div className="flex py-1 items-center ">
                   <div className="w-7">
-                    <TiHome />
+                    <IoMdHome />
                   </div>
                   <div className="flex flex-wrap ">
                     <a

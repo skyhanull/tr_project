@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-// import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { textState } from "@/recoil/atoms";
-import { FaArrowDown, FaXmark } from "react-icons/fa6";
+import { VscClose } from "@react-icons/all-files/vsc/VscClose";
+import { FaArrowDown } from "@react-icons/all-files/fa/FaArrowDown";
 
 interface PlaceData {
   title: string;
@@ -34,7 +34,7 @@ export default function ProductDetails({ setIsCollapsed, directions }: any) {
           className="text-gray-600 hover:text-black transition duration-300"
           onClick={() => setIsCollapsed(false)}
         >
-          <FaXmark size={40} />
+          <VscClose size={40} />
         </button>
       </div>
       <div className="flex flex-col items-center space-y-4">
