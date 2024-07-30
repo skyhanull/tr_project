@@ -18,6 +18,7 @@ import Button from "@mui/material/Button";
 import getChipColor from "@/utility/color";
 import getImageSrc from "@/utility/image";
 
+import LocalPopup from "../../../components/localPopup";
 export const metadata: Metadata = {
   title: "관광지 검색 페이지",
   description: "관광지 검색 페이지입니다",
@@ -91,10 +92,11 @@ const LocationList = () => {
     x: string,
     y: string,
     name: string,
-    address: string
+    address: string,
+    chip: string
   ) => {
-    const loca = [{ x, y, name, filterChip, address }];
-    if (addList.length > 5) {
+    const loca = [{ x, y, name, filterChip, address, chip }];
+    if (addList.length > 4) {
       alert("더 이상 추가 할 수 없습니다");
     } else {
       setAddList([...addList, ...loca]);
@@ -110,6 +112,10 @@ const LocationList = () => {
     page: number
   ) => {
     setCurrentPage(page);
+  };
+  const closePopup = () => {
+    setIsCollapsed(false);
+    setCurUrl("");
   };
 
   return (
@@ -182,7 +188,8 @@ const LocationList = () => {
                               el.x,
                               el.y,
                               el.place_name,
-                              el.road_address_name
+                              el.road_address_name,
+                              el.category_group_name
                             )
                           }
                         >
@@ -207,6 +214,7 @@ const LocationList = () => {
       {/* {isCollapsed && (
         <ListModal curUrl={curUrl} setIsCollapsed={setIsCollapsed} />
       )} */}
+      {isCollapsed && <LocalPopup url={curUrl} onClose={closePopup} />}
     </>
   );
 };
