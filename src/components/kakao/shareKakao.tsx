@@ -1,8 +1,6 @@
 // components/KakaoShareButton.tsx
 import { useEffect } from "react";
-import { FaShareNodes } from "react-icons/fa6";
-import { format } from "date-fns";
-
+import { IoMdShare } from "@react-icons/all-files/io/IoMdShare";
 interface CardProps {
   title: string;
   description: any;
@@ -106,7 +104,7 @@ const KakaoShareButton = ({
       onClick={shareKakao}
       className="flex items-center bg-rose-200 w-full justify-center p-3 mx-2 rounded-xl"
     >
-      <FaShareNodes size={25} />
+      <IoMdShare size={25} />
       <span className="text-lg ml-1"> 카카오톡으로 공유하기</span>
     </button>
   );

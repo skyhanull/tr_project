@@ -1,20 +1,19 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { useRecoilState } from "recoil";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { FaTrashCan } from "react-icons/fa6";
-import { textState } from "@/recoil/atoms";
-import SelectFilter from "../../../components/filterbar/fieldSelect";
-import { convertDuration } from "@/utility/time";
+import { useRecoilState } from "recoil";
+import React, { useState, useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Button from "@mui/material/Button";
-import DirectionModal from "@/components/directionModal";
+import SelectFilter from "../../../components/filterbar/fieldSelect";
 import DistanceM from "@/utility/distance";
 import getImageSrc from "@/utility/image";
-import ShareKakao from "@/components/kakao/shareKakao";
-import { BiSolidError } from "react-icons/bi";
-import { RouteResponse } from "../../../utility/interface/roadType";
 import ShareModal from "../../../components/shareModal";
+import { FaRegTrashAlt } from "@react-icons/all-files/fa/FaRegTrashAlt";
+import { textState } from "@/recoil/atoms";
+import { BiError } from "@react-icons/all-files/bi/BiError";
+import { convertDuration } from "@/utility/time";
+import { RouteResponse } from "../../../utility/interface/roadType";
+
 const filterArray = [
   { name: "자동차", code: "driving" },
   { name: "도보", code: "walking" },
@@ -30,13 +29,10 @@ interface RoadType {
 }
 
 const DirectionList = () => {
-  const pathName = usePathname();
-  const router = useRouter();
-  const searchparams = useSearchParams();
   const [filterChip, setFilterChip] = useState("driving");
   const [markerList, setMarkerList] = useRecoilState<RoadType[]>(textState);
   const [directions, setDirections] = useState<RouteResponse | null>(null);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -90,19 +86,6 @@ const DirectionList = () => {
             >
               상세보기
             </button>
-            {/* <ShareKakao
-              title="제목 예시"
-              description="설명 예시"
-              imageUrl="https://pide-p.vercel.app/img/shareImg.png"
-              // linkUrl="https://example.com"
-              linkUrl={`https://pide-p.vercel.app/${decodeURIComponent(
-                "/map/%EC%84%9C%EC%9A%B8"
-              )}?lat=${searchparams?.get("lat")}&lon=${searchparams?.get(
-                "lon"
-              )} `}
-              // startDate="string" // "YYYYMMDD" 형식
-              // endDate="string" // "YYYYMMDD" 형식
-            /> */}
           </div>
         </div>
 
@@ -110,14 +93,14 @@ const DirectionList = () => {
         <div className="h-full">
           {markerList.length === 0 ? (
             <div className="flex justify-center items-center text-red-500 ">
-              <BiSolidError className="text-red-500 my-5" />
+              <BiError className="text-red-500 my-5" />
               <span>여행지를 추가해주세요</span>
             </div>
           ) : (
             <>
               {markerList.length === 1 && (
                 <div className="flex justify-center items-center text-red-500">
-                  <BiSolidError className="text-red-500 my-5" />
+                  <BiError className="text-red-500 my-5" />
                   <span>최소 2개의 여행지가 있어야 합니다</span>
                 </div>
               )}
@@ -148,7 +131,7 @@ const DirectionList = () => {
                           className="h-full bg-red-500 "
                           onClick={() => deleteFilter(i)}
                         >
-                          <FaTrashCan />
+                          <FaRegTrashAlt />
                         </Button>
                       </div>
                     </div>
@@ -186,7 +169,6 @@ const DirectionList = () => {
       )} */}
       {isModalOpen && (
         <ShareModal
-          // setIsCollapsed={setIsCollapsed}
           markerList={markerList}
           directions={directions}
           isOpen={isModalOpen}

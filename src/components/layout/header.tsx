@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { RiRoadMapLine } from "react-icons/ri";
+import { RiRoadMapLine } from "@react-icons/all-files/ri/RiRoadMapLine";
 
 const Header = () => {
   const router = useRouter();
