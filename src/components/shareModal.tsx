@@ -1,5 +1,4 @@
 // components/Modal.tsx
-import { ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import DatePicker from "react-datepicker";
 import { useState } from "react";
@@ -14,7 +13,6 @@ interface ModalProps {
   onClose: () => void;
   directions: any;
   markerList: any;
-  // children: ReactNode;
 }
 
 const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
@@ -30,7 +28,6 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
     ? format(selectedDate, "yyyy.MM.dd (EEE)", { locale: ko })
     : "날짜를 선택해 주세요"; // null일 때의 기본 값
 
-  console.log(formattedDate);
   const handleSubmit = () => {
     console.log("Selected Date:", selectedDate);
     onClose();

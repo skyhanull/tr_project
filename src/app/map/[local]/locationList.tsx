@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Metadata } from "next";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRecoilState } from "recoil";
 import { usePathname } from "next/navigation";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
@@ -48,7 +48,14 @@ const LocationList = () => {
       ? router?.split("/")[2]
       : `${router?.split("/")[2]} ${search}`;
   //몽고디비 연결 api
-  const fetchData = async (collection = "") => {
+  const url = new URL("/api/mapArray", window.location.origin);
+  // if (collection) {
+  //   url.searchParams.append('collectionName', `${router?.split("/")[2]}_list`);
+  //   url.searchParams.append('filter', filterChip);
+  // }
+  console.log(url);
+
+  const fetchData = async (collection: string = ""): Promise<void> => {
     const url = collection
       ? `/api/mapArray?collectionName=${
           router?.split("/")[2]
@@ -87,20 +94,31 @@ const LocationList = () => {
   }, [filterChip, currentPage, search]);
 
   //전역변수넣는거
-  const locationHanlder = (
-    x: string,
-    y: string,
-    name: string,
-    address: string,
-    chip: string
-  ) => {
-    const loca = [{ x, y, name, filterChip, address, chip }];
-    if (addList.length > 4) {
-      alert("더 이상 추가 할 수 없습니다");
-    } else {
-      setAddList([...addList, ...loca]);
-    }
-  };
+  // const locationHanlder = (
+  //   x: string,
+  //   y: string,
+  //   name: string,
+  //   address: string,
+  //   chip: string
+  // ) => {
+  //   const loca = [{ x, y, name, filterChip, address, chip }];
+  //   if (addList.length > 4) {
+  //     alert("더 이상 추가 할 수 없습니다");
+  //   } else {
+  //     setAddList([...addList, ...loca]);
+  //   }
+  // };
+  const locationHandler = useCallback(
+    (x: string, y: string, name: string, address: string, chip: string) => {
+      const loca = [{ x, y, name, filterChip, address, chip }];
+      if (addList.length > 4) {
+        alert("더 이상 추가 할 수 없습니다");
+      } else {
+        setAddList((prevList) => [...prevList, ...loca]);
+      }
+    },
+    [addList, filterChip]
+  );
 
   const toggleCollapse = (url: string) => {
     setIsCollapsed(true);
@@ -155,6 +173,9 @@ const LocationList = () => {
                       height={90}
                       objectFit="cover"
                       className="rounded-lg shadow-xl"
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
                     />
 
                     <div className="flex ml-8 flex-row justify-between  w-full">

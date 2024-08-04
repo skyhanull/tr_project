@@ -14,7 +14,15 @@ import { PlaceData } from "@/utility/interface/scrapingType";
 import SubwayTag from "../components/subwayTag";
 import BusTag from "../components/busTag";
 
-export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
+interface ListModalProps {
+  curUrl: string;
+  setIsCollapsed: (isCollapsed: boolean) => void;
+}
+
+export default function ProductDetails({
+  curUrl,
+  setIsCollapsed,
+}: ListModalProps) {
   const [placeData, setPlaceData] = useState<PlaceData | null>(null);
   useEffect(() => {
     const fetchPlaceData = async (url: string) => {

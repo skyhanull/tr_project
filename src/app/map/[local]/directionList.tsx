@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Button from "@mui/material/Button";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
@@ -13,12 +13,8 @@ import { textState } from "@/recoil/atoms";
 import { BiError } from "@react-icons/all-files/bi/BiError";
 import { convertDuration } from "@/utility/time";
 import { RouteResponse } from "../../../utility/interface/roadType";
+import { FILTER_TRAFFIC } from "../../../constants/traffic";
 
-const filterArray = [
-  { name: "자동차", code: "driving" },
-  { name: "도보", code: "walking" },
-  { name: "실시간 경로", code: "driving-traffic" },
-];
 interface RoadType {
   address: string;
   filterChip: string;
@@ -38,9 +34,13 @@ const DirectionList = () => {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const destination = `${markerList[markerList.length - 1]?.x},${
-    markerList[markerList.length - 1]?.y
-  }`;
+  const destination = useMemo(
+    () =>
+      `${markerList[markerList.length - 1]?.x},${
+        markerList[markerList.length - 1]?.y
+      }`,
+    [markerList]
+  );
 
   const origin = markerList
     ?.map((el) => `${el.x},${el.y}`)
@@ -64,7 +64,7 @@ const DirectionList = () => {
       }
     };
 
-    if (markerList) {
+    if (markerList.length > 0) {
       fetchDirections();
     }
   }, [markerList, filterChip]);
@@ -89,7 +89,7 @@ const DirectionList = () => {
           </div>
         </div>
 
-        <SelectFilter setFilterChip={setFilterChip} Array={filterArray} />
+        <SelectFilter setFilterChip={setFilterChip} Array={FILTER_TRAFFIC} />
         <div className="h-full">
           {markerList.length === 0 ? (
             <div className="flex justify-center items-center text-red-500 ">

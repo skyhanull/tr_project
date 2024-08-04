@@ -44,8 +44,8 @@ const MainList = () => {
         immediateFilter={true}
         images={images}
       />
-      <div className="flex justify-center m-16 text-3xl">
-        {"[ 여행지를 선택해주세요! ]"}
+      <div className="flex justify-center m-16 text-3xl text-rose-300">
+        {"[ _여행지를 선택해주세요!_ ]"}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 p-10">
         {images?.length === 0 ? (
