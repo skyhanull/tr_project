@@ -1,9 +1,8 @@
 "use client";
 import Image from "next/image";
-import { SessionProvider } from "next-auth/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { AiFillMessage } from "@react-icons/all-files/ai/AiFillMessage";
-export default function Home() {
+export default function Page() {
   const { data: session } = useSession();
 
   return (
