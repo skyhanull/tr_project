@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import axios from "axios";
 import { useRecoilState } from "recoil";
 import React, { useState, useEffect, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -7,13 +8,16 @@ import Button from "@mui/material/Button";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
 import DistanceM from "@/utility/distance";
 import getImageSrc from "@/utility/image";
-import ShareModal from "../../../components/shareModal";
+import ShareModal from "../../../components/Modal/shareModal";
+import StoreModal from "../../../components/Modal/storeModal";
 import { FaRegTrashAlt } from "@react-icons/all-files/fa/FaRegTrashAlt";
 import { textState } from "@/recoil/atoms";
 import { BiError } from "@react-icons/all-files/bi/BiError";
 import { convertDuration } from "@/utility/time";
 import { RouteResponse } from "../../../utility/interface/roadType";
 import { FILTER_TRAFFIC } from "../../../constants/traffic";
+import { useSession } from "next-auth/react";
+import { getToken } from "next-auth/jwt";
 
 interface RoadType {
   address: string;
@@ -29,11 +33,14 @@ const DirectionList = () => {
   const [markerList, setMarkerList] = useRecoilState<RoadType[]>(textState);
   const [directions, setDirections] = useState<RouteResponse | null>(null);
 
+  const [name, setName] = useState("");
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [bookModal, setBookModal] = useState(false);
+  const userCode = localStorage.getItem("userCode");
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const closeBookModal = () => setBookModal(false);
   const destination = useMemo(
     () =>
       `${markerList[markerList.length - 1]?.x},${
@@ -74,12 +81,42 @@ const DirectionList = () => {
     setMarkerList(newList);
   };
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   // e.preventDefault();
+
+  //   try {
+  //     const res = await axios.post(
+  //       "/api/mypost",
+  //       { markerList, userCode },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+
+  //     // You can access the response data via res.data
+  //     // Handle the response as needed
+  //   } catch (error) {
+  //     // Handle any errors here
+  //     console.error("Error submitting data:", error);
+  //     // setName(error);
+  //   }
+  // };
+
   return (
     <>
       <div>
         <div className="flex items-center justify-between mr-5 mt-3">
           <div className="text-2xl m-8">길찾기</div>
           <div className="flex items-center">
+            <button
+              // onClick={(e) => handleSubmit(e)}
+              onClick={() => setBookModal(true)}
+              className="bg-pink-300 p-2 mr-4 rounded-xl text-white text-sm"
+            >
+              저장하기
+            </button>
             <button
               onClick={() => setIsModalOpen(true)}
               className="bg-pink-300 p-2 mr-4 rounded-xl text-white text-sm"
@@ -144,6 +181,7 @@ const DirectionList = () => {
           <div className="border-y-2  fixed bottom-0 p-10 flex flex-col bg-white w-px-55">
             <div className="text-xl flex justify-between w-full">
               <div className="font-bold ">총 시간 :</div>
+              <div>{name}</div>
               <div className="flex ">
                 {directions?.routes[0]?.duration
                   ? convertDuration(directions?.routes[0]?.duration)
@@ -167,6 +205,14 @@ const DirectionList = () => {
           directions={directions}
         />
       )} */}
+      {bookModal && (
+        <StoreModal
+          markerList={markerList}
+          directions={directions}
+          isOpen={bookModal}
+          onClose={closeBookModal}
+        />
+      )}
       {isModalOpen && (
         <ShareModal
           markerList={markerList}

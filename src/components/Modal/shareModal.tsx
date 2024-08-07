@@ -29,7 +29,7 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
     : "날짜를 선택해 주세요"; // null일 때의 기본 값
 
   const handleSubmit = () => {
-    console.log("Selected Date:", selectedDate);
+    // console.log("Selected Date:", selectedDate);
     onClose();
   };
 

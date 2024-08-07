@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { Metadata } from "next";
 import React, { useState, useEffect, useCallback } from "react";
@@ -8,15 +7,15 @@ import { usePathname } from "next/navigation";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
 import SearchBar from "../../../components/filterbar/search";
 import Chip from "@mui/material/Chip";
+import { usePlaces } from "@/hook/usePlaces";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
 import getChipColor from "@/utility/color";
 import getImageSrc from "@/utility/image";
-import LocalPopup from "../../../components/localPopup";
+import LocalPopup from "../../../components/Popup/localPopup";
 import { textState } from "../../../recoil/atoms";
 import { HiOutlinePlus } from "@react-icons/all-files/hi/HiOutlinePlus";
-import { Place } from "@/utility/interface/listInterface";
-import { searchPlaces } from "../../../utility/kakao";
+import { FILTER_ARRAY } from "@/constants/listFilter";
 
 export const metadata: Metadata = {
   title: "관광지 검색 페이지",
@@ -24,101 +23,42 @@ export const metadata: Metadata = {
   // 기타 메타데이터 입니다
 };
 
-const filterArray = [
-  { name: "추천루트", code: "loc" },
-  { name: "맛집", code: "FD6" },
-  { name: "관광지", code: "AT4" },
-  { name: "카페", code: "CE7" },
-  { name: "축제", code: "fes" },
-];
-
 const LocationList = () => {
   const router = usePathname();
   const [addList, setAddList] = useRecoilState(textState);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [filterChip, setFilterChip] = useState("loc");
-  const [mapArray, setMapArray] = useState<Place[]>([]);
   const [curUrl, setCurUrl] = useState("");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const backgroundColorClass = getChipColor(filterChip);
-  const [totalPages, setTotalPages] = useState(0);
+
   const searchUrl =
     search === ""
       ? router?.split("/")[2]
       : `${router?.split("/")[2]} ${search}`;
-  //몽고디비 연결 api
-  const url = new URL("/api/mapArray", window.location.origin);
-  // if (collection) {
-  //   url.searchParams.append('collectionName', `${router?.split("/")[2]}_list`);
-  //   url.searchParams.append('filter', filterChip);
-  // }
-  console.log(url);
 
-  const fetchData = async (collection: string = ""): Promise<void> => {
-    const url = collection
-      ? `/api/mapArray?collectionName=${
-          router?.split("/")[2]
-        }_list&filter=${filterChip}`
-      : `/api/mapArray`;
-    const res = await fetch(url);
-    const data = await res.json();
-    setMapArray(data); // Adjust according to your API response
-  };
-
-  //카카오 장소 검색 연결 api
-
-  const fetchPlaces = async () => {
-    try {
-      const options = {
-        size: 10, // 한 페이지에 보여질 문서의 개수
-        page: currentPage,
-        category_group_code: filterChip,
-        filter: search,
-      };
-      const results = await searchPlaces(searchUrl, options);
-
-      setTotalPages(Math.ceil(results.meta.total_count / 10));
-      setMapArray(results.documents);
-    } catch (error) {
-      console.error("Error fetching places:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (filterChip === "loc" || filterChip === "fes") {
-      fetchData(filterChip);
-    } else {
-      fetchPlaces();
-    }
-  }, [filterChip, currentPage, search]);
-
-  //전역변수넣는거
-  // const locationHanlder = (
-  //   x: string,
-  //   y: string,
-  //   name: string,
-  //   address: string,
-  //   chip: string
-  // ) => {
-  //   const loca = [{ x, y, name, filterChip, address, chip }];
-  //   if (addList.length > 4) {
-  //     alert("더 이상 추가 할 수 없습니다");
-  //   } else {
-  //     setAddList([...addList, ...loca]);
-  //   }
-  // };
-  const locationHandler = useCallback(
-    (x: string, y: string, name: string, address: string, chip: string) => {
-      const loca = [{ x, y, name, filterChip, address, chip }];
-      if (addList.length > 4) {
-        alert("더 이상 추가 할 수 없습니다");
-      } else {
-        setAddList((prevList) => [...prevList, ...loca]);
-      }
-    },
-    [addList, filterChip]
+  const { places, totalPages, isLoading, error } = usePlaces(
+    filterChip,
+    currentPage,
+    searchUrl
   );
+
+  // 전역변수넣는거;
+  const locationHanlder = (
+    x: string,
+    y: string,
+    name: string,
+    address: string,
+    chip: string
+  ) => {
+    const loca = [{ x, y, name, filterChip, address, chip }];
+    if (addList.length > 4) {
+      alert("더 이상 추가 할 수 없습니다");
+    } else {
+      setAddList([...addList, ...loca]);
+    }
+  };
 
   const toggleCollapse = (url: string) => {
     setIsCollapsed(true);
@@ -139,15 +79,15 @@ const LocationList = () => {
     <>
       <div>
         <SearchBar setSearch={setSearch} immediateFilter={false} />
-        <SelectFilter setFilterChip={setFilterChip} Array={filterArray} />
+        <SelectFilter setFilterChip={setFilterChip} Array={FILTER_ARRAY} />
         <div>
-          {mapArray.length === 0 ? (
+          {places.length === 0 ? (
             <div className="flex justify-center items-center h-screen">
               데이터가 없습니다
             </div>
           ) : (
             <>
-              {mapArray.map((el) => (
+              {places.map((el) => (
                 <div
                   key={el.id}
                   className="h-full rounded-xl p-5 flex flex-col border-b overflow-auto"
@@ -231,9 +171,6 @@ const LocationList = () => {
           className="p-6 flex justify-center text-pink-500"
         />
       </div>
-      {/* {isCollapsed && (
-        <ListModal curUrl={curUrl} setIsCollapsed={setIsCollapsed} />
-      )} */}
       {isCollapsed && <LocalPopup url={curUrl} onClose={closePopup} />}
     </>
   );
