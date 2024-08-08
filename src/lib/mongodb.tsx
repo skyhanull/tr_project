@@ -24,7 +24,7 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
+      // useUnifiedTopology: true,
       bufferCommands: false,
       dbName: "pide", // 여기에 기본 데이터베이스 이름을 설정합니다.
     };

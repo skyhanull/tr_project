@@ -67,7 +67,7 @@ export default function MapTest() {
                 position.x
               );
               if (!bounds.contain(latLng)) {
-                console.log(`Marker ${index + 1} is outside the map bounds.`);
+                // console.log(`Marker ${index + 1} is outside the map bounds.`);
 
                 // Optional: Move the map center to the out-of-bounds marker
                 map.setCenter(latLng);
