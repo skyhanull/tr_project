@@ -11,38 +11,43 @@ import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { red } from "@mui/material/colors";
 
 export default function RecipeReviewCard({ cardData }: any) {
   const [expanded, setExpanded] = React.useState(false);
+  const { data: session } = useSession();
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-  console.log(cardData);
   return (
-    <div>
+    <div className="flex flex-wrap gap-12 p-8 ml-12">
       {cardData?.map((card: any) => (
         <div key={card.id}>
           <Card sx={{ maxWidth: 345 }}>
             <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  Rs
+                  {session?.user?.name?.split("")[0]}
                 </Avatar>
               }
-              title={card.name}
+              title={card.listName}
               subheader={card.address}
             />
-            <CardMedia
+            {/* <CardMedia
               component="img"
               height="194"
               image={card.image}
               alt="Paella dish"
-            />
+            /> */}
+            <div className="h-40 w-60 bg-slate-400" />
             <CardContent>
               <Typography variant="body2" color="text.secondary">
-                {card.content}
+                <div className=" line-clamp-2">
+                  {card.roads.map((road: any) => (
+                    <span key={road.id} className=" ">
+                      <div>{road.name} -</div>
+                    </span>
+                  ))}
+                </div>
               </Typography>
             </CardContent>
             <CardActions disableSpacing></CardActions>
