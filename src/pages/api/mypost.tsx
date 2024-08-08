@@ -53,6 +53,8 @@
 import dbConnect from "../../lib/mongodb";
 import { getSession } from "next-auth/react"; // next-auth에서 getSession 임포트
 import Road from "../../lib/userRoad";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 const handler = async (req, res) => {
   const { method } = req;
@@ -74,7 +76,7 @@ const handler = async (req, res) => {
   switch (method) {
     case "POST":
       try {
-        const { userCode, markerList } = req.body;
+        const { userCode, markerList, listName } = req.body;
 
         // 각 도로 객체에 userCode 추가
         if (!userCode || !Array.isArray(markerList)) {
@@ -84,8 +86,14 @@ const handler = async (req, res) => {
           });
         }
 
+        // 현재 시간 생성
+        const date = format(new Date(), "yyyy년 M월 d일 H시 m분", {
+          locale: ko,
+        });
         const roadDoc = await Road.create({
           userCode,
+          date,
+          listName,
           roads: markerList, // `roads` 필드에 `markerList` 저장
         });
 
@@ -98,16 +106,12 @@ const handler = async (req, res) => {
       try {
         const { userCode } = req.query;
 
-        if (!userCode) {
-          return res.status(400).json({
-            success: false,
-            message: "'userCode' query parameter is required.",
-          });
+        let filteredRoads;
+        if (userCode) {
+          filteredRoads = await Road.find({ userCode });
+        } else {
+          filteredRoads = await Road.find(); // Return all records if no userCode
         }
-
-        // userCode로 필터링
-        const filteredRoads = await Road.find({ userCode });
-
         res.status(200).json({ success: true, data: filteredRoads });
       } catch (error) {
         res.status(400).json({ success: false, message: error.message });
