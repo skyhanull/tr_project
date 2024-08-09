@@ -143,7 +143,7 @@ const DirectionList = () => {
               )}
               {markerList.map((el, i) => (
                 <div
-                  key={el.name}
+                  key={`markerList-${el.name}`}
                   className="rounded-xl p-5 flex flex-col border-b "
                 >
                   <div className=" flex-row mb-2 text-xl ">{el.name}</div>
@@ -151,11 +151,15 @@ const DirectionList = () => {
                     <Image
                       src={getImageSrc(el.filterChip)}
                       alt=""
-                      layout="fixed"
-                      width={70}
-                      height={90}
-                      objectFit="cover" // 원본 이미지의 비율을 유지하면서 컨테이너에 맞게 조정
-                      className="rounded-lg shadow-md"
+                      width="0"
+                      height="0"
+                      sizes="10vw"
+                      style={{ width: "20%", height: "auto" }}
+                      // layout="fixed"
+                      // width={70}
+                      // height={90}
+                      // objectFit="cover" // 원본 이미지의 비율을 유지하면서 컨테이너에 맞게 조정
+                      // className="rounded-lg shadow-md"
                     />
                     <div className="flex ml-5 flex-row justify-between w-full">
                       <div>

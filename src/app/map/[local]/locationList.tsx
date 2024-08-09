@@ -89,7 +89,7 @@ const LocationList = () => {
             <>
               {places.map((el) => (
                 <div
-                  key={el.id}
+                  key={`places-${el.id}`}
                   className="h-full rounded-xl p-5 flex flex-col border-b overflow-auto"
                 >
                   <div
@@ -108,14 +108,18 @@ const LocationList = () => {
                     <Image
                       src={getImageSrc(filterChip)}
                       alt=""
-                      layout="fixed"
-                      width={70}
-                      height={90}
-                      objectFit="cover"
-                      className="rounded-lg shadow-xl"
-                      loading="lazy"
-                      placeholder="blur"
-                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
+                      // layout="fixed"
+                      width="0"
+                      height="0"
+                      sizes="10vw"
+                      style={{ width: "20%", height: "auto" }}
+                      // width={70}
+                      // height={90}
+                      // // objectFit="cover"
+                      // className="rounded-lg shadow-xl"
+                      // loading="lazy"
+                      // placeholder="blur"
+                      // blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
                     />
 
                     <div className="flex ml-8 flex-row justify-between  w-full">
@@ -126,7 +130,7 @@ const LocationList = () => {
                             .slice(0, 3)
                             .map((category, i) => (
                               <Chip
-                                key={i}
+                                key={`Chip-${i}`}
                                 label={category}
                                 size="small"
                                 // variant="Filled"
