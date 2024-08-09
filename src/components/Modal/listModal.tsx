@@ -126,7 +126,7 @@ export default function ProductDetails({
                     {placeData.filteredTags.map((el, i) => (
                       <div
                         className="text-gray-500 m-1 flex flex-row flex-wrap"
-                        key={i}
+                        key={`filteredTags-${i}`}
                       >
                         {el}
                       </div>
