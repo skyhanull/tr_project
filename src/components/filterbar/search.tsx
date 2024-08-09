@@ -2,10 +2,8 @@ import React, {
   useState,
   useRef,
   useEffect,
-  ChangeEvent,
   KeyboardEvent,
   useCallback,
-  useMemo,
 } from "react";
 import { urlLink } from "../../utility/interface/urlLink";
 import useDebounce from "../../hook/useDebounce";
@@ -91,7 +89,7 @@ const Search = ({
     <header>
       <div className="flex items-center justify-center relative ">
         <div className="relative w-4/6 mt-10 mb-5">
-          <FaSearch className="absolute top-1/2 left-4 transform -translate-y-1/2 text-rose-400" />
+          <FaSearch className="absolute top-1/2 left-4 transform -translate-y-1/2 text-Highlight_Rose" />
           <input
             ref={inputRef}
             className="border-rose-400 border-2 rounded-xl pl-12 pr-4 py-2 w-full  text-md focus:ring-blue-100/50 focus:ring-8 focus:outline-none "
@@ -108,7 +106,7 @@ const Search = ({
                 <div className="px-4 py-2 w-full h-60">
                   {images?.map((el, index) => (
                     <div
-                      key={el.name}
+                      key={`suggestion-${el.name}`}
                       id={`suggestion-${index}`}
                       className={`cursor-pointer px-4 py-2 ${
                         index === focusIndex ? "bg-gray-200" : ""

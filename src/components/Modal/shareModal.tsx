@@ -61,9 +61,8 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
         <div className="p-4 flex flex-row items-center">
           <span className="w-20">일정</span>
           <span className="w-96">
-            {" "}
             {markerList.map((el: any, i: number) => (
-              <span key={i}>{el.name}-</span>
+              <span key={`markerList-share-${i}`}>{el.name}-</span>
             ))}
           </span>
         </div>
