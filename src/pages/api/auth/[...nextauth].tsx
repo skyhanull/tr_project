@@ -7,41 +7,6 @@ import User from "../../../models/User";
 
 export default NextAuth({
   providers: [
-    // CredentialsProvider({
-    //   name: "Credentials",
-    //   credentials: {
-    //     // username: {
-    //     //   label: "이메일",
-    //     //   type: "text",
-    //     //   placeholder: "이메일 주소 입력 요망",
-    //     // },
-    //     // password: { label: "비밀번호", type: "password" },
-    //   },
-
-    //   async authorize(credentials, req) {
-    //     const res = await fetch(`${process.env.AUTH_URL}/api/login`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       // body: JSON.stringify({
-    //       //   username: credentials?.username,
-    //       //   password: credentials?.password,
-    //       // }),
-    //     });
-    //     const user = await res.json();
-
-    //     if (user) {
-    //       // Any object returned will be saved in `user` property of the JWT
-    //       return user;
-    //     } else {
-    //       // If you return null then an error will be displayed advising the user to check their details.
-    //       return null;
-
-    //       // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
-    //     }
-    //   },
-    // }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET_ID as string,
@@ -80,24 +45,6 @@ export default NextAuth({
       }
       return session;
     },
-    // async jwt({ token, user }) {
-    //   console.log("JWT Callback - user:", user);
-    //   console.log("JWT Callback - token before:", token);
-    //   if (user) {
-    //     token.id = user.id; // 예를 들어, 사용자 ID와 같은 필요한 정보만 저장
-    //     token.email = user.email;
-    //     token.name = user.name;
-    //     token.iat = user.iat; // 예를 들어, 사용자 ID와 같은 필요한 정보만 저장
-    //     token.exp = user.exp;
-    //     token.sub = user.sub;
-    //     // jti는 저장하지 않음
-    //   }
-    //   return token;
-    // },
-    // async session({ session, token }) {
-    //   session.user = token as any;
-    //   return session;
-    // },
 
     async signIn({ user, account, profile }) {
       try {
@@ -125,10 +72,6 @@ export default NextAuth({
         return false;
       }
     },
-
-    // async redirect({ url, baseUrl }) {
-    //   return baseUrl + "/share"; // 로그인 성공 후 리다이렉션 경로 설정
-    // },
   },
   secret: process.env.AUTH_CLIENT_SECRET,
 });
