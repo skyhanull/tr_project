@@ -69,7 +69,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         });
       } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+        res.status(400).json({ success: false, message: error });
       }
       break;
 
@@ -80,22 +80,3 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
-// // userId와 code를 가져옵니다.
-// const userId = session?.user?.id;
-// const userCode = session?.user?.code;
-// let roadDoc = await userRoadSchema.findOne({ userId: userCode });
-// // if (!roadDoc) {
-// //   // 도큐먼트가 없으면 새로 생성
-// //   roadDoc = new Road({
-// //     userId: session.user.id,
-// //     roads: [],
-// //   });
-// // }
-
-// // // 도로 데이터 추가
-// // roadDoc.roads.push(
-// //   ...roads.map((road) => ({ ...road, code: session.code }))
-// // );
-
-// // // 도큐먼트 저장
-// // const savedRoadDoc = await roadDoc.save();
