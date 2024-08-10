@@ -1,17 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { styled } from "@mui/material/styles";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Card from "@mui/material/Card";
 import Pagination from "@mui/material/Pagination";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import Skeleton from "@mui/material/Skeleton"; // Skeleton 컴포넌트 추가
+import Skeleton from "@mui/material/Skeleton";
 import { red } from "@mui/material/colors";
 
 export default function RecipeReviewCard({
@@ -81,7 +81,22 @@ export default function RecipeReviewCard({
                     title={card.listName}
                     subheader={card.date}
                   />
-                  <div className="h-40 w-64 bg-slate-400" />
+
+                  {card.image ? (
+                    <div className="relative w-full h-40 overflow-hidden ">
+                      <Image
+                        src={card.image}
+                        alt="img"
+                        width="0"
+                        height="0"
+                        sizes="20vw"
+                        style={{ width: "100%", height: "auto" }}
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-40 w-64 bg-slate-400" />
+                  )}
+
                   <CardContent>
                     <Typography variant="body2" color="text.secondary">
                       <span className=" line-clamp-2">
