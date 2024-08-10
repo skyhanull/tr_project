@@ -36,8 +36,8 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-1/3">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 ">
+      <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-1/3 p-3">
         <div className="p-4 border-b">
           <button
             className="text-gray-600 hover:text-gray-900"
@@ -47,38 +47,34 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
           </button>
         </div>
         <div className="p-4 flex flex-row items-center">
-          <span className="w-20">날짜 선택</span>
+          <span className="w-20 text-slate-600">날짜 선택</span>
           <DatePicker
             dateFormat="yyyy.MM.dd" // 날짜 형태
             shouldCloseOnSelect // 날짜를 선택하면 datepicker가 자동으로 닫힘
-            // minDate={new Date()} // minDate 이전 날짜 선택 불가
-            // maxDate={new Date()} // maxDate 이후 날짜 선택 불가
             selected={selectedDate}
             onChange={(date) => setSelectedDate(date)}
             className="border-2 border-gray-200"
           />
         </div>
         <div className="p-4 flex flex-row items-center">
-          <span className="w-20">일정</span>
+          <span className="w-20 text-slate-600">일정</span>
           <span className="w-96">
             {markerList.map((el: any, i: number) => (
               <span key={`markerList-share-${i}`}>{el.name}-</span>
             ))}
           </span>
         </div>
-        <div className="p-4 flex">
-          <span className="w-20 ">총 시간</span>
-          <span>
-            {" "}
+        <div className="p-4 flex items-center">
+          <span className="w-20 text-slate-600">총 시간</span>
+          <span className="bg-gray-200 w-full py-2 px-4 rounded-xl">
             {directions?.routes[0]?.duration
               ? convertDuration(directions?.routes[0]?.duration)
               : "0초"}
           </span>
         </div>
-        <div className="p-4 flex">
-          <span className="w-20 ">총 거리</span>
-          <span>
-            {" "}
+        <div className="p-4 flex items-center">
+          <span className="w-20 text-slate-600">총 거리</span>
+          <span className="bg-gray-200 w-full  py-2 px-4 rounded-xl">
             {directions?.routes[0]?.distance
               ? DistanceM(directions?.routes[0]?.distance)
               : "0km"}
