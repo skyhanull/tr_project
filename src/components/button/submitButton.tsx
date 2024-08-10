@@ -1,16 +1,17 @@
 "use client";
 import Chip from "@mui/material/Chip";
 
-interface arrayType {
+interface SubmitButtonProps {
+  clickHandler: () => void;
   name: string;
-  code: string;
+  state: boolean;
 }
-// interface ChipProps {
+//nterface ChipProps {
 //   setFilterChip: React.Dispatch<React.SetStateAction<string>>;
 //   Array: arrayType[];
 // }
 
-const SubmitButton = ({ clickHandler, name, state }: any) => {
+const SubmitButton = ({ clickHandler, name, state }: SubmitButtonProps) => {
   return (
     <button
       onClick={clickHandler}
