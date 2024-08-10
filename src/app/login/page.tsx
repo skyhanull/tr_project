@@ -13,7 +13,11 @@ export default function Page() {
             <div className="flex justify-center pb-10 text-3xl">Login</div>
             <div>
               <button
-                onClick={() => signIn("google")}
+                onClick={() =>
+                  signIn("google", {
+                    callbackUrl: "/",
+                  })
+                }
                 className="bg-white text-blue-500 flex p-3 rounded hover:bg-blue-600 border-sky-300 border-2 w-60 justify-center items-center"
               >
                 <Image
@@ -26,7 +30,11 @@ export default function Page() {
               </button>
             </div>
             <button
-              onClick={() => signIn("kakao")}
+              onClick={() =>
+                signIn("kakao", {
+                  callbackUrl: "/",
+                })
+              }
               className="bg-yellow-400 text-black p-3 rounded hover:bg-yellow-600 flex items-center justify-center  px-4 w-60"
             >
               <span className="pr-5">
