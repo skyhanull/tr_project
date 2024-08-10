@@ -41,6 +41,7 @@ const userRoadSchema = new mongoose.Schema({
   userCode: { type: String, ref: "User" },
   listName: { type: String },
   date: { type: String },
+  image: { type: String },
   roads: [
     {
       name: String,

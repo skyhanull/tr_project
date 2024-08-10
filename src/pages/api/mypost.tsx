@@ -12,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (method) {
     case "POST":
       try {
-        const { userCode, markerList, listName } = req.body;
+        const { userCode, markerList, listName, image } = req.body;
 
         // 각 도로 객체에 userCode 추가
         if (!userCode || !Array.isArray(markerList)) {
@@ -30,12 +30,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           userCode,
           date,
           listName,
+          image,
           roads: markerList, // `roads` 필드에 `markerList` 저장
         });
 
         res.status(201).json({ success: true, data: roadDoc });
       } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+        res.status(400).json({ success: false, message: error });
       }
       break;
     case "GET":
