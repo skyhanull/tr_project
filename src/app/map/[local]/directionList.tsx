@@ -17,7 +17,11 @@ import { convertDuration } from "@/utility/time";
 import { RouteResponse } from "../../../utility/interface/roadType";
 import { FILTER_TRAFFIC } from "../../../constants/traffic";
 import { useSession } from "next-auth/react";
+import { FaStar } from "@react-icons/all-files/fa/FaStar";
+import { FaRegStar } from "@react-icons/all-files/fa/FaRegStar";
+import { IoShareSocialSharp } from "@react-icons/all-files/io5/IoShareSocialSharp";
 import { getToken } from "next-auth/jwt";
+import SubmitButton from "@/components/button/submitButton";
 
 interface RoadType {
   address: string;
@@ -104,6 +108,9 @@ const DirectionList = () => {
   //   }
   // };
 
+  const detailModalHandler = () => {
+    setIsModalOpen(true);
+  };
   return (
     <>
       <div>
@@ -113,16 +120,22 @@ const DirectionList = () => {
             <button
               // onClick={(e) => handleSubmit(e)}
               onClick={() => setBookModal(true)}
-              className="bg-pink-300 p-2 mr-4 rounded-xl text-white text-sm"
+              className="p-2 mr-4 rounded-xl  text-sm"
             >
-              저장하기
+              {!bookModal ? (
+                <FaRegStar className="text-red-200" size={30} />
+              ) : (
+                <FaStar className="text-red-200" />
+              )}
             </button>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-pink-300 p-2 mr-4 rounded-xl text-white text-sm"
-            >
-              상세보기
+            <button>
+              <IoShareSocialSharp
+                className="text-red-300"
+                size={30}
+                onClick={detailModalHandler}
+              />
             </button>
+            {/* <SubmitButton clickHandler={detailModalHandler} name={"상세보기"} /> */}
           </div>
         </div>
 
