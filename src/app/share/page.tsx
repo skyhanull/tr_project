@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 import Card from "../../components/Card/card";
 import { storeListHandler } from "../../hook/storeListHandler";
-import Pagination from "@mui/material/Pagination";
+import { Pagenationtype } from "../../utility/interface/pagenation";
 
 export default function Page() {
   const [cardData, setCardData] = useState([]);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<Pagenationtype>({
     total: 0,
     page: 1,
     limit: 10,
@@ -22,7 +22,7 @@ export default function Page() {
     };
 
     fetchData();
-  }, [pagination.page]); // 페이지 변경 시마다 데이터 다시 가져오기
+  }, [pagination.page]);
 
   return (
     <div className="justify-center mx-20 mt-32">
@@ -32,7 +32,7 @@ export default function Page() {
             cardData={cardData}
             setPagination={setPagination}
             pagination={pagination}
-            loading={loading} // 로딩 상태 전달
+            loading={loading}
           />
         </div>
       </div>
