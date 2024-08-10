@@ -1,23 +1,23 @@
 "use client";
-import { useRouter } from "next/navigation";
-import Button from "@mui/material/Button";
-export default function Main() {
-  const route = useRouter();
+import React, { useEffect } from "react";
+import { getSession } from "next-auth/react";
+import MainList from "@/components/list/mainList";
 
-  const ClickHandler = () => {
-    route.push("/about");
-  };
+export default function Main() {
+  useEffect(() => {
+    const storeUserCode = async () => {
+      const session = await getSession();
+
+      if (session && session.user && session.user.code) {
+        localStorage.setItem("userCode", session.user.code);
+      }
+    };
+
+    storeUserCode();
+  }, []);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="justify-center flex">
-        <Button
-          disableElevation
-          className="bg-rose-300 text-4xl font-blod p-7 w-80 rounded-full mt-52 text-white "
-          onClick={ClickHandler}
-        >
-          시작하기
-        </Button>
-      </div>
-    </main>
+    <div className="justify-center mr-60 ml-60 mt-40">
+      <MainList />
+    </div>
   );
 }
