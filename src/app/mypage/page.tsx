@@ -43,16 +43,24 @@ export default function Page() {
             className="mx-20"
           />
         </div>
-        <div className="flex flex-col  my-10">
-          <div className="text-2xl">name : {session?.user?.name}님</div>
-          {session?.user?.email && (
-            <div className="text-2xl">e-mail : {session?.user?.email}</div>
-          )}
-          <div className="text-2xl">code : {session?.user?.code}</div>
+        <div className="flex flex-col  my-7">
+          <div className="text-2xl py-1">name : {session?.user?.name}님</div>
+
+          {/* <div className="text-2xl py-1">
+            e-mail : {session?.user?.email ? session?.user?.email : ""}
+          </div> */}
+
+          <div className="text-2xl py-1">
+            e-mail : {session?.user?.email ?? ""}
+          </div>
+          <div className="text-2xl py-1">code : {session?.user?.code}</div>
         </div>
       </div>
-      <div className="flex text-3xl justify-center mt-40">My List</div>
-
+      <div className="border-2 border-Main_Rose" />
+      <div className="flex text-3xl justify-between mt-40 mx-24 ">
+        <span> My List</span>
+        <span>{cardData.length}</span>
+      </div>
       <Card
         cardData={cardData}
         setPagination={setPagination}
