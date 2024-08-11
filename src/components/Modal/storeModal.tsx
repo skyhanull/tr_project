@@ -3,8 +3,8 @@ import axios from "axios";
 import Image from "next/image";
 import useDebounce from "@/hook/useDebounce";
 import SubmitButton from "../button/submitButton";
-// import { useImageUpload } from "@/hook/useFile";
 import ImgModal from "../Modal/ImgSelectModal";
+import RadioGroup from "../filterbar/radioButton";
 
 interface ModalProps {
   isOpen: boolean;
@@ -13,23 +13,36 @@ interface ModalProps {
   markerList: any;
 }
 
+const visibilityOptions = [
+  { value: "public", label: "공개" },
+  { value: "private", label: "비공개" },
+];
+
 const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
   const userCode = localStorage.getItem("userCode");
   const [isImg, setIsImg] = useState(false);
   const [uploadUrl, setUploadUrl] = useState<string | null>(null);
-  // const { imageFile, imagePreview, handleImageUpload, resetImage } =
-  //   useImageUpload();
-
+  const [visibility, setVisibility] = useState<string>("public"); // State for radio button
   const [inputValue, setInputValue] = useState("");
   const debouncedListName = useDebounce(inputValue, 1000);
-
+  console.log(visibility);
   const handleSubmits = async () => {
     // e.preventDefault();
 
+    if (debouncedListName === "") {
+      alert("이름을 입력해주세요");
+      return;
+    }
     try {
       const res = await axios.post(
         "/api/mypost",
-        { markerList, userCode, listName: debouncedListName, image: uploadUrl },
+        {
+          markerList,
+          userCode,
+          listName: debouncedListName,
+          image: uploadUrl,
+          visibility,
+        },
         {
           headers: {
             "Content-Type": "application/json",
@@ -49,14 +62,12 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
     setInputValue(e.target.value);
   };
 
-  const handleSubmit = () => {
-    onClose();
-  };
-
   const handleImageSelect = (url: string) => {
     setUploadUrl(url);
   };
-
+  const handleVisibilityChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setVisibility(e.target.value);
+  };
   const handleClose = () => {
     onClose();
     // resetImage();
@@ -66,7 +77,7 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-1/3">
+      <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-2/6">
         <div className="p-4 border-b">
           <button
             className="text-gray-600 hover:text-gray-900"
@@ -96,7 +107,7 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
               <div className="flex flex-row items-center">
                 <span className="w-20 font-bold">북마크 추가</span>
               </div>
-              <div className="py-4 flex flex-row items-center ">
+              <div className="pt-3  flex flex-row items-center ">
                 <span className="w-12">이름</span>
                 <input
                   className="border-2 border-gray-300 rounded-md p-1"
@@ -104,17 +115,15 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="p-4 flex">
-                <span className="w-20"></span>
-              </div>
+              <RadioGroup
+                options={visibilityOptions}
+                selectedValue={visibility}
+                onValueChange={handleVisibilityChange}
+                groupLabel="공개 설정"
+              />
             </div>
           </div>
           <div className="flex justify-end my-3">
-            <SubmitButton
-              clickHandler={handleClose}
-              name={"취소"}
-              state={false}
-            />
             <SubmitButton
               clickHandler={handleSubmits}
               name={"추가"}
