@@ -116,27 +116,27 @@ const DirectionList = () => {
       <div>
         <div className="flex items-center justify-between mr-5 mt-3">
           <div className="text-2xl m-8">길찾기</div>
-          <div className="flex items-center">
-            <button
-              // onClick={(e) => handleSubmit(e)}
-              onClick={() => setBookModal(true)}
-              className="p-2 mr-4 rounded-xl  text-sm"
-            >
-              {!bookModal ? (
-                <FaRegStar className="text-red-200" size={30} />
-              ) : (
-                <FaStar className="text-red-200" />
-              )}
-            </button>
-            <button>
-              <IoShareSocialSharp
-                className="text-red-300"
-                size={30}
-                onClick={detailModalHandler}
-              />
-            </button>
-            {/* <SubmitButton clickHandler={detailModalHandler} name={"상세보기"} /> */}
-          </div>
+          {markerList.length > 1 && (
+            <div className="flex items-center">
+              <button
+                onClick={() => setBookModal(true)}
+                className="p-2 mr-4 rounded-xl  text-sm"
+              >
+                {!bookModal ? (
+                  <FaRegStar className="text-red-200" size={30} />
+                ) : (
+                  <FaStar className="text-red-200" />
+                )}
+              </button>
+              <button>
+                <IoShareSocialSharp
+                  className="text-red-300"
+                  size={30}
+                  onClick={detailModalHandler}
+                />
+              </button>
+            </div>
+          )}
         </div>
 
         <SelectFilter setFilterChip={setFilterChip} Array={FILTER_TRAFFIC} />
@@ -168,11 +168,6 @@ const DirectionList = () => {
                       height="0"
                       sizes="10vw"
                       style={{ width: "20%", height: "auto" }}
-                      // layout="fixed"
-                      // width={70}
-                      // height={90}
-                      // objectFit="cover" // 원본 이미지의 비율을 유지하면서 컨테이너에 맞게 조정
-                      // className="rounded-lg shadow-md"
                     />
                     <div className="flex ml-5 flex-row justify-between w-full">
                       <div>
