@@ -1,8 +1,8 @@
 // /pages/api/add-comment.ts
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import Road from "@/lib/userRoad"; // 모델 경로에 따라 수정하세요.
-import connectToDatabase from "@/lib/mongodb"; // 데이터베이스 연결 유틸리티 경로에 따라 수정하세요.
+import Road from "@/lib/userRoad"; // Ensure this path is correct
+import connectToDatabase from "@/lib/mongodb"; // Ensure this path is correct
 
 async function addCommentToRoad(
   roadId: string,
@@ -13,17 +13,18 @@ async function addCommentToRoad(
     const newComment = {
       userId,
       text: commentText,
+      date: new Date(), // Set current date/time for the comment
     };
 
     const updatedRoad = await Road.findByIdAndUpdate(
       roadId,
       { $push: { comments: newComment } },
-      { new: true }
-    );
+      { new: true } // Return the updated document
+    ).exec(); // Ensure that we use exec() to execute the query
 
     return updatedRoad;
   } catch (error) {
-    throw new Error("Error adding comment: " + error.message);
+    throw new Error("Error adding comment: " + error);
   }
 }
 
@@ -33,7 +34,7 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      await connectToDatabase(); // 데이터베이스에 연결
+      await connectToDatabase(); // Connect to the database
 
       const { roadId, userId, commentText } = req.body;
 
