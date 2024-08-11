@@ -10,7 +10,7 @@ export default function Page() {
   const [pagination, setPagination] = useState<Pagenationtype>({
     total: 0,
     page: 1,
-    limit: 10,
+    limit: 12,
     totalPages: 0,
   });
 
