@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState, ChangeEvent } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Card from "@mui/material/Card";
@@ -13,6 +13,7 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Skeleton from "@mui/material/Skeleton";
 import { red } from "@mui/material/colors";
+import DetailModal from "../../components/Modal/detailModal";
 
 export default function RecipeReviewCard({
   cardData,
@@ -22,27 +23,26 @@ export default function RecipeReviewCard({
 }: any) {
   const { data: session } = useSession();
   const route = useRouter();
-
-  const ClickHandler = (code: string) => {
-    if (code === session?.user?.code) {
-      route.push(`/chatting/${code}`);
-    } else {
-      console.log("Not authorized to access this page");
-    }
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<any>(null);
+  console.log(cardData);
+  const ClickHandler = (card: any) => {
+    setSelectedCard(card);
+    setIsOpen(true);
   };
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     newPage: number
   ) => {
-    setPagination((prev) => ({ ...prev, page: newPage }));
+    setPagination((prev: any) => ({ ...prev, page: newPage }));
   };
 
   return (
-    <div className="h-screen">
+    <div className="">
       <div className="flex flex-wrap gap-12 p-8 ml-12">
         {loading // 로딩 중일 때 스켈레톤 표시
-          ? [...Array(10)].map((_, i) => (
+          ? [...Array(12)].map((_, i) => (
               <div key={`skeleton-${i}`} className="rounded-lg w-64">
                 <Card sx={{ maxWidth: 345 }}>
                   <CardHeader
@@ -68,8 +68,8 @@ export default function RecipeReviewCard({
           : cardData?.map((card: any, i: number) => (
               <div
                 key={`card-${i}`}
-                onClick={() => ClickHandler(card.userCode)}
-                className="rounded-lg w-64"
+                onClick={() => ClickHandler(card)}
+                className="rounded-lg w-64 border-2 border-gray-400 h-76"
               >
                 <Card sx={{ maxWidth: 345 }} className="text-overflow-elipsis">
                   <CardHeader
@@ -91,28 +91,33 @@ export default function RecipeReviewCard({
                         height="0"
                         sizes="20vw"
                         style={{ width: "100%", height: "auto" }}
+                        priority
                       />
                     </div>
                   ) : (
-                    <div className="h-40 w-64 bg-slate-400" />
+                    <div className="h-40 w-64 bg-rose-50" />
                   )}
 
-                  <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                      <span className=" line-clamp-2">
-                        {card.roads.map((road: any, i: number) => (
-                          <span key={`road-card-${i}`} className="">
-                            <span className="">{road.name} -</span>
-                          </span>
-                        ))}
-                      </span>
-                    </Typography>
+                  <CardContent className="h-20">
+                    <span className=" line-clamp-2">
+                      {card.roads.map((road: any, i: number) => (
+                        <span key={`road-card-${i}`}>
+                          <span className="">{road.name} -</span>
+                        </span>
+                      ))}
+                    </span>
                   </CardContent>
-                  <CardActions disableSpacing></CardActions>
                 </Card>
               </div>
             ))}
       </div>
+      {isOpen && (
+        <DetailModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          card={selectedCard}
+        />
+      )}
       <Pagination
         count={pagination.totalPages}
         page={pagination.page}
