@@ -11,6 +11,9 @@ import Provider from "../lib/next-auth";
 export const metadata: Metadata = {
   title: "Pide",
   description: "길찾기와 여행루트를 한번에 볼 수 있는 웹사이트",
+  icons: {
+    icon: "/favi.png",
+  },
 };
 
 declare global {
