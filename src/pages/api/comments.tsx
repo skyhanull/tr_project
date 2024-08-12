@@ -3,17 +3,25 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Road from "@/lib/userRoad"; // Ensure this path is correct
 import connectToDatabase from "@/lib/mongodb"; // Ensure this path is correct
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 async function addCommentToRoad(
   roadId: string,
-  userId: string,
+  userName: string,
+  userImg: string,
   commentText: string
 ) {
   try {
+    const date = format(new Date(), "yyyy년 M월 d일 H시 m분", {
+      locale: ko,
+    });
+
     const newComment = {
-      userId,
+      userName,
       text: commentText,
-      date: new Date(), // Set current date/time for the comment
+      userImg,
+      date: date, // Set current date/time for the comment
     };
 
     const updatedRoad = await Road.findByIdAndUpdate(
@@ -36,15 +44,20 @@ export default async function handler(
     try {
       await connectToDatabase(); // Connect to the database
 
-      const { roadId, userId, commentText } = req.body;
+      const { roadId, userName, commentText, userImg } = req.body;
 
-      if (!roadId || !userId || !commentText) {
+      if (!roadId || !userName || !commentText) {
         return res
           .status(400)
           .json({ success: false, message: "Missing required fields." });
       }
 
-      const updatedRoad = await addCommentToRoad(roadId, userId, commentText);
+      const updatedRoad = await addCommentToRoad(
+        roadId,
+        userName,
+        userImg,
+        commentText
+      );
 
       if (updatedRoad) {
         res.status(200).json({ success: true, data: updatedRoad });

@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema({
-  userId: { type: String, required: true }, // 댓글 작성자 ID
+  userName: { type: String, required: true }, // 댓글 작성자 ID
   text: { type: String, required: true }, // 댓글 내용
-  date: { type: Date, default: Date.now }, // 댓글 작성 시간
+  date: { type: String }, // 댓글 작성 시간
+  userImg: { type: String }, // 댓글 작성 시간
 });
 
 const userRoadSchema = new mongoose.Schema({
