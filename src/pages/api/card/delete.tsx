@@ -29,7 +29,7 @@ export default async function handler(
         res.status(404).json({ success: false, message: "Road not found." });
       }
     } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
+      res.status(500).json({ success: false, message: error });
     }
   } else {
     res.status(405).json({ success: false, message: "Method not allowed." });
