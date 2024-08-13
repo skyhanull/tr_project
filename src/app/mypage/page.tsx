@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Card from "../../components/Card/card";
 import Avatar from "@mui/material/Avatar";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { storeListHandler } from "../../hook/storeListHandler";
 import { Pagenationtype } from "../../utility/interface/pagenation";
 import Select from "../../components/filterbar/select";
