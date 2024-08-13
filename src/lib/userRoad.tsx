@@ -5,6 +5,8 @@ const commentSchema = new mongoose.Schema({
   text: { type: String, required: true }, // 댓글 내용
   date: { type: String }, // 댓글 작성 시간
   userImg: { type: String }, // 댓글 작성 시간
+  userId: { type: String },
+  editedAt: { type: String },
 });
 
 const userRoadSchema = new mongoose.Schema({
@@ -13,6 +15,10 @@ const userRoadSchema = new mongoose.Schema({
   date: { type: String },
   image: { type: String },
   visibility: { type: String },
+  likes: { type: [String], default: [] },
+  likesCount: { type: Number, default: 0 }, // 좋아요 수
+  review: { type: String },
+
   roads: [
     {
       name: String,
