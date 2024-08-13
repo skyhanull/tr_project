@@ -6,16 +6,24 @@ import Avatar from "@mui/material/Avatar";
 import { signOut, useSession } from "next-auth/react";
 import { storeListHandler } from "../../hook/storeListHandler";
 import { Pagenationtype } from "../../utility/interface/pagenation";
+import Select from "../../components/filterbar/select";
+
 export default function Page() {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const [userCode, setUserCode] = useState<string | null>(null);
+  const [sort, setSort] = useState("");
   const [pagination, setPagination] = useState<Pagenationtype>({
     total: 0,
     page: 1,
     limit: 10,
     totalPages: 0,
   });
+  const filters = [
+    { name: "전체", code: "" },
+    { name: "최신 순", code: "recent" },
+    { name: "인기 순", code: "popular" },
+  ];
 
   useEffect(() => {
     // Fetch userCode from localStorage and update state
@@ -27,7 +35,7 @@ export default function Page() {
   useEffect(() => {
     setLoading(true);
     if (userCode) {
-      storeListHandler(userCode, setCardData, setPagination, pagination);
+      storeListHandler(userCode, setCardData, setPagination, pagination, sort);
     }
     setLoading(false);
   }, [pagination.page, userCode]);
@@ -44,12 +52,7 @@ export default function Page() {
           />
         </div>
         <div className="flex flex-col  my-7">
-          <div className="text-2xl py-1">name : {session?.user?.name}님</div>
-
-          {/* <div className="text-2xl py-1">
-            e-mail : {session?.user?.email ? session?.user?.email : ""}
-          </div> */}
-
+          <div className="text-2xl py-1">name : {session?.user?.name}님</div>ㅋ
           <div className="text-2xl py-1">
             e-mail : {session?.user?.email ?? ""}
           </div>
@@ -61,6 +64,7 @@ export default function Page() {
         <span> My List</span>
         <span>{cardData.length}</span>
       </div>
+      <Select filterList={filters} setSort={setSort} sort={sort} />
       <Card
         cardData={cardData}
         setPagination={setPagination}
