@@ -29,9 +29,6 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
   const [error, setError] = useState<string | null>(null);
   const [isEdit, setIsEdit] = useState("");
 
-  console.log(state);
-  console.log(card);
-
   useEffect(() => {
     if (isOpen) {
       fetchComments();
@@ -42,7 +39,7 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
     try {
       const response = await axios.get(`/api/comment/${card._id}`);
       const result = response.data;
-      console.log(result);
+
       if (result.success) {
         setComments(result.data.comments);
       } else {

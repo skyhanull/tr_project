@@ -25,7 +25,7 @@ export default function RecipeReviewCard({
   const route = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState<any>(null);
-  console.log(cardData);
+
   const ClickHandler = (card: any) => {
     setSelectedCard(card);
     setIsOpen(true);
