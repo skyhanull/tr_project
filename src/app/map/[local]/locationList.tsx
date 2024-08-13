@@ -108,18 +108,10 @@ const LocationList = () => {
                     <Image
                       src={getImageSrc(filterChip)}
                       alt=""
-                      // layout="fixed"
                       width="0"
                       height="0"
                       sizes="10vw"
                       style={{ width: "20%", height: "auto" }}
-                      // width={70}
-                      // height={90}
-                      // // objectFit="cover"
-                      // className="rounded-lg shadow-xl"
-                      // loading="lazy"
-                      // placeholder="blur"
-                      // blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
                     />
 
                     <div className="flex ml-8 flex-row justify-between  w-full">

@@ -3,7 +3,6 @@ import Image from "next/image";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import React, { useState, useEffect, useMemo } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Button from "@mui/material/Button";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
 import DistanceM from "@/utility/distance";
@@ -41,8 +40,7 @@ const DirectionList = () => {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookModal, setBookModal] = useState(false);
-  const userCode = localStorage.getItem("userCode");
-  const openModal = () => setIsModalOpen(true);
+
   const closeModal = () => setIsModalOpen(false);
   const closeBookModal = () => setBookModal(false);
   const destination = useMemo(
@@ -84,29 +82,6 @@ const DirectionList = () => {
     const newList = markerList.filter((el, index) => index !== i);
     setMarkerList(newList);
   };
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   // e.preventDefault();
-
-  //   try {
-  //     const res = await axios.post(
-  //       "/api/mypost",
-  //       { markerList, userCode },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-
-  //     // You can access the response data via res.data
-  //     // Handle the response as needed
-  //   } catch (error) {
-  //     // Handle any errors here
-  //     console.error("Error submitting data:", error);
-  //     // setName(error);
-  //   }
-  // };
 
   const detailModalHandler = () => {
     setIsModalOpen(true);

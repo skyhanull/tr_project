@@ -5,7 +5,7 @@ import useDebounce from "@/hook/useDebounce";
 import SubmitButton from "../button/submitButton";
 import ImgModal from "../Modal/ImgSelectModal";
 import RadioGroup from "../filterbar/radioButton";
-
+import CustomTextField from "../filterbar/textInput";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -21,11 +21,12 @@ const visibilityOptions = [
 const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
   const userCode = localStorage.getItem("userCode");
   const [isImg, setIsImg] = useState(false);
+  const [review, setReview] = useState<string>("");
   const [uploadUrl, setUploadUrl] = useState<string | null>(null);
   const [visibility, setVisibility] = useState<string>("public"); // State for radio button
   const [inputValue, setInputValue] = useState("");
   const debouncedListName = useDebounce(inputValue, 1000);
-  console.log(visibility);
+
   const handleSubmits = async () => {
     // e.preventDefault();
 
@@ -42,6 +43,7 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
           listName: debouncedListName,
           image: uploadUrl,
           visibility,
+          review,
         },
         {
           headers: {
@@ -52,6 +54,7 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
 
       // Handle the response as needed
       console.log("Response data:", res.data);
+      onClose();
     } catch (error) {
       // Handle any errors here
       console.error("Error submitting data:", error);
@@ -123,6 +126,13 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
               />
             </div>
           </div>
+          <span className="m-4 font-bold">리뷰</span>
+          <CustomTextField
+            label={"리뷰를 입력하세요"}
+            rows={3}
+            value={review}
+            onChange={(e) => setReview(e.target.value)}
+          />
           <div className="flex justify-end my-3">
             <SubmitButton
               clickHandler={handleSubmits}
