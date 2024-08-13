@@ -73,5 +73,5 @@ export default NextAuth({
       }
     },
   },
-  secret: process.env.AUTH_CLIENT_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
 });
