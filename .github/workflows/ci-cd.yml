@@ -1,9 +1,47 @@
+# name: CI/CD for Next.js
+
+# on:
+#   pull_request:
+#     branches:
+#       - main
+
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: "18"
+
+#       - name: Install dependencies
+#         run: yarn install
+
+#       # - name: Run tests
+#       #   run: yarn test
+#       # ..
+#       - name: Build project
+#         run: yarn build
+
+#       - name: Deploy to Vercel
+#         uses: amondnet/vercel-action@v20
+#         with:
+#           vercel-token: ${{ secrets.VERCEL_TOKEN }}
+#           vercel-args: "--prod --confirm"
+#           working-directory: ./
+#           github-token: ${{ secrets.GITHUB_TOKEN }}
 name: GitHub Actions Vercel Preview Deployment
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
 on:
+  # push:
+  #   branches-ignore:
+  #     - main
   pull_request_target:
     branches:
       - main
@@ -22,15 +60,13 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const pullRequest = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-            });
+            const pullRequest = context.payload.pull_request;
 
-            return {
-              hasConflicts: pullRequest.data.mergeable === false ? 'true' : 'false'
-            };
+            if (pullRequest.mergeable === false) {
+              return { hasConflicts: 'true' };
+            } else {
+              return { hasConflicts: 'false' };
+            }
 
   Deploy-Preview:
     runs-on: ubuntu-latest

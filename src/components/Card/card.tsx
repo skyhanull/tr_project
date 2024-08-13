@@ -116,6 +116,7 @@ export default function RecipeReviewCard({
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           card={selectedCard}
+          state={false}
         />
       )}
       <Pagination
