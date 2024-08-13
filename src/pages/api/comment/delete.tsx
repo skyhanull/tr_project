@@ -18,7 +18,7 @@ async function deleteCommentFromRoad(roadId: string, commentId: string) {
 
     return updatedRoad;
   } catch (error) {
-    throw new Error("Error deleting comment: " + error.message);
+    throw new Error("Error deleting comment: " + error);
   }
 }
 
@@ -48,7 +48,7 @@ export default async function handler(
           .json({ success: false, message: "Road or comment not found." });
       }
     } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
+      res.status(500).json({ success: false, message: error });
     }
   } else {
     res.status(405).json({ success: false, message: "Method not allowed." });
