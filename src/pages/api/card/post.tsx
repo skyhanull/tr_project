@@ -62,7 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         let sortOptions: { [key: string]: 1 | -1 } = {};
 
         if (sortBy === "recent") {
-          sortOptions.date = 1; // Sorting by date in descending order
+          sortOptions.date = -1; // Sorting by date in descending order
         } else if (sortBy === "popular") {
           sortOptions.likesCount = -1; // Sorting by popularity in descending order
         }

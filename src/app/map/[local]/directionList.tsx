@@ -97,11 +97,7 @@ const DirectionList = () => {
                 onClick={() => setBookModal(true)}
                 className="p-2 mr-4 rounded-xl  text-sm"
               >
-                {!bookModal ? (
-                  <FaRegStar className="text-red-200" size={30} />
-                ) : (
-                  <FaStar className="text-red-200" />
-                )}
+                <FaRegStar className="text-red-200" size={30} />
               </button>
               <button>
                 <IoShareSocialSharp
