@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
 import DistanceM from "@/utility/distance";
 import getImageSrc from "@/utility/image";
-import ShareModal from "../../../components/shareModal";
+import ShareModal from "../../../components/modal/shareModal";
 import { FaRegTrashAlt } from "@react-icons/all-files/fa/FaRegTrashAlt";
 import { textState } from "@/recoil/atoms";
 import { BiError } from "@react-icons/all-files/bi/BiError";
