@@ -11,8 +11,8 @@ import { IoMdHome } from "@react-icons/all-files/io/IoMdHome";
 import { IoTime } from "@react-icons/all-files/io5/IoTime";
 import { RiMapPin2Fill } from "@react-icons/all-files/ri/RiMapPin2Fill";
 import { PlaceData } from "@/utility/interface/scrapingType";
-import SubwayTag from "../components/subwayTag";
-import BusTag from "../components/busTag";
+import SubwayTag from "../subwayTag";
+import BusTag from "../busTag";
 
 export default function ProductDetails({ curUrl, setIsCollapsed }: any) {
   const [placeData, setPlaceData] = useState<PlaceData | null>(null);

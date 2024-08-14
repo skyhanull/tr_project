@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import theme from "./theme";
-import RecoilRootWrapper from "@/components/recoilWapper";
+import RecoilRootWrapper from "@/lib/recoilWapper";
 import Layout from "../components/layout/layout";
 import { Jua } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
