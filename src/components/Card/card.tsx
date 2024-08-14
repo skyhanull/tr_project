@@ -13,7 +13,7 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Skeleton from "@mui/material/Skeleton";
 import { red } from "@mui/material/colors";
-import DetailModal from "../modal/detailModal";
+import DetailModal from "../Modal/detailModal";
 
 export default function RecipeReviewCard({
   cardData,
