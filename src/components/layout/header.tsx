@@ -28,9 +28,6 @@ const Header = () => {
         <Image
           src="/img/Pide.png"
           alt="Logo"
-          // width={80}
-          // height={70}
-          // style={{ width: 80, height: 30 }}
           width="0"
           height="0"
           sizes="10vw"
@@ -41,8 +38,11 @@ const Header = () => {
 
       <div className="flex items-center space-x-4">
         {session ? (
-          <span className="text-xl p-7" onClick={() => RouteHanlder("/share")}>
-            List
+          <span
+            className="text-xl p-7 hover:bg-slate-200 hover:rounded-2xl"
+            onClick={() => RouteHanlder("/share")}
+          >
+            게시글
           </span>
         ) : null}
         {session ? (
@@ -56,7 +56,7 @@ const Header = () => {
                 src={session.user?.image as string}
                 className="h-5 w-5 mr-2"
               />
-              {session.user?.name}님
+
               {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </span>
           </span>

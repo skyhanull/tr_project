@@ -1,10 +1,9 @@
 "use client";
-import { useState, useEffect, useCallback, MouseEvent } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { urlLink } from "../../utility/interface/urlLink";
 import useDebounce from "../../hook/useDebounce";
 import ImageItem from "../img/mainListImg";
-import Image from "next/image";
 import Search from "../filterbar/search";
 
 const MainList = () => {
@@ -12,6 +11,7 @@ const MainList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const route = useRouter();
+
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const fetchImages = useCallback(async () => {
     setIsLoading(true);
@@ -57,17 +57,21 @@ const MainList = () => {
           <p className="text-xl text-gray-600">Loading...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 p-10">
+        <div className="">
           {images.length === 0 ? (
-            <div>No results found</div>
+            <div className="w-full flex justify-center items-center mt-40 text-gray-500">
+              검색 결과가 없습니다.
+            </div>
           ) : (
-            images.map((image) => (
-              <ImageItem
-                key={`images-${image.name}`}
-                image={image}
-                onLinkHandler={LinkHandler}
-              />
-            ))
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 p-10">
+              {images.map((image) => (
+                <ImageItem
+                  key={`images-${image.name}`}
+                  image={image}
+                  onLinkHandler={LinkHandler}
+                />
+              ))}
+            </div>
           )}
         </div>
       )}

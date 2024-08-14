@@ -22,7 +22,6 @@ export default function RecipeReviewCard({
   loading, // 로딩 상태 추가
 }: any) {
   const { data: session } = useSession();
-  const route = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState<any>(null);
 
@@ -69,7 +68,7 @@ export default function RecipeReviewCard({
               <div
                 key={`card-${i}`}
                 onClick={() => ClickHandler(card)}
-                className="rounded-lg w-64 border-2 border-gray-400 h-76"
+                className="rounded-lg w-64 border-2 shadow-xl h-76"
               >
                 <Card sx={{ maxWidth: 345 }} className="text-overflow-elipsis">
                   <CardHeader
@@ -78,8 +77,16 @@ export default function RecipeReviewCard({
                         {session?.user?.name?.split("")[0]}
                       </Avatar>
                     }
-                    title={card.listName}
-                    subheader={card.date}
+                    title={
+                      <span className="block text-ellipsis overflow-hidden whitespace-nowrap">
+                        {card.listName}
+                      </span>
+                    }
+                    subheader={
+                      <span className="block text-ellipsis overflow-hidden whitespace-nowrap">
+                        {card.date}
+                      </span>
+                    }
                   />
 
                   {card.image ? (
@@ -89,8 +96,8 @@ export default function RecipeReviewCard({
                         alt="img"
                         width="0"
                         height="0"
-                        sizes="20vw"
-                        style={{ width: "100%", height: "auto" }}
+                        sizes="100vw"
+                        style={{ width: "auto", height: "auto" }}
                         priority
                       />
                     </div>
