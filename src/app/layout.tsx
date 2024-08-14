@@ -3,10 +3,8 @@ import type { Metadata } from "next";
 import theme from "./theme";
 import RecoilRootWrapper from "@/lib/recoilWapper";
 import Layout from "../components/layout/layout";
-import { Jua } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
-import Provider from "../lib/next-auth";
-// const inter = Inter({ subsets: ["latin"] });
+import AuthProvider from "../lib/next-auth"; // 클라이언트 전용 컴포넌트
 
 export const metadata: Metadata = {
   title: "Pide",
@@ -21,7 +19,7 @@ declare global {
     kakao: any;
   }
 }
-//className="h-full bg-[url('/img/background.png')] bg-cover bg-center overflow-auto"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,24 +27,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="text/javascript"
+          src="https://developers.kakao.com/sdk/js/kakao.min.js"
+          defer
+        ></script>
+      </head>
       <body className="m-0 h-screen overflow-auto">
-        {/* <div className="h-full bg-[url('/img/backgroundImg.png')] bg-cover bg-center overflow-auto"> */}
-        <div>
-          <ThemeProvider theme={theme}>
-            <RecoilRootWrapper>
-              <Provider>
-                <Layout>
-                  <script
-                    type="text/javascript"
-                    src="https://developers.kakao.com/sdk/js/kakao.min.js"
-                    defer
-                  ></script>
-                  <main>{children}</main>
-                </Layout>
-              </Provider>
-            </RecoilRootWrapper>
-          </ThemeProvider>
-        </div>
+        <ThemeProvider theme={theme}>
+          <RecoilRootWrapper>
+            <AuthProvider>
+              <Layout>
+                <main>{children}</main>
+              </Layout>
+            </AuthProvider>
+          </RecoilRootWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );
