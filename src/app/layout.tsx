@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import theme from "./theme";
 import RecoilRootWrapper from "@/lib/recoilWapper";
 import Layout from "../components/layout/layout";
-import { Jua } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import Provider from "../lib/next-auth";
 // const inter = Inter({ subsets: ["latin"] });
@@ -21,7 +20,7 @@ declare global {
     kakao: any;
   }
 }
-//className="h-full bg-[url('/img/background.png')] bg-cover bg-center overflow-auto"
+
 export default function RootLayout({
   children,
 }: Readonly<{

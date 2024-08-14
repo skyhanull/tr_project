@@ -3,7 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import useDebounce from "@/hook/useDebounce";
 import SubmitButton from "../button/submitButton";
-import ImgModal from "../Modal/ImgSelectModal";
+import ImgModal from "./imgSelectModal";
 import RadioGroup from "../filterbar/radioButton";
 import CustomTextField from "../filterbar/textInput";
 interface ModalProps {
