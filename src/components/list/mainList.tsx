@@ -1,40 +1,44 @@
 "use client";
-import { useState, useEffect, MouseEvent } from "react";
+import { useState, useEffect, useCallback, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { urlLink } from "../../utility/interface/urlLink";
+import useDebounce from "../../hook/useDebounce";
+import ImageItem from "../img/mainListImg";
 import Image from "next/image";
 import Search from "../filterbar/search";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 const MainList = () => {
-  const [images, setImages] = useState<urlLink[]>();
+  const [images, setImages] = useState<urlLink[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const route = useRouter();
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      const endpoint = searchQuery
-        ? `/api/regions?query=${encodeURIComponent(searchQuery)}`
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+  const fetchImages = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const endpoint = debouncedSearchQuery
+        ? `/api/regions?query=${encodeURIComponent(debouncedSearchQuery)}`
         : `/api/regionList`;
       const res = await fetch(endpoint);
       const data = await res.json();
       setImages(data);
-    };
+    } catch (error) {
+      console.error("Failed to fetch images:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [debouncedSearchQuery]);
 
+  useEffect(() => {
     fetchImages();
-  }, [searchQuery]);
+  }, [fetchImages]);
 
-  const LinkHandler = (
-    url: string,
-    lat: string,
-    lon: string,
-    e: MouseEvent<HTMLDivElement>
-  ) => {
-    e.stopPropagation();
-    route.push(`/map/${url}?lat=${lat}&lon=${lon}`);
-  };
-
+  const LinkHandler = useCallback(
+    (url: string, lat: string, lon: string) => {
+      route.push(`/map/${url}?lat=${lat}&lon=${lon}`);
+    },
+    [route]
+  );
   return (
     <div className="flex justify-center flex-col">
       <h2 className="flex justify-center m-16 text-6xl">Tour-list</h2>
@@ -44,48 +48,29 @@ const MainList = () => {
         immediateFilter={true}
         images={images}
       />
-      <div className="flex justify-center m-16 text-3xl">
-        {"[ 여행지를 선택해주세요! ]"}
+      <div className="flex justify-center m-16 text-3xl text-Main_Rose">
+        {"[ _여행지를 선택해주세요!_ ]"}
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 p-10">
-        {images?.length === 0 ? (
-          <div></div>
-        ) : (
-          <>
-            {images?.map((image, index) => (
-              <div
-                key={index}
-                onClick={(e) =>
-                  LinkHandler(image.name, image.lat, image.lon, e)
-                }
-                className="flex flex-col justify-center items-center"
-              >
-                <div
-                  style={{
-                    width: "200px",
-                    height: "200px",
-                    position: "relative",
-                  }}
-                >
-                  <Image
-                    src={image?.src}
-                    alt=""
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-3xl justify-center"
-                  />
-                </div>
-                <div className="my-6 text-xl justify-start flex  items-center">
-                  {image.name}
-                  <span className="text-gray-400 text-sm items-center">
-                    ({image.country})
-                  </span>
-                </div>
-              </div>
-            ))}
-          </>
-        )}
-      </div>
+
+      {isLoading ? (
+        <div className="flex justify-center items-center h-64">
+          <p className="text-xl text-gray-600">Loading...</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 p-10">
+          {images.length === 0 ? (
+            <div>No results found</div>
+          ) : (
+            images.map((image) => (
+              <ImageItem
+                key={`images-${image.name}`}
+                image={image}
+                onLinkHandler={LinkHandler}
+              />
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 };

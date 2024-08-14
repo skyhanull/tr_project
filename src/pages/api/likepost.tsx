@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import Road from "@/models/userRoad";
+import Road from "@/lib/userRoad";
 import connectToDatabase from "@/lib/mongodb";
 
 async function addLikeToRoad(roadId: string, userId: string) {

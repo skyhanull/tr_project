@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Card from "../../components/card/card";
+import Card from "../../components/Card/card";
 import { storeListHandler } from "../../hook/storeListHandler";
 import { Pagenationtype } from "../../utility/interface/pagenation";
 import Select from "../../components/filterbar/select";

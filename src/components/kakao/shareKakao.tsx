@@ -102,7 +102,7 @@ const KakaoShareButton = ({
   return (
     <button
       onClick={shareKakao}
-      className="flex items-center bg-rose-200 w-full justify-center p-3 mx-2 rounded-xl"
+      className="flex items-center bg-Main_Rose w-full justify-center p-3 mx-2 rounded-xl"
     >
       <IoMdShare size={25} />
       <span className="text-lg ml-1"> 카카오톡으로 공유하기</span>

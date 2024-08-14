@@ -10,7 +10,6 @@ export default async function handler(
 
   try {
     await dbConnect(); // MongoDB에 연결
-
     // 쿼리 파라미터 확인 및 URL 디코딩
     const decodedQuery = query ? decodeURIComponent(query.toString()) : "";
 

@@ -60,18 +60,13 @@
 #         uses: actions/github-script@v6
 #         with:
 #           script: |
-#             const { data: pullRequest } = await github.pulls.get({
-#               owner: context.repo.owner,
-#               repo: context.repo.repo,
-#               pull_number: context.issue.number,
-#             });
+#             const pullRequest = context.payload.pull_request;
 
 #             if (pullRequest.mergeable === false) {
 #               return { hasConflicts: 'true' };
 #             } else {
 #               return { hasConflicts: 'false' };
 #             }
-#           result-encoding: string
 
 #   Deploy-Preview:
 #     runs-on: ubuntu-latest

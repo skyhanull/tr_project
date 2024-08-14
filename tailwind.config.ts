@@ -1,3 +1,4 @@
+import { hi } from "date-fns/locale";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -6,6 +7,7 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+
   theme: {
     extend: {
       spacing: {
@@ -65,11 +67,16 @@ const config: Config = {
         customGreen: "#17BF63",
         customYellow: "#FFAD1F",
         customRed: "#E0245E",
+        Main_Rose: "#fda4af",
+        Highlight_Rose: "#fb7185",
         // 원하는 만큼 추가
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // ...
+    require("@tailwindcss/line-clamp"),
+  ],
 };
 
 export default config;

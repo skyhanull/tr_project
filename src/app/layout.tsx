@@ -4,7 +4,8 @@ import theme from "./theme";
 import RecoilRootWrapper from "@/lib/recoilWapper";
 import Layout from "../components/layout/layout";
 import { ThemeProvider } from "@mui/material/styles";
-import AuthProvider from "../lib/next-auth"; // 클라이언트 전용 컴포넌트
+import Provider from "../lib/next-auth";
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Pide",
@@ -27,23 +28,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <script
-          type="text/javascript"
-          src="https://developers.kakao.com/sdk/js/kakao.min.js"
-          defer
-        ></script>
-      </head>
       <body className="m-0 h-screen overflow-auto">
-        <ThemeProvider theme={theme}>
-          <RecoilRootWrapper>
-            <AuthProvider>
-              <Layout>
-                <main>{children}</main>
-              </Layout>
-            </AuthProvider>
-          </RecoilRootWrapper>
-        </ThemeProvider>
+        {/* <div className="h-full bg-[url('/img/backgroundImg.png')] bg-cover bg-center overflow-auto"> */}
+        <div>
+          <ThemeProvider theme={theme}>
+            <RecoilRootWrapper>
+              <Provider>
+                <Layout>
+                  <script
+                    type="text/javascript"
+                    src="https://developers.kakao.com/sdk/js/kakao.min.js"
+                    defer
+                  ></script>
+                  <main>{children}</main>
+                </Layout>
+              </Provider>
+            </RecoilRootWrapper>
+          </ThemeProvider>
+        </div>
       </body>
     </html>
   );

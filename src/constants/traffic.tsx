@@ -3,10 +3,8 @@ interface FilterItem {
   code: string;
 }
 
-export const FILTER_ARRAY: FilterItem[] = [
-  { name: "추천루트", code: "loc" },
-  { name: "맛집", code: "FD6" },
-  { name: "관광지", code: "AT4" },
-  { name: "카페", code: "CE7" },
-  { name: "축제", code: "fes" },
+export const FILTER_TRAFFIC: FilterItem[] = [
+  { name: "자동차", code: "driving" },
+  { name: "도보", code: "walking" },
+  { name: "실시간 경로", code: "driving-traffic" },
 ];

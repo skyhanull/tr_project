@@ -13,7 +13,7 @@ const MapLayout = ({ setTab }: MapLayoutProps) => {
     <nav className=" bg-white border-2 border-gray-200 flex items-center flex-col">
       {tabs.map((tab) => (
         <div
-          key={tab.name}
+          key={`tabs-${tab.name}`}
           className="hover:bg-pink-100 text-gray-500 py-12 w-24 flex justify-center"
           onClick={() => setTab(tab.id)}
         >

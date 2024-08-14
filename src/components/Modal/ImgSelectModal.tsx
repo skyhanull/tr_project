@@ -8,21 +8,18 @@ interface ImgModalProps {
   onSelectImage: (url: string) => void;
 }
 
-const ImgModal = ({ isOpen, onClose, onSelectImage }: ImgModalProps) => {
-  const imageList = useMemo(
-    () => [
-      "/img/select/red.png",
-      "/img/select/orange.png",
-      "/img/select/yellow.png",
-      "/img/select/green.png",
-      "/img/select/sky.png",
-      "/img/select/blue.png",
-      "/img/select/purple.png",
-      "/img/select/white.png",
-      "/img/select/black.png",
-    ],
-    []
-  );
+const imgSelectModal = ({ isOpen, onClose, onSelectImage }: ImgModalProps) => {
+  const imageList = [
+    "/img/select/red.png",
+    "/img/select/orange.png",
+    "/img/select/yellow.png",
+    "/img/select/green.png",
+    "/img/select/sky.png",
+    "/img/select/blue.png",
+    "/img/select/purple.png",
+    "/img/select/white.png",
+    "/img/select/black.png",
+  ];
 
   const handleClose = () => {
     onClose();
@@ -68,4 +65,4 @@ const ImgModal = ({ isOpen, onClose, onSelectImage }: ImgModalProps) => {
   );
 };
 
-export default ImgModal;
+export default imgSelectModal;

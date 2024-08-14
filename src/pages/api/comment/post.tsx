@@ -1,7 +1,7 @@
 // /pages/api/add-comment.ts
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import Road from "@/models/userRoad"; // Ensure this path is correct
+import Road from "@/lib/userRoad"; // Ensure this path is correct
 import connectToDatabase from "@/lib/mongodb"; // Ensure this path is correct
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";

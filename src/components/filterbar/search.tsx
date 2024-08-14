@@ -2,12 +2,14 @@ import React, {
   useState,
   useRef,
   useEffect,
-  ChangeEvent,
   KeyboardEvent,
+  useCallback,
 } from "react";
 import { urlLink } from "../../utility/interface/urlLink";
 import useDebounce from "../../hook/useDebounce";
 import { FaSearch } from "@react-icons/all-files/fa/FaSearch";
+
+const DEBOUNCE_DELAY = 200;
 
 interface Props {
   setSearch: (newSearchQuery: string) => void;
@@ -22,11 +24,11 @@ const Search = ({
   immediateFilter,
   images = [],
 }: Props) => {
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
   const [focusIndex, setFocusIndex] = useState(-1);
 
-  const debouncedSearchQuery = useDebounce(localSearchQuery, 200);
+  const debouncedSearchQuery = useDebounce(localSearchQuery, DEBOUNCE_DELAY);
 
   useEffect(() => {
     if (immediateFilter) {
@@ -34,14 +36,19 @@ const Search = ({
     }
   }, [debouncedSearchQuery, immediateFilter, setSearch]);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setLocalSearchQuery(e.target.value);
-  };
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setLocalSearchQuery(e.target.value);
+    },
+    []
+  );
 
-  const handleSuggestionClick = (name: string) => {
-    setSearch(name);
-  };
-
+  const handleSuggestionClick = useCallback(
+    (name: string) => {
+      setSearch(name);
+    },
+    [setSearch]
+  );
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -73,14 +80,19 @@ const Search = ({
     }
   }, [focusIndex, images?.length]);
 
+  // const filteredImages = useMemo(() =>
+  //   images.filter(img => img.name.toLowerCase().includes(localSearchQuery.toLowerCase())),
+  //   [images, localSearchQuery]
+  // );
+
   return (
     <header>
       <div className="flex items-center justify-center relative ">
         <div className="relative w-4/6 mt-10 mb-5">
-          <FaSearch className="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500" />
+          <FaSearch className="absolute top-1/2 left-4 transform -translate-y-1/2 text-Highlight_Rose" />
           <input
             ref={inputRef}
-            className="border-rose-300 border-4 rounded-xl pl-12 pr-4 py-2 w-full  text-md focus:ring-blue-100/50 focus:ring-8 focus:outline-none "
+            className="border-rose-400 border-2 rounded-xl pl-12 pr-4 py-2 w-full  text-md focus:ring-blue-100/50 focus:ring-8 focus:outline-none "
             placeholder="여행가고 싶은 지역을 검색하세요"
             value={localSearchQuery}
             onChange={handleInputChange}
@@ -94,12 +106,13 @@ const Search = ({
                 <div className="px-4 py-2 w-full h-60">
                   {images?.map((el, index) => (
                     <div
-                      key={el.name}
+                      key={`suggestion-${el.name}`}
                       id={`suggestion-${index}`}
                       className={`cursor-pointer px-4 py-2 ${
                         index === focusIndex ? "bg-gray-200" : ""
                       } hover:bg-gray-200`}
                       onMouseDown={() => handleSuggestionClick(el.name)}
+                      aria-selected={index === focusIndex}
                     >
                       {el.name}
                     </div>

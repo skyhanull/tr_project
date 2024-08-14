@@ -1,24 +1,27 @@
 "use client";
 import Image from "next/image";
+import axios from "axios";
 import { useRecoilState } from "recoil";
-import React, { useState, useEffect } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useState, useEffect, useMemo } from "react";
 import Button from "@mui/material/Button";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
 import DistanceM from "@/utility/distance";
 import getImageSrc from "@/utility/image";
-import ShareModal from "../../../components/modal/shareModal";
+import ShareModal from "@/components/Modal/shareModal";
+import StoreModal from "@/components/Modal/storeModal";
 import { FaRegTrashAlt } from "@react-icons/all-files/fa/FaRegTrashAlt";
 import { textState } from "@/recoil/atoms";
 import { BiError } from "@react-icons/all-files/bi/BiError";
 import { convertDuration } from "@/utility/time";
 import { RouteResponse } from "../../../utility/interface/roadType";
+import { FILTER_TRAFFIC } from "../../../constants/traffic";
+import { useSession } from "next-auth/react";
+import { FaStar } from "@react-icons/all-files/fa/FaStar";
+import { FaRegStar } from "@react-icons/all-files/fa/FaRegStar";
+import { IoShareSocialSharp } from "@react-icons/all-files/io5/IoShareSocialSharp";
+import { getToken } from "next-auth/jwt";
+import SubmitButton from "@/components/button/submitButton";
 
-const filterArray = [
-  { name: "자동차", code: "driving" },
-  { name: "도보", code: "walking" },
-  { name: "실시간 경로", code: "driving-traffic" },
-];
 interface RoadType {
   address: string;
   filterChip: string;
@@ -33,14 +36,20 @@ const DirectionList = () => {
   const [markerList, setMarkerList] = useRecoilState<RoadType[]>(textState);
   const [directions, setDirections] = useState<RouteResponse | null>(null);
 
+  const [name, setName] = useState("");
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bookModal, setBookModal] = useState(false);
 
-  const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const destination = `${markerList[markerList.length - 1]?.x},${
-    markerList[markerList.length - 1]?.y
-  }`;
+  const closeBookModal = () => setBookModal(false);
+  const destination = useMemo(
+    () =>
+      `${markerList[markerList.length - 1]?.x},${
+        markerList[markerList.length - 1]?.y
+      }`,
+    [markerList]
+  );
 
   const origin = markerList
     ?.map((el) => `${el.x},${el.y}`)
@@ -64,7 +73,7 @@ const DirectionList = () => {
       }
     };
 
-    if (markerList) {
+    if (markerList.length > 0) {
       fetchDirections();
     }
   }, [markerList, filterChip]);
@@ -74,22 +83,38 @@ const DirectionList = () => {
     setMarkerList(newList);
   };
 
+  const detailModalHandler = () => {
+    setIsModalOpen(true);
+  };
   return (
     <>
       <div>
         <div className="flex items-center justify-between mr-5 mt-3">
           <div className="text-2xl m-8">길찾기</div>
-          <div className="flex items-center">
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-pink-300 p-2 mr-4 rounded-xl text-white text-sm"
-            >
-              상세보기
-            </button>
-          </div>
+          {markerList.length > 1 && (
+            <div className="flex items-center">
+              <button
+                onClick={() => setBookModal(true)}
+                className="p-2 mr-4 rounded-xl  text-sm"
+              >
+                {!bookModal ? (
+                  <FaRegStar className="text-red-200" size={30} />
+                ) : (
+                  <FaStar className="text-red-200" />
+                )}
+              </button>
+              <button>
+                <IoShareSocialSharp
+                  className="text-red-300"
+                  size={30}
+                  onClick={detailModalHandler}
+                />
+              </button>
+            </div>
+          )}
         </div>
 
-        <SelectFilter setFilterChip={setFilterChip} Array={filterArray} />
+        <SelectFilter setFilterChip={setFilterChip} Array={FILTER_TRAFFIC} />
         <div className="h-full">
           {markerList.length === 0 ? (
             <div className="flex justify-center items-center text-red-500 ">
@@ -106,7 +131,7 @@ const DirectionList = () => {
               )}
               {markerList.map((el, i) => (
                 <div
-                  key={el.name}
+                  key={`markerList-${el.name}`}
                   className="rounded-xl p-5 flex flex-col border-b "
                 >
                   <div className=" flex-row mb-2 text-xl ">{el.name}</div>
@@ -114,11 +139,10 @@ const DirectionList = () => {
                     <Image
                       src={getImageSrc(el.filterChip)}
                       alt=""
-                      layout="fixed"
-                      width={70}
-                      height={90}
-                      objectFit="cover" // 원본 이미지의 비율을 유지하면서 컨테이너에 맞게 조정
-                      className="rounded-lg shadow-md"
+                      width="0"
+                      height="0"
+                      sizes="10vw"
+                      style={{ width: "20%", height: "auto" }}
                     />
                     <div className="flex ml-5 flex-row justify-between w-full">
                       <div>
@@ -144,6 +168,7 @@ const DirectionList = () => {
           <div className="border-y-2  fixed bottom-0 p-10 flex flex-col bg-white w-px-55">
             <div className="text-xl flex justify-between w-full">
               <div className="font-bold ">총 시간 :</div>
+              <div>{name}</div>
               <div className="flex ">
                 {directions?.routes[0]?.duration
                   ? convertDuration(directions?.routes[0]?.duration)
@@ -167,6 +192,14 @@ const DirectionList = () => {
           directions={directions}
         />
       )} */}
+      {bookModal && (
+        <StoreModal
+          markerList={markerList}
+          directions={directions}
+          isOpen={bookModal}
+          onClose={closeBookModal}
+        />
+      )}
       {isModalOpen && (
         <ShareModal
           markerList={markerList}

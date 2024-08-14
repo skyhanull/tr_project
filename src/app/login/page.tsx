@@ -1,19 +1,10 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { AiFillMessage } from "@react-icons/all-files/ai/AiFillMessage";
 export default function Page() {
   const { data: session } = useSession();
-  const [isClient, setIsClient] = useState(false);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null; // SSR 단계에서는 아무것도 렌더링하지 않음
-  }
   return (
     <div>
       {!session ? (
@@ -23,13 +14,8 @@ export default function Page() {
             <div>
               <button
                 onClick={() =>
-                  // signIn("google", {
-                  //   callbackUrl: "/",
-                  // })
                   signIn("google", {
-                    callbackUrl:
-                      process.env.NEXT_PUBLIC_SITE_URL ||
-                      "http://localhost:3000/",
+                    callbackUrl: "/",
                   })
                 }
                 className="bg-white text-blue-500 flex p-3 rounded hover:bg-blue-600 border-sky-300 border-2 w-60 justify-center items-center"
@@ -45,13 +31,8 @@ export default function Page() {
             </div>
             <button
               onClick={() =>
-                // signIn("kakao", {
-                //   callbackUrl: "/",
-                // })
                 signIn("kakao", {
-                  callbackUrl:
-                    process.env.NEXT_PUBLIC_SITE_URL ||
-                    "http://localhost:3000/",
+                  callbackUrl: "/",
                 })
               }
               className="bg-yellow-400 text-black p-3 rounded hover:bg-yellow-600 flex items-center justify-center  px-4 w-60"

@@ -1,7 +1,7 @@
 // /pages/api/delete-road.ts
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import Road from "@/models/userRoad"; // Ensure this path is correct
+import Road from "@/lib/userRoad"; // Ensure this path is correct
 import connectToDatabase from "@/lib/mongodb"; // Ensure this path is correct
 
 export default async function handler(
