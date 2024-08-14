@@ -3,14 +3,15 @@ import type { Metadata } from "next";
 import theme from "./theme";
 import RecoilRootWrapper from "@/lib/recoilWapper";
 import Layout from "../components/layout/layout";
-import { Jua } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
-
-// const inter = Inter({ subsets: ["latin"] });
+import AuthProvider from "../lib/next-auth"; // 클라이언트 전용 컴포넌트
 
 export const metadata: Metadata = {
   title: "Pide",
   description: "길찾기와 여행루트를 한번에 볼 수 있는 웹사이트",
+  icons: {
+    icon: "/favi.png",
+  },
 };
 
 declare global {
@@ -18,7 +19,7 @@ declare global {
     kakao: any;
   }
 }
-//className="h-full bg-[url('/img/background.png')] bg-cover bg-center overflow-auto"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,30 +27,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="text/javascript"
+          src="https://developers.kakao.com/sdk/js/kakao.min.js"
+          defer
+        ></script>
+      </head>
       <body className="m-0 h-screen overflow-auto">
-        <div className="h-full bg-[url('/img/backgroundImg.png')] bg-cover bg-center overflow-auto">
-          <ThemeProvider theme={theme}>
-            <RecoilRootWrapper>
+        <ThemeProvider theme={theme}>
+          <RecoilRootWrapper>
+            <AuthProvider>
               <Layout>
-                {/* <Script
-                type="text/javascript"
-                src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&callback=CALLBACK_FUNCTION`}
-              /> */}
-                {/* <Script
-                // type="text/javascript"
-
-                src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_JS_KAKAO_CLIENT_KEY}&libraries=services&autoload=false`}
-              /> */}
-                <script
-                  type="text/javascript"
-                  src="https://developers.kakao.com/sdk/js/kakao.min.js"
-                  defer
-                ></script>
                 <main>{children}</main>
               </Layout>
-            </RecoilRootWrapper>
-          </ThemeProvider>
-        </div>
+            </AuthProvider>
+          </RecoilRootWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );
