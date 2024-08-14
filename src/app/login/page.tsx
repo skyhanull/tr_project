@@ -23,8 +23,13 @@ export default function Page() {
             <div>
               <button
                 onClick={() =>
+                  // signIn("google", {
+                  //   callbackUrl: "/",
+                  // })
                   signIn("google", {
-                    callbackUrl: "/",
+                    callbackUrl:
+                      process.env.NEXT_PUBLIC_SITE_URL ||
+                      "http://localhost:3000/",
                   })
                 }
                 className="bg-white text-blue-500 flex p-3 rounded hover:bg-blue-600 border-sky-300 border-2 w-60 justify-center items-center"
@@ -40,8 +45,13 @@ export default function Page() {
             </div>
             <button
               onClick={() =>
+                // signIn("kakao", {
+                //   callbackUrl: "/",
+                // })
                 signIn("kakao", {
-                  callbackUrl: "/",
+                  callbackUrl:
+                    process.env.NEXT_PUBLIC_SITE_URL ||
+                    "http://localhost:3000/",
                 })
               }
               className="bg-yellow-400 text-black p-3 rounded hover:bg-yellow-600 flex items-center justify-center  px-4 w-60"
