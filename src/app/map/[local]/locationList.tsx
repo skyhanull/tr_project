@@ -12,7 +12,7 @@ import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
 import getChipColor from "@/utility/color";
 import getImageSrc from "@/utility/image";
-import LocalPopup from "../../../components/Popup/localPopup";
+import LocalPopup from "../../../components/popup/localPopup";
 import { textState } from "../../../recoil/atoms";
 import { HiOutlinePlus } from "@react-icons/all-files/hi/HiOutlinePlus";
 import { FILTER_ARRAY } from "@/constants/listFilter";
