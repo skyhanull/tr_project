@@ -5,12 +5,15 @@ import RecoilRootWrapper from "@/lib/recoilWapper";
 import Layout from "../components/layout/layout";
 import { Jua } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
-
+import Provider from "../lib/next-auth";
 // const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Pide",
   description: "길찾기와 여행루트를 한번에 볼 수 있는 웹사이트",
+  icons: {
+    icon: "/favi.png",
+  },
 };
 
 declare global {
@@ -27,26 +30,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="m-0 h-screen overflow-auto">
-        <div className="h-full bg-[url('/img/backgroundImg.png')] bg-cover bg-center overflow-auto">
+        {/* <div className="h-full bg-[url('/img/backgroundImg.png')] bg-cover bg-center overflow-auto"> */}
+        <div>
           <ThemeProvider theme={theme}>
             <RecoilRootWrapper>
-              <Layout>
-                {/* <Script
-                type="text/javascript"
-                src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&callback=CALLBACK_FUNCTION`}
-              /> */}
-                {/* <Script
-                // type="text/javascript"
-
-                src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_JS_KAKAO_CLIENT_KEY}&libraries=services&autoload=false`}
-              /> */}
-                <script
-                  type="text/javascript"
-                  src="https://developers.kakao.com/sdk/js/kakao.min.js"
-                  defer
-                ></script>
-                <main>{children}</main>
-              </Layout>
+              <Provider>
+                <Layout>
+                  <script
+                    type="text/javascript"
+                    src="https://developers.kakao.com/sdk/js/kakao.min.js"
+                    defer
+                  ></script>
+                  <main>{children}</main>
+                </Layout>
+              </Provider>
             </RecoilRootWrapper>
           </ThemeProvider>
         </div>
