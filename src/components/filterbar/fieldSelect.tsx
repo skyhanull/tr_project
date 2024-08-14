@@ -15,7 +15,7 @@ const FilterChip = ({ setFilterChip, Array }: ChipProps) => {
     <div className="w-auto mx-2">
       {Array?.map((el: any) => (
         <Chip
-          key={el}
+          key={`filter-${el.name}`}
           label={el.name}
           className="border-2 rounded-xl m-2 px-3 bg-white"
           variant="outlined"
