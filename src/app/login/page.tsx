@@ -1,10 +1,19 @@
 "use client";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { AiFillMessage } from "@react-icons/all-files/ai/AiFillMessage";
 export default function Page() {
   const { data: session } = useSession();
+  const [isClient, setIsClient] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; // SSR 단계에서는 아무것도 렌더링하지 않음
+  }
   return (
     <div>
       {!session ? (
