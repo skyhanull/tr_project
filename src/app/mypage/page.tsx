@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { storeListHandler } from "../../hook/storeListHandler";
 import { Pagenationtype } from "../../utility/interface/pagenation";
 import Select from "../../components/filterbar/select";
+import Divider from "@mui/material/Divider";
 
 export default function Page() {
   const { data: session } = useSession();
@@ -37,7 +38,7 @@ export default function Page() {
       storeListHandler(userCode, setCardData, setPagination, pagination, sort);
     }
     setLoading(false);
-  }, [pagination.page, userCode]);
+  }, [pagination.page, userCode, sort]);
 
   return (
     <div className="justify-center mr-52 ml-52 mt-40">
@@ -58,20 +59,21 @@ export default function Page() {
           <div className="text-2xl py-1">Code : {session?.user?.code}</div>
         </div>
       </div>
-      <div className="border-2 border-Main_Rose" />
-      <div className="flex  justify-between mt-40 mx-24 ">
-        <span className="text-3xl"> My List</span>
-        <span>{cardData.length}개</span>
-      </div>
 
+      <div className="flex mt-40 mx-24 ">
+        <span className="text-3xl"> My List</span>
+        {/* <span>{cardData.length}개</span> */}
+      </div>
       <div className="flex justify-end mx-8 items-center">
         <Select filterList={filters} setSort={setSort} sort={sort} />
       </div>
+      <Divider sx={{ my: 1 }} />
       <Card
         cardData={cardData}
         setPagination={setPagination}
         pagination={pagination}
         loading={loading}
+        state={true}
       />
     </div>
   );

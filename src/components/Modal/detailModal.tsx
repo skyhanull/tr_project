@@ -2,16 +2,18 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import CardContent from "@mui/material/CardContent";
-import Divider from "@mui/material/Divider";
-import { useSession } from "next-auth/react";
-import { HiThumbUp } from "@react-icons/all-files/hi/HiThumbUp";
 import AvataImg from "../img/avata";
+import Divider from "@mui/material/Divider";
 import CustomTextField from "../filterbar/textInput";
+import { useSession } from "next-auth/react";
+import { RiThumbUpFill } from "@react-icons/all-files/ri/RiThumbUpFill";
 import { cardItem } from "../../utility/interface/card";
-import { Pagenationtype } from "../../utility/interface/pagenation";
+import { RiThumbUpLine } from "@react-icons/all-files/ri/RiThumbUpLine";
+import Switch from "@mui/material/Switch";
+import SubmitButton from "../button/submitButton";
 
+const label = { inputProps: { "aria-label": "Switch demo" } };
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -26,6 +28,7 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
   const [newComment, setNewComment] = useState<string>("");
   const [editComment, setEditComment] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [isLike, setIsLike] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isEdit, setIsEdit] = useState("");
 
@@ -172,6 +175,7 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
 
       if (result.success) {
         fetchComments();
+        setIsLike(true);
       } else {
         console.error("Error adding like:", result.message);
       }
@@ -184,13 +188,14 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-2/4 p-3">
-        <div className="p-4 border-b">
+        <div className="p-4 border-b justify-between flex">
           <button
             className="text-gray-600 hover:text-gray-900"
             onClick={onClose}
           >
             &times;
           </button>
+          <Switch {...label} defaultChecked />
         </div>
         <div key={`card`} className="rounded-lg h-76">
           {card.image ? (
@@ -208,9 +213,10 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
           ) : (
             <div className="h-40 w-full bg-rose-50" />
           )}
+
           <div className="p-3 ">
             <div className="flex flex-row items-center justify-between">
-              <div className="text-3xl py-2">{card.listName}</div>
+              <div className="text-3xl py-2 ">{card.listName}</div>
               <div className="text-gray-400">
                 {state && (
                   <>
@@ -229,7 +235,7 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
               <span>
                 <AvataImg name={session?.user?.name?.charAt(0)} />
               </span>
-              <span className="ml-2"> {session?.user.name}</span>
+              <span className="ml-2 text-gray-500"> {session?.user.name}</span>
             </div>
             <CardContent>
               <div className="text-gray-400">road</div>
@@ -243,11 +249,18 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
               <div className="text-gray-400">review</div>
               <div className="my-2">{card.review}</div>
             </CardContent>
-            <div className="flex items-center">
+            <div className="flex items-center text-lg mx-5">
               {card.likesCount ?? 0}
-              <div onClick={() => handleLike()}>
-                <HiThumbUp />
-              </div>
+
+              {isLike ? (
+                <div onClick={() => handleLike()} className=" mx-1">
+                  <RiThumbUpFill />
+                </div>
+              ) : (
+                <div onClick={() => handleLike()} className=" mx-1">
+                  <RiThumbUpLine />
+                </div>
+              )}
             </div>
           </div>
           <Divider sx={{ my: 1 }} />
@@ -324,15 +337,13 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
             />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSubmitComment}
-              className="mt-2"
-              disabled={loading}
-            >
-              {loading ? "작성 중..." : "댓글 작성"}
-            </Button>
+            <div className="flex justify-end mt-3">
+              <SubmitButton
+                clickHandler={handleSubmitComment}
+                name="댓글 작성"
+                state={true}
+              />
+            </div>
             {error && (
               <Typography variant="body2" color="error" className="mt-2">
                 {error}

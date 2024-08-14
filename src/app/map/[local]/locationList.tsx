@@ -92,16 +92,19 @@ const LocationList = () => {
                   key={`places-${el.id}`}
                   className="h-full rounded-xl p-5 flex flex-col border-b overflow-auto"
                 >
-                  <div
-                    className=" flex-row mb-2 text-xl "
-                    onClick={() => toggleCollapse(el.place_url)}
-                  >
-                    {el.place_name}
+                  <div className="flex items-center">
+                    <div
+                      className=" flex-row mb-2 text-xl "
+                      onClick={() => toggleCollapse(el.place_url)}
+                    >
+                      {el.place_name}
+                    </div>
                     <Chip
                       label={el.category_group_name}
                       sx={{ backgroundColorClass, color: backgroundColorClass }}
                       variant="outlined"
-                      className="ml-3 text-xs"
+                      className="ml-2 text-xs"
+                      size="small"
                     />
                   </div>
                   <div className=" flex flex-row ">
@@ -126,7 +129,7 @@ const LocationList = () => {
                                 label={category}
                                 size="small"
                                 // variant="Filled"
-                                className="m-1 text-xs "
+                                className="mr-1 text-xs "
                               />
                             ))}
                         </span>

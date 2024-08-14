@@ -20,6 +20,7 @@ export default function RecipeReviewCard({
   setPagination,
   pagination,
   loading, // 로딩 상태 추가
+  state,
 }: any) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
@@ -40,7 +41,7 @@ export default function RecipeReviewCard({
   return (
     <div className="">
       <div className="flex flex-wrap gap-12 p-8 ml-12">
-        {loading // 로딩 중일 때 스켈레톤 표시
+        {loading
           ? [...Array(12)].map((_, i) => (
               <div key={`skeleton-${i}`} className="rounded-lg w-64">
                 <Card sx={{ maxWidth: 345 }}>
@@ -123,7 +124,7 @@ export default function RecipeReviewCard({
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           card={selectedCard}
-          state={false}
+          state={state}
         />
       )}
       <Pagination
