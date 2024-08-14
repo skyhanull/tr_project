@@ -1,13 +1,15 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Card from "../../components/Card/card";
+import Select from "../../components/filterbar/select";
+import Divider from "@mui/material/Divider";
 import { storeListHandler } from "../../hook/storeListHandler";
 import { Pagenationtype } from "../../utility/interface/pagenation";
-import Select from "../../components/filterbar/select";
 
 export default function Page() {
   const [cardData, setCardData] = useState([]);
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState("");
   const [pagination, setPagination] = useState<Pagenationtype>({
     total: 0,
@@ -24,7 +26,7 @@ export default function Page() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // 데이터를 가져오기 시작할 때 로딩 상태로 설정
+      setLoading(true);
       await storeListHandler(
         null,
         setCardData,
@@ -32,7 +34,7 @@ export default function Page() {
         pagination,
         sort
       );
-      setLoading(false); // 데이터 가져오기 완료 후 로딩 상태 해제
+      setLoading(false);
     };
 
     fetchData();
@@ -41,10 +43,11 @@ export default function Page() {
   return (
     <div className="justify-center mx-20 mt-32">
       <div className="h-screen">
-        <div className="flex justify-between mx-8 items-center">
-          <div className="ml-10">전체 리스트</div>
+        <div className="ml-20 mt-10 font-bold text-3xl">전체 게시글</div>
+        <div className="flex justify-end mx-8 items-center">
           <Select filterList={filters} setSort={setSort} sort={sort} />
         </div>
+        <Divider sx={{ my: 1 }} />
         <div>
           <Card
             cardData={cardData}
