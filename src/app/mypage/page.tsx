@@ -26,7 +26,6 @@ export default function Page() {
   ];
 
   useEffect(() => {
-    // Fetch userCode from localStorage and update state
     const code = localStorage.getItem("userCode");
     setUserCode(code);
   }, []);
@@ -52,19 +51,22 @@ export default function Page() {
           />
         </div>
         <div className="flex flex-col  my-7">
-          <div className="text-2xl py-1">name : {session?.user?.name}님</div>ㅋ
+          <div className="text-2xl py-1">Name : {session?.user?.name}님</div>
           <div className="text-2xl py-1">
-            e-mail : {session?.user?.email ?? ""}
+            E-mail : {session?.user?.email ?? ""}
           </div>
-          <div className="text-2xl py-1">code : {session?.user?.code}</div>
+          <div className="text-2xl py-1">Code : {session?.user?.code}</div>
         </div>
       </div>
       <div className="border-2 border-Main_Rose" />
-      <div className="flex text-3xl justify-between mt-40 mx-24 ">
-        <span> My List</span>
-        <span>{cardData.length}</span>
+      <div className="flex  justify-between mt-40 mx-24 ">
+        <span className="text-3xl"> My List</span>
+        <span>{cardData.length}개</span>
       </div>
-      <Select filterList={filters} setSort={setSort} sort={sort} />
+
+      <div className="flex justify-end mx-8 items-center">
+        <Select filterList={filters} setSort={setSort} sort={sort} />
+      </div>
       <Card
         cardData={cardData}
         setPagination={setPagination}
