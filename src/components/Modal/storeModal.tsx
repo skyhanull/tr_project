@@ -3,7 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import useDebounce from "@/hook/useDebounce";
 import SubmitButton from "../button/submitButton";
-import ImgModal from "./imgSelectModal";
+import ImgSelectModal from "./ImgSelectModal";
 import RadioGroup from "../filterbar/radioButton";
 import CustomTextField from "../filterbar/textInput";
 interface ModalProps {
@@ -143,7 +143,7 @@ const Modal = ({ isOpen, onClose, directions, markerList }: ModalProps) => {
         </div>
       </div>
       {isImg && (
-        <ImgModal
+        <ImgSelectModal
           isOpen={isImg}
           onClose={() => setIsImg(false)}
           onSelectImage={handleImageSelect}
