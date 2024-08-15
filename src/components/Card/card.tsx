@@ -10,19 +10,46 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import DetailModal from "../Modal/detailModal";
+import { cardItem } from "../../utility/interface/card";
+interface RoadType {
+  name: string;
+}
 
+interface CardType {
+  listName: string;
+  date: string;
+  image?: string;
+  roads: RoadType[];
+}
+
+interface PaginationType {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+type SetPaginationType = React.Dispatch<React.SetStateAction<PaginationType>>;
+
+interface RecipeReviewCardProps {
+  cardData: CardType[];
+  setPagination: SetPaginationType;
+  pagination: PaginationType;
+  loading: boolean;
+  state: boolean;
+}
 export default function RecipeReviewCard({
   cardData,
   setPagination,
   pagination,
   loading,
   state,
-}: any) {
+}: RecipeReviewCardProps) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<any>(null);
+  const [selectedCard, setSelectedCard] = useState<cardItem | undefined>();
 
-  const ClickHandler = (card: any) => {
+  const ClickHandler = (card: cardItem) => {
     setSelectedCard(card);
     setIsOpen(true);
   };
