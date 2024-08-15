@@ -6,11 +6,16 @@
 
 ## 📕 프로젝트 소개
 
-지도 서비스의 주변 장소 검색과 원하는 장소들에 대한 길 찾기 시스템을 한 페이지에서 이용할 수 있도록 구현한 서비스입니다.
+지역 기반 맛집/관광지 추천 및 길 찾기 웹 애플리케이션
 
 ## 🕛 개발 기간
 
 2024.06 ~ 진행 중
+
+## 🕛 테스트 용 계정
+
+id :
+password :
 
 ## ✍ 실행 방법
 
@@ -26,11 +31,12 @@ yarn dev
 ## 개발 스택
 
 <p>
-<img alt="Typescript" src="https://img.shields.io/badge/Typescript-v4.9.4-3178C6?style=plastic&logoColor=white%22/%3E"/>
+<img alt="Next.js" src="https://img.shields.io/badge/Next.js-v13.4.4-000000?style=plastic&logo=next.js&logoColor=white"/>
+<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-v4.9.4-3178C6?style=plastic&logo=typescript&logoColor=white"/>
+<img alt="Tailwind CSS" src="https://img.shields.io/badge/TailwindCSS-v3.2.4-06B6D4?style=plastic&logo=tailwindcss&logoColor=white"/>
+<img alt="Axios" src="https://img.shields.io/badge/Axios-v1.3.0-5A29E4?style=plastic&logo=axios&logoColor=white"/>
+<img alt="MongoDB" src="https://img.shields.io/badge/MongoDB-v6.0.3-47A248?style=plastic&logo=mongodb&logoColor=white"/>
 
-<img alt="React" src="https://img.shields.io/badge/React-v18.2.0-61DAFB?style=plastic&logo=react&logoColor=white"/>
-
-<img alt="React Router" src="https://img.shields.io/badge/React Router-v6.8.0-CA4245?style=plastic&logo=reactrouter&logoColor=white"/>
 </p>
 
 ## 🗂️ 프로젝트 구조
@@ -40,6 +46,8 @@ yarn dev
  ┣ 📂app
  ┃ ┣ 📂about
  ┃ ┃ ┗ 📜page.tsx
+ ┃ ┣ 📂login
+ ┃ ┃ ┗ 📜page.tsx
  ┃ ┣ 📂map
  ┃ ┃ ┣ 📂[local]
  ┃ ┃ ┃ ┣ 📜directionList.tsx
@@ -47,15 +55,39 @@ yarn dev
  ┃ ┃ ┃ ┣ 📜mapCilent.tsx
  ┃ ┃ ┃ ┗ 📜page.tsx
  ┃ ┃ ┗ 📜page.tsx
- ┃ ┣ 📜favicon.ico
+ ┃ ┣ 📂mypage
+ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┣ 📂share
+ ┃ ┃ ┗ 📜page.tsx
  ┃ ┣ 📜globals.css
  ┃ ┣ 📜layout.tsx
  ┃ ┣ 📜page.tsx
  ┃ ┗ 📜theme.tsx
  ┣ 📂components
+ ┃ ┣ 📂Card
+ ┃ ┃ ┣ 📜card.tsx
+ ┃ ┃ ┗ 📜caresel.tsx
+ ┃ ┣ 📂Modal
+ ┃ ┃ ┣ 📜ImgSelectModal.tsx
+ ┃ ┃ ┣ 📜detailModal.tsx
+ ┃ ┃ ┣ 📜directionModal.tsx
+ ┃ ┃ ┣ 📜listModal.tsx
+ ┃ ┃ ┣ 📜shareModal.tsx
+ ┃ ┃ ┗ 📜storeModal.tsx
+ ┃ ┣ 📂Popup
+ ┃ ┃ ┗ 📜localPopup.tsx
+ ┃ ┣ 📂alert
+ ┃ ┣ 📂button
+ ┃ ┃ ┗ 📜submitButton.tsx
  ┃ ┣ 📂filterbar
  ┃ ┃ ┣ 📜fieldSelect.tsx
- ┃ ┃ ┗ 📜search.tsx
+ ┃ ┃ ┣ 📜radioButton.tsx
+ ┃ ┃ ┣ 📜search.tsx
+ ┃ ┃ ┣ 📜select.tsx
+ ┃ ┃ ┗ 📜textInput.tsx
+ ┃ ┣ 📂img
+ ┃ ┃ ┣ 📜avata.tsx
+ ┃ ┃ ┗ 📜mainListImg.tsx
  ┃ ┣ 📂kakao
  ┃ ┃ ┣ 📜kakaomap.tsx
  ┃ ┃ ┗ 📜shareKakao.tsx
@@ -65,42 +97,69 @@ yarn dev
  ┃ ┃ ┣ 📜layout.tsx
  ┃ ┃ ┣ 📜loader.tsx
  ┃ ┃ ┗ 📜nav.tsx
+ ┃ ┣ 📂list
+ ┃ ┃ ┣ 📜locationList.tsx
+ ┃ ┃ ┗ 📜mainList.tsx
  ┃ ┣ 📜SearchSuggestions.tsx
  ┃ ┣ 📜busTag.tsx
- ┃ ┣ 📜caresel.tsx
- ┃ ┣ 📜directionModal.tsx
  ┃ ┣ 📜geocoding.tsx
  ┃ ┣ 📜googleMap.tsx
  ┃ ┣ 📜googletrans.tsx
- ┃ ┣ 📜listModal.tsx
- ┃ ┣ 📜mainList.tsx
  ┃ ┣ 📜map.tsx
- ┃ ┣ 📜recoilWapper.tsx
  ┃ ┗ 📜subwayTag.tsx
+ ┣ 📂constants
+ ┃ ┣ 📜listFilter.tsx
+ ┃ ┗ 📜traffic.tsx
  ┣ 📂hook
- ┃ ┗ 📜useDebounce.tsx
+ ┃ ┣ 📜storeListHandler.tsx
+ ┃ ┣ 📜useDebounce.tsx
+ ┃ ┣ 📜useFile.tsx
+ ┃ ┗ 📜usePlaces.tsx
  ┣ 📂lib
- ┃ ┗ 📜mongodb.tsx
+ ┃ ┣ 📜auth.tsx
+ ┃ ┣ 📜mongodb.tsx
+ ┃ ┣ 📜next-auth.tsx
+ ┃ ┣ 📜recoilWapper.tsx
+ ┃ ┗ 📜userRoad.tsx
  ┣ 📂models
  ┃ ┣ 📜MapItem.tsx
- ┃ ┗ 📜regionModels.tsx
+ ┃ ┣ 📜User.tsx
+ ┃ ┣ 📜regionModels.tsx
+ ┃ ┗ 📜userRoad.tsx
  ┣ 📂pages
  ┃ ┗ 📂api
+ ┃ ┃ ┣ 📂auth
+ ┃ ┃ ┃ ┗ 📜[...nextauth].tsx
+ ┃ ┃ ┣ 📂card
+ ┃ ┃ ┃ ┣ 📜delete.tsx
+ ┃ ┃ ┃ ┗ 📜post.tsx
+ ┃ ┃ ┣ 📂comment
+ ┃ ┃ ┃ ┣ 📜[id].tsx
+ ┃ ┃ ┃ ┣ 📜delete.tsx
+ ┃ ┃ ┃ ┣ 📜post.tsx
+ ┃ ┃ ┃ ┗ 📜update.tsx
  ┃ ┃ ┣ 📜dir.tsx
  ┃ ┃ ┣ 📜directions.tsx
  ┃ ┃ ┣ 📜http.tsx
+ ┃ ┃ ┣ 📜likepost.tsx
  ┃ ┃ ┣ 📜mapArray.tsx
  ┃ ┃ ┣ 📜mapbox.tsx
+ ┃ ┃ ┣ 📜mypost.tsx
  ┃ ┃ ┣ 📜naverSearch.tsx
  ┃ ┃ ┣ 📜regionList.tsx
  ┃ ┃ ┣ 📜regions.tsx
- ┃ ┃ ┗ 📜scrapePlace.tsx
+ ┃ ┃ ┣ 📜scrapePlace.tsx
+ ┃ ┃ ┣ 📜socket.tsx
+ ┃ ┃ ┗ 📜upload.tsx
  ┣ 📂recoil
  ┃ ┗ 📜atoms.tsx
  ┗ 📂utility
  ┃ ┣ 📂interface
+ ┃ ┃ ┣ 📜card.tsx
  ┃ ┃ ┣ 📜kakao.tsx
  ┃ ┃ ┣ 📜listInterface.tsx
+ ┃ ┃ ┣ 📜next-auth.d.tsx
+ ┃ ┃ ┣ 📜pagenation.tsx
  ┃ ┃ ┣ 📜roadType.tsx
  ┃ ┃ ┣ 📜scrapingType.tsx
  ┃ ┃ ┗ 📜urlLink.tsx
@@ -121,34 +180,68 @@ yarn dev
 2. 디바운스로 0.2초 마다 한번씩 이벤트가 일어나도록 구현
 ```
 
-1. 주변 장소 검색 / 리스트
+2. 주변 장소 검색 / 리스트
 
 ```
-1. 카카오map을 이용한 키워드 검색을 이용하여 주변 장소 리스트가 나오도록 구현
-2. 카카오map 키워드 검색을 이용하여 나오지 않는 정보들은 몽고디비를 이용하여 리스트가 나오도록 함
-3. 추가한 장소는 마커로 표시
+1. 사용자가 선택한 지역의 주변 맛집, 관광지, 카페 정보를 카카오 맵의 `keywordSearch` API를 활용하여 가져옴
+2. 장소 추가 선택 시 선택한 순서에 따라 마커가 생성 마커는 최대5개까지 생성가능
+3. 초기에는 웹 스크래핑을 시도하였으나, 법률 위반의 우려로 인해 Iframe을 활용하여 카카오맵의 가게 페이지를 정보를 보여주는 것으로 변경
+4. react-icon사용 시 500KB가 초과하여 @react-icons/all-files로 각각 import하여 크기 개선  및 next-img의 layout이 구식이라 정확한 크기를 지정해주는 방식으로 변경
 ```
 
-1. 추가한 장소 간 길찾기
+3. mapbox을 이용한 길 찾기
 
 ```
-1. 장소 검색 / 리스트에서 추가한 장소들 간의 길찾기 구현
-2. 카카오 map의 길찾기는 자동차만 가능하기 때문에 mapbox를 이용하여 자동차/도보/ 실시간 경로의 길찾기 버전을 추가함
-3. 경유지는 최대 5개까지 가능하며 걸리는 총 시간/거리를 나타냄
-4. 길찾기 옆 카카오 공유하기로 현재 페이지 공유가능
+
+1. Mapbox를 사용하여 자동차 / 도보 등 다양한 경로 유형을 지원. 이를 통해 카카오 및 네이버의 방향 API가 제공하지 않는 길 찾기 기능을 구현하고 경로 계산 후 총시간 및 총거리를 제공
+2. 로그인한 사용자가 생성한 경로를 마이페이지에 저장하고, 카카오톡으로 공유할 수 있는 기능을 구현
 ```
 
-1. 사이트 스크래핑
+3. mapbox을 이용한 길 찾기
 
 ```
-1. 카카오 맵 상세페이지의 가게 상세 정보를 모달로 보여주는 것으로 구현
-2. 현재 이 부분은 법적인 문제가 있을 수 있어 주석처리
+
+1. Mapbox를 사용하여 자동차 / 도보 등 다양한 경로 유형을 지원. 이를 통해 카카오 및 네이버의 방향 API가 제공하지 않는 길 찾기 기능을 구현하고 경로 계산 후 총시간 및 총거리를 제공
+2. 로그인한 사용자가 생성한 경로를 마이페이지에 저장하고, 카카오톡으로 공유할 수 있는 기능을 구현
+```
+
+3. mapbox을 이용한 길 찾기
+
+```
+
+1. Mapbox를 사용하여 자동차 / 도보 등 다양한 경로 유형을 지원. 이를 통해 카카오 및 네이버의 방향 API가 제공하지 않는 길 찾기 기능을 구현하고 경로 계산 후 총시간 및 총거리를 제공
+2. 로그인한 사용자가 생성한 경로를 마이페이지에 저장하고, 카카오톡으로 공유할 수 있는 기능을 구현
+```
+
+3. mapbox을 이용한 길 찾기
+
+```
+
+1. Mapbox를 사용하여 자동차 / 도보 등 다양한 경로 유형을 지원. 이를 통해 카카오 및 네이버의 방향 API가 제공하지 않는 길 찾기 기능을 구현하고 경로 계산 후 총시간 및 총거리를 제공
+2. 로그인한 사용자가 생성한 경로를 마이페이지에 저장하고, 카카오톡으로 공유할 수 있는 기능을 구현
+```
+
+## 이슈
+
+1. 지도 선택
+
+```
+1. 처음에는 네이버 지도를 선택 => 주변 장소를 최대5개까지 밖에 불러오지 못함
+2. 구글 지도 => 길찾기 시 기본이 미국으로 되어있어 한국으로 설정 시 정보가 없다고 나옴 ( 구글에 문의 시 서드파티를 사용하라는 답변) => mapbox를 이용
+3. 카카오 지도가 스크래핑이 좋았으나 정책위반으로 페이지를 불러오는 형식으로 변경하여 선택
+kakao.maps.LatLng is not a constructor라는 오류가 발생했는데 이것은 script가 완전히 로드 되기 전에 map 관련 메소드를 실행 시키려고 하기 때문에 생기는 에러=>  autoload=false을 넣어줌으로 써 해결
+```
+
+2. git action 배포
+
+```
+https://nextjs.org/docs/messages/prerender-error TypeError [ERR_INVALID_URL]
+오류 발생 => 깃 액션을 사용할 때 프로덕트 next-auth 사용 시 NEXTAUTH_URL값을 깃허브에 키등록을 하지않아 생긴 오류 env는 gitignore에 들어갔기 때문
 ```
 
 ## 추가 할 목표
 
 ```
-1. 로그인을 하여 원하는 장소/루트 저장 후 공유하기 시 같이 보이도록 수정
+1. 테스팅 jest 시도
 2. 국내 뿐만 아니라 해외도 같이 적용
-3. 추천 루트,여행지,여행시간 등 데이터 추가
 ```
