@@ -17,14 +17,14 @@ const label = { inputProps: { "aria-label": "Switch demo" } };
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  card: cardItem;
+  card: cardItem | undefined;
   state: boolean;
 }
 
 const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
   const { data: session } = useSession(); // To get user info
 
-  const [comments, setComments] = useState<any[]>(card.comments || []); // Assuming card has comments
+  const [comments, setComments] = useState<any[]>(card?.comments || []); // Assuming card has comments
   const [newComment, setNewComment] = useState<string>("");
   const [editComment, setEditComment] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -40,7 +40,7 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(`/api/comment/${card._id}`);
+      const response = await axios.get(`/api/comment/${card?._id}`);
       const result = response.data;
 
       if (result.success) {
@@ -65,7 +65,7 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
 
     try {
       const response = await axios.post("/api/comment/post", {
-        roadId: card._id,
+        roadId: card?._id,
         userName: session?.user.name,
         userImg: session?.user.image,
         userId: session?.user.code,
@@ -98,7 +98,7 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
 
     try {
       const response = await axios.patch("/api/comment/update", {
-        roadId: card._id, // Assuming card has _id
+        roadId: card?._id, // Assuming card has _id
         commentId: id,
         updatedText: editComment,
       });
@@ -128,7 +128,7 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
     try {
       const response = await axios.delete("/api/comment/delete", {
         data: {
-          roadId: card._id, // Assuming card has _id
+          roadId: card?._id, // Assuming card has _id
           commentId: id,
         },
       });
@@ -150,7 +150,7 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
     try {
       const response = await axios.delete("/api/card/delete", {
         data: {
-          roadId: card._id, // Assuming card has _id
+          roadId: card?._id, // Assuming card has _id
         },
       });
       const result = response.data;
@@ -168,7 +168,7 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
   const handleLike = async () => {
     try {
       const response = await axios.post("/api/likepost", {
-        roadId: card._id,
+        roadId: card?._id,
         userId: session?.user.code,
       });
       const result = response.data;
@@ -198,10 +198,10 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
           <Switch {...label} defaultChecked />
         </div>
         <div key={`card`} className="rounded-lg h-76">
-          {card.image ? (
+          {card?.image ? (
             <div className="relative w-full h-40 overflow-hidden">
               <Image
-                src={card.image}
+                src={card?.image}
                 alt="img"
                 width="0"
                 height="0"
@@ -216,7 +216,7 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
 
           <div className="p-3 ">
             <div className="flex flex-row items-center justify-between">
-              <div className="text-3xl py-2 ">{card.listName}</div>
+              <div className="text-3xl py-2 ">{card?.listName}</div>
               <div className="text-gray-400">
                 {state && (
                   <>
@@ -240,17 +240,17 @@ const Modal = ({ isOpen, onClose, card, state }: ModalProps) => {
             <CardContent>
               <div className="text-gray-400">road</div>
               <div className="py-2">
-                {card.roads.map((road: any, i: number) => (
+                {card?.roads.map((road: any, i: number) => (
                   <span key={`road-card-${i}`} className="my-3">
                     {road.name} -
                   </span>
                 ))}
               </div>
               <div className="text-gray-400">review</div>
-              <div className="my-2">{card.review}</div>
+              <div className="my-2">{card?.review}</div>
             </CardContent>
             <div className="flex items-center text-lg mx-5">
-              {card.likesCount ?? 0}
+              {card?.likesCount ?? 0}
 
               {isLike ? (
                 <div onClick={() => handleLike()} className=" mx-1">

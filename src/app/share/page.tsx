@@ -54,6 +54,7 @@ export default function Page() {
             setPagination={setPagination}
             pagination={pagination}
             loading={loading}
+            state={false}
           />
         </div>
       </div>

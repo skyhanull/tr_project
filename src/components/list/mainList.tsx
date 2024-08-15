@@ -31,7 +31,7 @@ const MainList = () => {
 
   useEffect(() => {
     fetchImages();
-  }, [fetchImages]);
+  }, []);
 
   const LinkHandler = useCallback(
     (url: string, lat: string, lon: string) => {

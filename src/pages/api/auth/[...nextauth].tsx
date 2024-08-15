@@ -21,6 +21,10 @@ export default NextAuth({
   //   // Seconds - How long until an idle ses
   //   maxAge: 60 * 60 * 24 * 30, // 30 days
   // },
+  session: {
+    strategy: "jwt", // JWT 기반의 세션 전략 사용
+    maxAge: 60 * 60 * 24 * 30, // 30일 동안 토큰 유효
+  },
   callbacks: {
     // async jwt({ token, user }) {
     //   return { ...token, ...user };

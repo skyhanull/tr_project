@@ -1,8 +1,5 @@
-"use client";
-
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import Card from "@mui/material/Card";
 import Pagination from "@mui/material/Pagination";
 import CardHeader from "@mui/material/CardHeader";
@@ -11,22 +8,48 @@ import CardActions from "@mui/material/CardActions";
 import { useSession } from "next-auth/react";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import Skeleton from "@mui/material/Skeleton";
 import { red } from "@mui/material/colors";
 import DetailModal from "../Modal/detailModal";
+import { cardItem } from "../../utility/interface/card";
+interface RoadType {
+  name: string;
+}
 
+interface CardType {
+  listName: string;
+  date: string;
+  image?: string;
+  roads: RoadType[];
+}
+
+interface PaginationType {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+type SetPaginationType = React.Dispatch<React.SetStateAction<PaginationType>>;
+
+interface RecipeReviewCardProps {
+  cardData: CardType[];
+  setPagination: SetPaginationType;
+  pagination: PaginationType;
+  loading: boolean;
+  state: boolean;
+}
 export default function RecipeReviewCard({
   cardData,
   setPagination,
   pagination,
-  loading, // 로딩 상태 추가
+  loading,
   state,
-}: any) {
+}: RecipeReviewCardProps) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<any>(null);
+  const [selectedCard, setSelectedCard] = useState<cardItem | undefined>();
 
-  const ClickHandler = (card: any) => {
+  const ClickHandler = (card: cardItem) => {
     setSelectedCard(card);
     setIsOpen(true);
   };
@@ -39,7 +62,7 @@ export default function RecipeReviewCard({
   };
 
   return (
-    <div className="">
+    <div>
       <div className="flex flex-wrap gap-12 p-8 ml-12">
         {loading
           ? [...Array(12)].map((_, i) => (
@@ -47,20 +70,24 @@ export default function RecipeReviewCard({
                 <Card sx={{ maxWidth: 345 }}>
                   <CardHeader
                     avatar={
-                      <Skeleton variant="circular" width={40} height={40} />
+                      <div className="w-10 h-10 bg-gray-300 rounded-full animate-pulse" />
                     }
-                    title={<Skeleton width="80%" />}
-                    subheader={<Skeleton width="40%" />}
+                    title={
+                      <div className="h-4 bg-gray-300 rounded w-3/4 animate-pulse" />
+                    }
+                    subheader={
+                      <div className="h-3 bg-gray-200 rounded w-1/2 animate-pulse" />
+                    }
                   />
-                  <Skeleton variant="rectangular" height={150} />
+                  <div className="h-40 bg-gray-300 animate-pulse" />
                   <CardContent>
                     <Typography variant="body2" color="text.secondary">
-                      <Skeleton width="100%" />
-                      <Skeleton width="80%" />
+                      <span className="h-4 bg-gray-300 rounded animate-pulse" />
+                      <span className="h-4 bg-gray-200 rounded animate-pulse w-4/5" />
                     </Typography>
                   </CardContent>
                   <CardActions disableSpacing>
-                    <Skeleton width="30%" />
+                    <span className="h-4 bg-gray-200 rounded animate-pulse w-1/3" />
                   </CardActions>
                 </Card>
               </div>
@@ -71,11 +98,11 @@ export default function RecipeReviewCard({
                 onClick={() => ClickHandler(card)}
                 className="rounded-lg w-64 border-2 shadow-xl h-76"
               >
-                <Card sx={{ maxWidth: 345 }} className="text-overflow-elipsis">
+                <Card sx={{ maxWidth: 345 }} className="text-overflow-ellipsis">
                   <CardHeader
                     avatar={
                       <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {session?.user?.name?.split("")[0]}
+                        {session?.user?.name?.[0]}
                       </Avatar>
                     }
                     title={
@@ -91,7 +118,7 @@ export default function RecipeReviewCard({
                   />
 
                   {card.image ? (
-                    <div className="relative w-full h-40 overflow-hidden ">
+                    <div className="relative w-full h-40 overflow-hidden">
                       <Image
                         src={card.image}
                         alt="img"
@@ -107,10 +134,10 @@ export default function RecipeReviewCard({
                   )}
 
                   <CardContent className="h-20">
-                    <span className=" line-clamp-2">
+                    <span className="line-clamp-2">
                       {card.roads.map((road: any, i: number) => (
                         <span key={`road-card-${i}`}>
-                          <span className="">{road.name} -</span>
+                          <span>{road.name} -</span>
                         </span>
                       ))}
                     </span>
