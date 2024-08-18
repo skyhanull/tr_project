@@ -77,6 +77,8 @@ yarn dev
 
 1. Next.js API Routes와 MongoDB를 활용하여 게시글과 댓글 등 CRUD를 구현
 2. MongoDB 쿼리와 select 와 userCode 를 사용하여  전체 페이지와 개인 페이지에서 게시글 리스트를 필터링하고, 최신순 및 인기순으로 정렬할 수 있는 기능 구현
+3. 상세모달 안에 댓글 crud/좋아요/게시글 삭제 등의 기능 추가
+
 ```
 
 6. CI/CD 파이프라인 구축
