@@ -57,7 +57,7 @@ const MainList = () => {
           <p className="text-xl text-gray-600">Loading...</p>
         </div>
       ) : (
-        <div className="">
+        <>
           {images.length === 0 ? (
             <div className="w-full flex justify-center items-center mt-40 text-gray-500">
               검색 결과가 없습니다.
@@ -73,7 +73,7 @@ const MainList = () => {
               ))}
             </div>
           )}
-        </div>
+        </>
       )}
     </div>
   );
