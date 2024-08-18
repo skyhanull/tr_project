@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import axios from "axios";
 import { useRecoilState } from "recoil";
 import React, { useState, useEffect, useMemo } from "react";
 import Button from "@mui/material/Button";
@@ -12,28 +11,16 @@ import StoreModal from "@/components/Modal/storeModal";
 import { FaRegTrashAlt } from "@react-icons/all-files/fa/FaRegTrashAlt";
 import { textState } from "@/recoil/atoms";
 import { BiError } from "@react-icons/all-files/bi/BiError";
+import { FaRegStar } from "@react-icons/all-files/fa/FaRegStar";
+import { IoShareSocialSharp } from "@react-icons/all-files/io5/IoShareSocialSharp";
 import { convertDuration } from "@/utility/time";
 import { RouteResponse } from "../../../utility/interface/roadType";
 import { FILTER_TRAFFIC } from "../../../constants/traffic";
-import { useSession } from "next-auth/react";
-import { FaStar } from "@react-icons/all-files/fa/FaStar";
-import { FaRegStar } from "@react-icons/all-files/fa/FaRegStar";
-import { IoShareSocialSharp } from "@react-icons/all-files/io5/IoShareSocialSharp";
-import { getToken } from "next-auth/jwt";
-import SubmitButton from "@/components/button/submitButton";
-
-interface RoadType {
-  address: string;
-  filterChip: string;
-  chip: string;
-  name: string;
-  x: string;
-  y: string;
-}
+import { RoadDataType } from "@/utility/interface/roadData";
 
 const DirectionList = () => {
   const [filterChip, setFilterChip] = useState("driving");
-  const [markerList, setMarkerList] = useRecoilState<RoadType[]>(textState);
+  const [markerList, setMarkerList] = useRecoilState<RoadDataType[]>(textState);
   const [directions, setDirections] = useState<RouteResponse | null>(null);
 
   const [name, setName] = useState("");
@@ -164,7 +151,7 @@ const DirectionList = () => {
           <div className="border-y-2  fixed bottom-0 p-10 flex flex-col bg-white w-px-55">
             <div className="text-xl flex justify-between w-full">
               <div className="font-bold ">총 시간 :</div>
-              <div>{name}</div>
+
               <div className="flex ">
                 {directions?.routes[0]?.duration
                   ? convertDuration(directions?.routes[0]?.duration)
@@ -182,12 +169,6 @@ const DirectionList = () => {
           </div>
         </div>
       </div>
-      {/* {isCollapsed && (
-        <DirectionModal
-          setIsCollapsed={setIsCollapsed}
-          directions={directions}
-        />
-      )} */}
       {bookModal && (
         <StoreModal
           markerList={markerList}
