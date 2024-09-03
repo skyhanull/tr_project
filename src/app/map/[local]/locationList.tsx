@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Metadata } from "next";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { usePathname } from "next/navigation";
 import SelectFilter from "../../../components/filterbar/fieldSelect";
@@ -12,7 +12,7 @@ import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
 import getChipColor from "@/utility/color";
 import getImageSrc from "@/utility/image";
-import LocalPopup from "../../../components/Popup/localPopup";
+import LocalPopup from "../../../components/popup/localPopup";
 import { textState } from "../../../recoil/atoms";
 import { HiOutlinePlus } from "@react-icons/all-files/hi/HiOutlinePlus";
 import { FILTER_ARRAY } from "@/constants/listFilter";
@@ -27,7 +27,7 @@ const LocationList = () => {
   const router = usePathname();
   const [addList, setAddList] = useRecoilState(textState);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [filterChip, setFilterChip] = useState("loc");
+  const [filterChip, setFilterChip] = useState("FD6");
   const [curUrl, setCurUrl] = useState("");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
